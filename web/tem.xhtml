@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+ 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <h:form >
+            <p:panel id="gpPurchase" header="Purchase">
+
+                <p:panelGrid columns="2" >
+
+                    <p:panel id="gpItemAndList">
+                        <p:panel id="gpItem" header="Item Details">
+
+                            <h:outputLabel value="Item" />
+                            <h:selectOneListbox id="lstItem" value="#{purchaseBillController.billItemEntry.billItem.itemUnit.item}" size="5">
+                                <f:selectItems value="#{purchaseBillController.items}" var="item" itemValue="#{item}" itemLabel="#{item.name}">
+                                </f:selectItems>
+                                <f:ajax execute="lstItem" render="txtTem"/>
+                            </h:selectOneListbox>
+
+                            <h:outputLabel value="Selected is #{purchaseBillController.billItemEntry.billItem.itemUnit.item.name}" id="txtTem" />
+
+                            <h:commandButton id="btnAdd" value="Add" action="#{purchaseBillController.addItemToList}">
+                                <f:ajax execute="lstItem btnAdd" render="gpItem gpList txtTem"/>
+                            </h:commandButton>
+
+
+
+
+                        </p:panel>
+                        <p:panel id="gpList" header="Item List">
+
+                            <p:dataTable value="#{purchaseBillController.billItemEntrys}" var="temBillItem" selection="#{purchaseBillController.editBillItemEntry}" selectionMode="single" rowKey="#{temBillItem.id}" >
+
+                                <p:column headerText="Item" >
+                                    #{temBillItem.billItem.itemUnit.item.name}
+                                </p:column>
+
+                                <p:column headerText="ID" >
+                                    #{temBillItem}
+                                </p:column>
+
+
+
+                            </p:dataTable> 
+
+
+
+
+                            <h:commandButton value="Delete" action="#{purchaseBillController.removeItemFromList}" >
+                                <f:ajax render="gpList gpItem" execute="gpList"/>
+                            </h:commandButton>
+
+
+
+
+                        </p:panel>
+                    </p:panel>
+                    <p:panel id="gpBillDetails" header="Bill Details">
+                        <p:panelGrid columns="2">
+                            Supplied By
+                            <h:selectOneListbox value="#{purchaseBillController.fromInstitution}" >
+                                <f:selectItems value="#{purchaseBillController.fromInstitutions}" var="fronIns" itemValue="#{fronIns}" itemLabel="#{fronIns.name}"></f:selectItems>
+                            </h:selectOneListbox>
+                            Receiving Institution
+                            <h:selectOneListbox id="cmbToIns" value="#{purchaseBillController.toInstitution}" >
+                                <f:selectItems value="#{purchaseBillController.toInstitutions}" var="toIns" itemValue="#{toIns}" itemLabel="#{toIns.name}"></f:selectItems>
+                                <f:ajax execute="cmbToIns" render="cmbToUnit" event="change" />
+                            </h:selectOneListbox>
+                            Receiving Unit
+                            <h:selectOneListbox id="cmbToUnit" value="#{purchaseBillController.toUnit}" >
+                                <f:selectItems value="#{purchaseBillController.toUnits}" var="toUnit" itemValue="#{toUnit}" itemLabel="#{toUnit.name}"></f:selectItems>
+                                <f:ajax execute="cmbToUnit" event="change" render="cmbToLocation tem"  />
+                            </h:selectOneListbox>                      
+                            Receiving Location
+                            <h:selectOneListbox id="cmbToLocation" value="#{purchaseBillController.toLocation}" >
+                                <f:selectItems value="#{purchaseBillController.toLocations}" var="toLoc" itemValue="#{toLoc}" itemLabel="#{toLoc.name}"></f:selectItems>
+                            </h:selectOneListbox>                      
+                            <h:outputLabel value="#{purchaseBillController.toLocations.rowCount}" id="tem"/>
+
+                        </p:panelGrid>
+                    </p:panel>
+                </p:panelGrid>
+            </p:panel>
+
+
+
+        </h:form>        
+
+
+      
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+ 
+    </h:body>
+</html>
+
