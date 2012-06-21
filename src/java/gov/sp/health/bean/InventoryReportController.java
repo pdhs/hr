@@ -204,6 +204,7 @@ public class InventoryReportController {
 //                }
 //            }
 //        }
+        return false;
 
     }
     
@@ -312,7 +313,8 @@ public class InventoryReportController {
     }
 
     public DataModel<Unit> getFromUnits() {
-        return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getBill().getFromInstitution().getId()));
+//        return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getBill().getFromInstitution().getId()));
+        return null;
     }
 
     public void setFromUnits(DataModel<Unit> fromUnits) {
@@ -372,9 +374,9 @@ public class InventoryReportController {
     }
 
     public DataModel<Person> getFromPersons() {
-        if (getBill().getFromInstitution() != null) {
-            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getBill().getFromInstitution().getId() + " ORDER BY p.name"));
-        }
+//        if (getBill().getFromInstitution() != null) {
+//            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getBill().getFromInstitution().getId() + " ORDER BY p.name"));
+//        }
         return null;
     }
 
@@ -391,9 +393,9 @@ public class InventoryReportController {
     }
 
     public DataModel<Person> getToPersons() {
-        if (getBill().getToInstitution() != null) {
-            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getBill().getToInstitution().getId() + " ORDER BY p.name"));
-        }
+//        if (getBill().getToInstitution() != null) {
+//            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getBill().getToInstitution().getId() + " ORDER BY p.name"));
+//        }
         return null;
     }
 
