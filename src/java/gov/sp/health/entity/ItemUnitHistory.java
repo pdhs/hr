@@ -66,8 +66,38 @@ public class ItemUnitHistory implements Serializable {
     @ManyToOne
     Person person;
     
-     
+     BillItem billItem;
     
+    @Temporal(javax.persistence.TemporalType.DATE)
+    Date historyDate;
+    @Temporal(javax.persistence.TemporalType.TIME)
+    Date historyTime;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    Date historyTimeStamp;
+
+    public Date getHistoryDate() {
+        return historyDate;
+    }
+
+    public void setHistoryDate(Date historyDate) {
+        this.historyDate = historyDate;
+    }
+
+    public Date getHistoryTime() {
+        return historyTime;
+    }
+
+    public void setHistoryTime(Date historyTime) {
+        this.historyTime = historyTime;
+    }
+
+    public Date getHistoryTimeStamp() {
+        return historyTimeStamp;
+    }
+
+    public void setHistoryTimeStamp(Date historyTimeStamp) {
+        this.historyTimeStamp = historyTimeStamp;
+    }
     
     
 
@@ -239,6 +269,15 @@ public class ItemUnitHistory implements Serializable {
         this.unit = unit;
     }
 
+    public BillItem getBillItem() {
+        return billItem;
+    }
+
+    public void setBillItem(BillItem billItem) {
+        this.billItem = billItem;
+    }
+
+    
     
     
     

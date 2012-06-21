@@ -19,10 +19,7 @@ import gov.sp.health.facade.ModalFacade;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.facade.SupplierFacade;
 import gov.sp.health.facade.UnitFacade;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -83,8 +80,8 @@ public class InventoryReportController {
     DataModel<Item> items;
     DataModel<Make> makes;
     //
-    DataModel<LedgureEntry> ledgureEntrys;
-    List<LedgureEntry> lstLedgureEntrys;
+    DataModel<LedgerEntry> ledgureEntrys;
+    List<LedgerEntry> lstLedgureEntrys;
     //
     DataModel<Institution> fromInstitutions;
     DataModel<Unit> fromUnits;
@@ -96,6 +93,11 @@ public class InventoryReportController {
     DataModel<Location> toLocations;
     DataModel<Person> toPersons;
     //
+    DataModel<Institution> institutions;
+    DataModel<Unit> units;
+    DataModel<Location> locations;
+    DataModel<Person> persons;
+    //
     DataModel<Country> countries;
     DataModel<Supplier> suppliers;
     DataModel<Manufacturer> manufacturers;
@@ -106,14 +108,28 @@ public class InventoryReportController {
      */
     Date fromDate;
     Date toDate;
-    LedgureEntry ledgureEntry;
+    LedgerEntry ledgureEntry;
+    Institution institution;
+    Unit unit;
+    Location location;
+    Person person;
+    Item item;
+    //
+    Institution fromInstitution;
+    Unit fromUnit;
+    Location fromLocation;
+    Person fromPerson;
+    //
+    Institution toInstitution;
+    Unit toUnit;
+    Location toLocation;
+    Person toPerson;
 
     /**
      *
      * Methods
      *
      */
-   
     public Double calculateStock(Item item) {
         if (item != null) {
             return calculateStock("SELECT SUM(i.quentity) FROM ItemUnit i WHERE i.retired=false AND i.item.id = " + item.getId() + "");
@@ -154,9 +170,6 @@ public class InventoryReportController {
         }
     }
 
-    
-    
-    
     public Double calculateStock(String strJQL) {
         System.out.println(strJQL);
         System.out.println(getBillFacade().toString());
@@ -164,11 +177,6 @@ public class InventoryReportController {
         return getBillFacade().findAggregateDbl(strJQL);
     }
 
-    
-           
-
-    
-    
     private boolean canProceed() {
 //        if (getEntryDate() == null) {
 //            return false;
@@ -183,22 +191,22 @@ public class InventoryReportController {
 //            return false;
 //        }
 //        if (getInstitution() != null) {
-//            entryType = LedgureEntry.EntryType.INSTITUTION;
+//            entryType = LedgerEntry.EntryType.INSTITUTION;
 //            return true;
 //        } else {
 //            if (getUnit() != null) {
-//                entryType = LedgureEntry.EntryType.UNIT;
+//                entryType = LedgerEntry.EntryType.UNIT;
 //                return true;
 //            } else {
 //                if (getLocation() != null) {
-//                    entryType = LedgureEntry.EntryType.LOCATION;
+//                    entryType = LedgerEntry.EntryType.LOCATION;
 //                    return true;
 //                } else {
 //                    if (getPerson() != null) {
-//                        entryType = LedgureEntry.EntryType.PERSON;
+//                        entryType = LedgerEntry.EntryType.PERSON;
 //                        return true;
 //                    } else {
-//                        entryType = LedgureEntry.EntryType.OTHER;
+//                        entryType = LedgerEntry.EntryType.OTHER;
 //                        return false;
 //                    }
 //                }
@@ -207,11 +215,7 @@ public class InventoryReportController {
         return false;
 
     }
-    
-    
-    
-    
-    
+
     /**
      * Creates a new instance of PurchaseBillController
      */
@@ -221,7 +225,6 @@ public class InventoryReportController {
     /**
      * Getters and Setters
      */
-
     public BillFacade getBillFacade() {
         return billFacade;
     }
@@ -286,8 +289,6 @@ public class InventoryReportController {
         this.sessionController = sessionController;
     }
 
-
-
     public InstitutionFacade getInstitutionFacade() {
         return institutionFacade;
     }
@@ -297,6 +298,10 @@ public class InventoryReportController {
     }
 
     public DataModel<Institution> getToInstitutions() {
+        return new ListDataModel<Institution>(getInstitutionFacade().findBySQL("SELECT i FROM Institution i WHERE i.retired=false ORDER by i.name"));
+    }
+
+    public DataModel<Institution> getInstitutions() {
         return new ListDataModel<Institution>(getInstitutionFacade().findBySQL("SELECT i FROM Institution i WHERE i.retired=false ORDER by i.name"));
     }
 
@@ -313,7 +318,9 @@ public class InventoryReportController {
     }
 
     public DataModel<Unit> getFromUnits() {
-//        return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getBill().getFromInstitution().getId()));
+        if (getInstitution() != null) {
+            return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getFromInstitution().getId()));
+        }
         return null;
     }
 
@@ -322,9 +329,9 @@ public class InventoryReportController {
     }
 
     public DataModel<Location> getFromLocations() {
-//        if (getBill().getFromUnit() != null) {
-//            return new ListDataModel<Location>(getLocationFacade().findBySQL("SELECT l FROM Location l WHERE l.retired=false AND l.unit.id = " + getBill().getFromUnit().getId() + " ORDER BY l.name"));
-//        }
+        if (getFromUnit() != null) {
+            return new ListDataModel<Location>(getLocationFacade().findBySQL("SELECT l FROM Location l WHERE l.retired=false AND l.unit.id = " + getFromUnit().getId() + " ORDER BY l.name"));
+        }
         return null;
     }
 
@@ -333,12 +340,16 @@ public class InventoryReportController {
     }
 
     public DataModel<Location> getToLocations() {
-//        System.out.println("Getting ToLocations");
-//        if (getBill().getToUnit() != null) {
-//            System.out.println("Got Null while getting toLocations");
-//            return new ListDataModel<Location>(getLocationFacade().findBySQL("SELECT l FROM Location l WHERE l.retired=false AND l.unit.id = " + getBill().getToUnit().getId() + " ORDER BY l.name"));
-//        }
-//        System.out.println("Got Null while getting toLocations");
+        if (getToUnit() != null) {
+            return new ListDataModel<Location>(getLocationFacade().findBySQL("SELECT l FROM Location l WHERE l.retired=false AND l.unit.id = " + getToUnit().getId() + " ORDER BY l.name"));
+        }
+        return null;
+    }
+
+    public DataModel<Location> getLocations() {
+        if (getToUnit() != null) {
+            return new ListDataModel<Location>(getLocationFacade().findBySQL("SELECT l FROM Location l WHERE l.retired=false AND l.unit.id = " + getUnit().getId() + " ORDER BY l.name"));
+        }
         return null;
     }
 
@@ -347,9 +358,16 @@ public class InventoryReportController {
     }
 
     public DataModel<Unit> getToUnits() {
-//        if (getBill().getToInstitution() != null) {
-//            return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id=" + getBill().getToInstitution().getId() + " ORDER BY u.name"));
-//        }
+        if (getToInstitution() != null) {
+            return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id=" + getToInstitution().getId() + " ORDER BY u.name"));
+        }
+        return null;
+    }
+
+    public DataModel<Unit> getUnits() {
+        if (getInstitution() != null) {
+            return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id=" + getInstitution().getId() + " ORDER BY u.name"));
+        }
         return null;
     }
 
@@ -374,9 +392,9 @@ public class InventoryReportController {
     }
 
     public DataModel<Person> getFromPersons() {
-//        if (getBill().getFromInstitution() != null) {
-//            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getBill().getFromInstitution().getId() + " ORDER BY p.name"));
-//        }
+        if (getFromInstitution() != null) {
+            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getFromInstitution().getId() + " ORDER BY p.name"));
+        }
         return null;
     }
 
@@ -393,9 +411,16 @@ public class InventoryReportController {
     }
 
     public DataModel<Person> getToPersons() {
-//        if (getBill().getToInstitution() != null) {
-//            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getBill().getToInstitution().getId() + " ORDER BY p.name"));
-//        }
+        if (getToInstitution() != null) {
+            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getToInstitution().getId() + " ORDER BY p.name"));
+        }
+        return null;
+    }
+
+    public DataModel<Person> getPersons() {
+        if (getInstitution() != null) {
+            return new ListDataModel<Person>(getPersonFacade().findBySQL("SELECT p FROM Person p WHERE p.retired=false AND p.institution.id=" + getInstitution().getId() + " ORDER BY p.name"));
+        }
         return null;
     }
 
@@ -467,29 +492,178 @@ public class InventoryReportController {
         this.itemUnitHistoryFacade = itemUnitHistoryFacade;
     }
 
-    public LedgureEntry getLedgureEntry() {
+    public LedgerEntry getLedgureEntry() {
         return ledgureEntry;
     }
 
-    public void setLedgureEntry(LedgureEntry ledgureEntry) {
+    public void setLedgureEntry(LedgerEntry ledgureEntry) {
         this.ledgureEntry = ledgureEntry;
     }
 
-    public DataModel<LedgureEntry> getLedgureEntrys() {
-        return ledgureEntrys;
+    public DataModel<LedgerEntry> getLedgureEntrys() {
+        if (getInstitution()==null){
+            JsfUtil.addErrorMessage("Please select an institute");
+            return null;
+        }
+        if (getUnit()==null){
+            JsfUtil.addErrorMessage("Please select an item");
+            return null;
+        }
+        if (getItem()==null){
+            JsfUtil.addErrorMessage("Please select an Item");
+            return null;
+        }
+        Map temMap = new HashMap();
+        String temSQL = "SELECT h FROM ItemUnitHistory h WHERE h.retired=false AND h.unit.id=" + getUnit().getId() + " AND h.itemUnit.item.id=" + getItem().getId() + " AND h.historyDate BETWEEN :fromDate AND :toDate ORDER BY h.historyTimeStamp  " ;
+        temMap.put("fromDate", fromDate);
+        temMap.put("toDate", toDate);
+        
+        List<ItemUnitHistory> lstTemHx = getItemUnitHistoryFacade().findBySQL(temSQL, temMap);
+        
+        List<LedgerEntry> lstTemLedgerEntrys = new ArrayList<LedgerEntry>();
+        for (ItemUnitHistory hx:lstTemHx){
+            LedgerEntry en = new LedgerEntry();
+            en.setAfterStock(hx.getAfterQty());
+            en.setBeforeStock(hx.getBeforeQty());
+            en.setBill(hx);
+                    
+        }
+        
+        return new ListDataModel<LedgerEntry>(lstTemLedgerEntrys);
     }
 
-    public void setLedgureEntrys(DataModel<LedgureEntry> ledgureEntrys) {
+    public void setLedgureEntrys(DataModel<LedgerEntry> ledgureEntrys) {
         this.ledgureEntrys = ledgureEntrys;
     }
 
-    public List<LedgureEntry> getLstLedgureEntrys() {
+    public List<LedgerEntry> getLstLedgureEntrys() {
         return lstLedgureEntrys;
     }
 
-    public void setLstLedgureEntrys(List<LedgureEntry> lstLedgureEntrys) {
+    public void setLstLedgureEntrys(List<LedgerEntry> lstLedgureEntrys) {
         this.lstLedgureEntrys = lstLedgureEntrys;
     }
+
+    public Date getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Date getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public Institution getFromInstitution() {
+        return fromInstitution;
+    }
+
+    public void setFromInstitution(Institution fromInstitution) {
+        this.fromInstitution = fromInstitution;
+    }
+
+    public Location getFromLocation() {
+        return fromLocation;
+    }
+
+    public void setFromLocation(Location fromLocation) {
+        this.fromLocation = fromLocation;
+    }
+
+    public Person getFromPerson() {
+        return fromPerson;
+    }
+
+    public void setFromPerson(Person fromPerson) {
+        this.fromPerson = fromPerson;
+    }
+
+    public Unit getFromUnit() {
+        return fromUnit;
+    }
+
+    public void setFromUnit(Unit fromUnit) {
+        this.fromUnit = fromUnit;
+    }
+
+    public Institution getToInstitution() {
+        return toInstitution;
+    }
+
+    public void setToInstitution(Institution toInstitution) {
+        this.toInstitution = toInstitution;
+    }
+
+    public Location getToLocation() {
+        return toLocation;
+    }
+
+    public void setToLocation(Location toLocation) {
+        this.toLocation = toLocation;
+    }
+
+    public Person getToPerson() {
+        return toPerson;
+    }
+
+    public void setToPerson(Person toPerson) {
+        this.toPerson = toPerson;
+    }
+
+    public Unit getToUnit() {
+        return toUnit;
+    }
+
+    public void setToUnit(Unit toUnit) {
+        this.toUnit = toUnit;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+    
     
     
 }

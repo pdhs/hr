@@ -1,8 +1,6 @@
 package gov.sp.health.facade;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -67,6 +65,20 @@ public abstract class AbstractFacade<T> {
         return qry.getResultList();
     }
 
+    
+    public List<T> findBySQL(String temSQL, Map<String, Object> parameters) {
+        TypedQuery<T> qry = getEntityManager().createQuery(temSQL, entityClass);
+        Set s=parameters.entrySet();
+        Iterator it=s.iterator();
+        while (it.hasNext()){
+            Map.Entry m=(Map.Entry)it.next();
+            Object pVal =  m.getValue();
+            String pPara=(String) m.getKey();
+            qry.setParameter(pPara, pVal);
+        }
+        return qry.getResultList();
+    }    
+    
     private void test(Class myClass, Object ob) {
     }
 

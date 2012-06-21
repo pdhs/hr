@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author Buddhika
  */
-public class LedgureEntry {
+public class LedgerEntry {
 
     Date entryDate;
     ItemUnit itemUnit;
