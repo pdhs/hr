@@ -31,113 +31,8 @@ public class LedgureEntry {
     Location location;
     Person person;
 
-    public enum EntryType {
-
-        INSTITUTION,
-        LOCATION,
-        UNIT,
-        PERSON,
-        OTHER,}
-    EntryType entryType;
-
-    public ItemUnitHistory getItemUnitHistory() {
-        if (!canProceed()) {
-            return null;
-        }
-        String temJQL;
-        switch (entryType) {
-            case INSTITUTION:
-                break;
-            case LOCATION:
-                break;
-            case UNIT:
-                break;
-            case PERSON:
-                break;
-            case OTHER:
-            default:
-
-
-        }
-        return itemUnitHistory;
-    }
-
-    public void setItemUnitHistory(ItemUnitHistory itemUnitHistory) {
-        this.itemUnitHistory = itemUnitHistory;
-    }
-
     public Double getAfterStock() {
         return afterStock;
-    }
-
-    private boolean canProceed() {
-        if (getEntryDate() == null) {
-            return false;
-        }
-        if (getItemUnit() == null) {
-            return false;
-        }
-        if (getBillItem() == null) {
-            return false;
-        }
-        if (getBill() == null) {
-            return false;
-        }
-        if (getInstitution() != null) {
-            entryType = EntryType.INSTITUTION;
-            return true;
-        } else {
-            if (getUnit() != null) {
-                entryType = EntryType.UNIT;
-                return true;
-            } else {
-                if (getLocation() != null) {
-                    entryType = EntryType.LOCATION;
-                    return true;
-                } else {
-                    if (getPerson() != null) {
-                        entryType = EntryType.PERSON;
-                        return true;
-                    } else {
-                        entryType = EntryType.OTHER;
-                        return false;
-                    }
-                }
-            }
-        }
-
-    }
-
-    public Institution getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
     }
 
     public void setAfterStock(Double afterStock) {
@@ -145,9 +40,6 @@ public class LedgureEntry {
     }
 
     public Double getBeforeStock() {
-        if (!canProceed()) {
-            return null;
-        }
         return beforeStock;
     }
 
@@ -195,12 +87,36 @@ public class LedgureEntry {
         this.inQty = inQty;
     }
 
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
     public ItemUnit getItemUnit() {
         return itemUnit;
     }
 
     public void setItemUnit(ItemUnit itemUnit) {
         this.itemUnit = itemUnit;
+    }
+
+    public ItemUnitHistory getItemUnitHistory() {
+        return itemUnitHistory;
+    }
+
+    public void setItemUnitHistory(ItemUnitHistory itemUnitHistory) {
+        this.itemUnitHistory = itemUnitHistory;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Double getMonthInQty() {
@@ -227,6 +143,22 @@ public class LedgureEntry {
         this.outQty = outQty;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
     public Double getYearInQty() {
         return yearInQty;
     }
@@ -242,4 +174,10 @@ public class LedgureEntry {
     public void setYearOutQty(Double yearOutQty) {
         this.yearOutQty = yearOutQty;
     }
+
+
+    
+    
+    
+
 }
