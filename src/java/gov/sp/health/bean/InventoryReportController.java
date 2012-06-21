@@ -525,7 +525,8 @@ public class InventoryReportController {
             LedgerEntry en = new LedgerEntry();
             en.setAfterStock(hx.getAfterQty());
             en.setBeforeStock(hx.getBeforeQty());
-            en.setBill(hx);
+            en.setBill(hx.getBillItem().getBill());
+            
                     
         }
         
