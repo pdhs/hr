@@ -22,12 +22,12 @@
             <pou:growl id="g"></pou:growl>
 
             <h:panelGrid columns="3" >
-                <h:outputLabel value="DPDHS Area"/>
+                <h:outputLabel value="#{labels.DPDHSArea}"/>
                 <h:selectOneListbox id="lstDPDHS" value="#{areaController.dpdhsId}" size="5">
                     <f:selectItems value="#{areaController.dpdhsAreas}" var="dpdhs" itemValue="#{dpdhs.id}" itemLabel="#{dpdhs.name}"/>
 <!--                    <f:ajax execute="lstDPDHS" render="tblArea g" event="change"/>-->
                 </h:selectOneListbox>
-                <h:commandButton value="Display All"/>
+                <h:commandButton value="#{labels.DisplayAll}"/>
             </h:panelGrid>
 
 
@@ -36,7 +36,7 @@
             <pou:dataTable id="tblArea"  var="demo" value="#{areaController.listGnPopOfDPDHS()}" >
                 <pou:column>
                     <f:facet name="header">
-                        MOH Area
+                        "#{labels.MOHArea}"
                     </f:facet>
                     <h:outputText value="#{demo.moh.name}"/>
                 </pou:column>
@@ -44,7 +44,7 @@
 
                 <pou:column>
                     <f:facet name="header">
-                        PHI Area
+                        "#{labels.PHIArea}"
                     </f:facet>
                     <h:outputText value="#{demo.phi.name}"/>
                 </pou:column>
@@ -52,21 +52,21 @@
 
                 <pou:column>
                     <f:facet name="header">
-                        PHM Area
+                        "#{labels.PHMArea}"
                     </f:facet>
                     <h:outputText value="#{demo.phm.name}"/>
                 </pou:column>
 
                 <pou:column>
                     <f:facet name="header">
-                        GN Area
+                        "#{labels.GNArea}" 
                     </f:facet>
                     <h:outputText value="#{demo.gn.name}"/>
                 </pou:column>
 
                 <pou:column>
                     <f:facet name="header">
-                        Population
+                        "#{labels.Population}"
                     </f:facet>
                     <h:outputText value="#{demo.gnPop.populationNumber}"/>
                 </pou:column>
@@ -74,7 +74,7 @@
 
                 <pou:column>
                     <f:facet name="header">
-                        Area
+                        "#{labels.Area}"
                     </f:facet>
                     <h:outputText value="#{demo.gnPop.areaKm}"/>
                 </pou:column>
