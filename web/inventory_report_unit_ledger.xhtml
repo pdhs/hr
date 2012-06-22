@@ -7,6 +7,7 @@
                 xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:define name="content">
+        <h:outputStylesheet library="css" name="pdhssp1.css"/>
 
         <pou:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
             <f:facet name="start">
@@ -18,27 +19,54 @@
             </f:facet>
         </pou:ajaxStatus>
         <h:form>
+<!--ToDO:
+Align Top
 
+-->
             <pou:growl id="g"></pou:growl>
-
-            <h:panelGrid columns="2" >
-                <h:outputLabel value="Institution"/>
-                <h:selectOneListbox id="lstIns" value="#{inventoryReportController.institution}" size="5">
-                    <f:selectItems value="#{inventoryController.items}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
-                    <f:ajax execute="lstIns" render="lstUnit" event="change"/>
-                </h:selectOneListbox>
-                <h:outputLabel value="Unit"/>
-                <h:selectOneListbox id="lstUnit" value="#{inventoryReportController.unit}" size="5">
-                    <f:selectItems value="#{unitController.items}" var="uni" itemValue="#{uni}" itemLabel="#{uni.name}"/>
-                </h:selectOneListbox>
-                <h:outputLabel value="Item"/>
-                <h:selectOneListbox id="lstItem" value="#{inventoryReportController.item}" size="5">
-                    <f:selectItems value="#{itemController.items}" var="uni" itemValue="#{item}" itemLabel="#{item.name}"/>
-                </h:selectOneListbox>
-
-                <h:commandButton value="Display All"/>
-            </h:panelGrid>
-
+            <pou:panel id="gpDetail" style="vertical-align: text-top;">
+                <h:panelGrid columnClasses = "pdTopAlign" styleClass="pdTopAlignNoBorder"  >
+                    <pou:row>
+                        <pou:column  styleClass="pdTopAlign">
+                            <h:outputLabel value="Institution"/>
+                            <h:selectOneListbox id="lstIns" value="#{inventoryReportController.institution}" size="5">
+                                <f:selectItems value="#{institutionController.items}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
+                                <f:ajax execute="lstIns" render="lstUnit" event="change"/>
+                            </h:selectOneListbox>
+                        </pou:column>
+                        <pou:column  styleClass="pdTopAlign">
+                            <h:outputLabel value="Unit"/>
+                            <h:selectOneListbox id="lstUnit" value="#{inventoryReportController.unit}" size="5">
+                                <f:selectItems value="#{unitController.items}" var="uni" itemValue="#{uni}" itemLabel="#{uni.name}"/>
+                            </h:selectOneListbox>
+                        </pou:column>
+                        <pou:column  styleClass="pdTopAlign">
+                            <h:outputLabel value="Item"/>
+                            <h:selectOneListbox id="lstItem" value="#{inventoryReportController.item}" size="5">
+                                <f:selectItems value="#{itemController.items}" var="inventoryItem" itemValue="#{inventoryItem}" itemLabel="#{inventoryItem.name}"/>
+                            </h:selectOneListbox>
+                        </pou:column>
+                    </pou:row>
+                    <pou:row>
+                        <pou:column  styleClass="pdTopAlign">
+                            <h:outputLabel value="From"/>
+                            <pou:calendar pattern="dd MMMM yyyy" value="#{inventoryReportController.fromDate}" >
+                            </pou:calendar>
+                        </pou:column>
+                        <pou:column  styleClass="pdTopAlign">
+                            <h:outputLabel value="To"/>
+                            <pou:calendar pattern="dd MMMM yyyy"  value="#{inventoryReportController.toDate}" ></pou:calendar>
+                        </pou:column>
+                    </pou:row>
+                    <pou:row>
+                        <pou:column  styleClass="pdTopAlign" >
+                            <h:commandButton value="Display All">
+                                <f:ajax render="tblItems" execute="gpDetail" ></f:ajax>
+                            </h:commandButton>
+                        </pou:column>
+                    </pou:row>
+                </h:panelGrid>
+            </pou:panel>
 
 
 
@@ -47,14 +75,16 @@
                     <f:facet name="header">
                         Date
                     </f:facet>
-                    <h:outputText value="#{demo.entryDate}"/>
+                    <h:outputText value="#{demo.bill.billDate}">
+                        <f:convertDateTime pattern="dd MMMM yyyy"/>
+                    </h:outputText>
                 </pou:column>
 
                 <pou:column>
                     <f:facet name="header">
                         Make
                     </f:facet>
-                    <h:outputText value="#{demo.itemUnit.make}"/>
+                    <h:outputText value="#{demo.billItem.itemUnit.make.name}"/>
                 </pou:column>                
 
 
@@ -62,7 +92,7 @@
                     <f:facet name="header">
                         Modal
                     </f:facet>
-                    <h:outputText value="#{demo.itemUnit.modal}"/>
+                    <h:outputText value="#{demo.billItem.itemUnit.modal.name}"/>
                 </pou:column>
 
                 <pou:column>
@@ -70,7 +100,24 @@
                         ID
                     </f:facet>
                     <h:outputText value="#{demo.itemUnit.name}"/>
+                </pou:column>                   
+
+
+                <pou:column>
+                    <f:facet name="header">
+                        From/To
+                    </f:facet>
+                    <h:outputText value="#{demo.bill.fromInstitution.name}"/>
                 </pou:column>                
+
+                <pou:column>
+                    <f:facet name="header">
+                        Invoice
+                    </f:facet>
+                    <h:outputText value="#{demo.bill.name}"/>
+                </pou:column>   
+
+
 
                 <pou:column>
                     <f:facet name="header">
@@ -86,16 +133,32 @@
                     </f:facet>
                     <h:outputText value="#{demo.outQty}"/>
                 </pou:column>                
-                
+
+
+                <pou:column>
+                    <f:facet name="header">
+                        Quentity Before
+                    </f:facet>
+                    <h:outputText value="#{demo.itemUnitHistory.beforeQty}"/>
+                </pou:column>                
+
+
+                <pou:column>
+                    <f:facet name="header">
+                        Quentity After
+                    </f:facet>
+                    <h:outputText value="#{demo.itemUnitHistory.afterQty}"/>
+                </pou:column>                
+
 
                 <pou:column>
                     <f:facet name="header">
                         Month In
                     </f:facet>
-                    <h:outputText value="#{demo.monthInQty}"/>
+                    <h:outputText value="#{demo.beforeStock}"/>
                 </pou:column>                
 
-                
+
                 <pou:column>
                     <f:facet name="header">
                         Month out
@@ -103,7 +166,7 @@
                     <h:outputText value="#{demo.monthOutQty}"/>
                 </pou:column>                
 
-                
+
             </pou:dataTable>
 
             <pou:panel header="Export All Data">

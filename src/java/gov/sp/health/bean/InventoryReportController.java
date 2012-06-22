@@ -501,35 +501,49 @@ public class InventoryReportController {
     }
 
     public DataModel<LedgerEntry> getLedgureEntrys() {
-        if (getInstitution()==null){
+        if (getInstitution() == null) {
             JsfUtil.addErrorMessage("Please select an institute");
             return null;
         }
-        if (getUnit()==null){
-            JsfUtil.addErrorMessage("Please select an item");
+        if (getUnit() == null) {
+            JsfUtil.addErrorMessage("Please select a Unit");
             return null;
         }
-        if (getItem()==null){
+        if (getItem() == null) {
             JsfUtil.addErrorMessage("Please select an Item");
             return null;
         }
         Map temMap = new HashMap();
-        String temSQL = "SELECT h FROM ItemUnitHistory h WHERE h.retired=false AND h.unit.id=" + getUnit().getId() + " AND h.itemUnit.item.id=" + getItem().getId() + " AND h.historyDate BETWEEN :fromDate AND :toDate ORDER BY h.historyTimeStamp  " ;
+        String temSQL = "SELECT h FROM ItemUnitHistory h WHERE h.retired=false AND h.unit.id=" + getUnit().getId() + " AND h.itemUnit.item.id=" + getItem().getId() + " AND h.historyDate BETWEEN :fromDate AND :toDate ORDER BY h.historyTimeStamp  ";
+//        temSQL = "SELECT h FROM ItemUnitHistory h WHERE h.retired=false AND h.unit.id=" + getUnit().getId() + " AND h.itemUnit.item.id=" + getItem().getId() + " ORDER BY h.historyTimeStamp  ";
         temMap.put("fromDate", fromDate);
         temMap.put("toDate", toDate);
-        
-        List<ItemUnitHistory> lstTemHx = getItemUnitHistoryFacade().findBySQL(temSQL, temMap);
-        
+
+        System.out.println("From Date" + fromDate);
+        System.out.println("To Date" + toDate);
+        System.out.println("SQL" + temSQL);
+
+        List<ItemUnitHistory> lstTemHx = getItemUnitHistoryFacade().findBySQL(temSQL,temMap);
+        System.out.println(lstTemHx);
+
         List<LedgerEntry> lstTemLedgerEntrys = new ArrayList<LedgerEntry>();
-        for (ItemUnitHistory hx:lstTemHx){
+        System.out.println(lstTemHx);
+
+        for (ItemUnitHistory hx : lstTemHx) {
             LedgerEntry en = new LedgerEntry();
             en.setAfterStock(hx.getAfterQty());
-            en.setBeforeStock(hx.getBeforeQty());
+            en.setItemUnitHistory(hx);
+            en.setBillItem(hx.getBillItem());
             en.setBill(hx.getBillItem().getBill());
-            
-                    
+            if (en.getBill() instanceof InBill){
+                en.setInQty(hx.getBillItem().getQuentity());
+                en.setOutQty(null);
+            }else{
+                en.setOutQty(hx.getBillItem().getQuentity());
+                en.setInQty(null);
+            }
+            lstTemLedgerEntrys.add(en);
         }
-        
         return new ListDataModel<LedgerEntry>(lstTemLedgerEntrys);
     }
 
@@ -664,7 +678,4 @@ public class InventoryReportController {
     public void setItem(Item item) {
         this.item = item;
     }
-    
-    
-    
 }

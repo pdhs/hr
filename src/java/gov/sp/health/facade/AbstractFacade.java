@@ -3,6 +3,7 @@ package gov.sp.health.facade;
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
@@ -66,15 +67,16 @@ public abstract class AbstractFacade<T> {
     }
 
     
-    public List<T> findBySQL(String temSQL, Map<String, Object> parameters) {
+    public List<T> findBySQL(String temSQL, Map<String, Date> parameters) {
         TypedQuery<T> qry = getEntityManager().createQuery(temSQL, entityClass);
         Set s=parameters.entrySet();
         Iterator it=s.iterator();
         while (it.hasNext()){
             Map.Entry m=(Map.Entry)it.next();
-            Object pVal =  m.getValue();
+            Date pVal =  (Date) m.getValue();
             String pPara=(String) m.getKey();
-            qry.setParameter(pPara, pVal);
+            qry.setParameter(pPara, pVal, TemporalType.DATE);
+            System.out.println("Parameter " + pPara + "\tVal" + pVal);
         }
         return qry.getResultList();
     }    

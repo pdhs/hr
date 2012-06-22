@@ -54,6 +54,8 @@ public class AreaController {
     AreaFacade ejbFacade;
     @EJB
     PopulationFacade popFacade;
+    @EJB
+            AreaFacade areaFacade;
     /**
      * Lists
      */
@@ -63,6 +65,7 @@ public class AreaController {
     DataModel<PhiArea> phiAreas;
     DataModel<PhmArea> phmAreas;
     DataModel<GnArea> gnAreas;
+    DataModel<Area> areas;
     //
     DpdhsArea dpdhsArea;
     MohArea mohArea;
@@ -95,6 +98,35 @@ public class AreaController {
     public AreaController() {
     }
 
+    public DataModel<Area> getAreas() {
+        return new ListDataModel<Area>(getAreaFacade().findBySQL("SELECT a FROM Area a WHERE a.retired=false ORDER BY a.name"));
+    }
+
+    public void setAreas(DataModel<Area> areas) {
+        this.areas = areas;
+    }
+
+    public AreaFacade getAreaFacade() {
+        return areaFacade;
+    }
+
+    public void setAreaFacade(AreaFacade areaFacade) {
+        this.areaFacade = areaFacade;
+    }
+    
+    
+
+    public PopulationFacade getPopFacade() {
+        return popFacade;
+    }
+
+    public void setPopFacade(PopulationFacade popFacade) {
+        this.popFacade = popFacade;
+    }
+
+    
+    
+    
     public static int intValue(long value) {
         int valueInt = (int) value;
         if (valueInt != value) {
@@ -351,6 +383,7 @@ public class AreaController {
         this.sessionController = sessionController;
     }
 
+    
     public List<DemoTblRow> listGnPopOfDPDHS() {
         String temSQL;
         double area;

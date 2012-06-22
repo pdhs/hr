@@ -7,10 +7,10 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:p="http://primefaces.org/ui">
 
-    
-    
-<!--  testing  -->
-    
+
+
+    <!--  testing  -->
+
     <ui:define name="content">
         <p:growl autoUpdate="true" />
         <h:outputStylesheet library="css" name="pdhscss1.css"   />
@@ -93,6 +93,25 @@
                         <h:selectBooleanCheckbox  value="#{userApproveController.privilege.vehicleEdit}"/>
                         <h:selectBooleanCheckbox  value="#{userApproveController.privilege.vehicleDelete}"/>
 
+                        <h:outputLabel value="Restricted Area" />
+                        <h:selectOneListbox value="#{userApproveController.privilege.restrictedArea}" >
+                            <f:selectItems value="#{areaController.areas}"  var="ra" itemLabel="#{ra.name}" itemValue="#{ra}" />
+                        </h:selectOneListbox>
+                        <h:outputLabel value="&nbsp;" />
+                        <h:outputLabel value="&nbsp;" />
+
+
+                        <h:selectOneListbox value="#{userApproveController.privilege.restrictedInstitution}" >
+                            <f:selectItems value="#{institutionController.items}" var="ri" itemValue="#{ri}" itemLabel="#{ri.name}" />
+                        </h:selectOneListbox>
+                        <h:outputLabel value="&nbsp;" />
+                        <h:outputLabel value="&nbsp;" />
+
+                        <h:selectOneListbox value="#{userApproveController.privilege.restrictedUnit}" >
+                            <f:selectItems value="#{unitController.items}" var="ru" itemValue="#{ru}" itemLabel="#{ru.name}" />
+                        </h:selectOneListbox>
+                        <h:outputLabel value="&nbsp;" />
+                        <h:outputLabel value="&nbsp;" />
 
 
 
@@ -101,12 +120,12 @@
                     <h:panelGroup>
                         <h:inputText value="#{userApproveController.activateComments}" />
                     </h:panelGroup>
-                    
+
                     <h:panelGroup>
                         <h:commandButton value="Activate" action="#{userApproveController.approveUser}"/>
                     </h:panelGroup>
-                    
-                    
+
+
                 </h:panelGroup>
             </h:panelGrid>
         </h:form>        
