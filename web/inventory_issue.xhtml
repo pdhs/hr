@@ -27,7 +27,7 @@
 
                                 <p:row>
                                     <p:column styleClass="pdTopAlign">
-                                        <h:outputLabel value="Select an Institution" ></h:outputLabel>
+                                        <h:outputLabel value="Select Institution" ></h:outputLabel>
                                         <h:selectOneListbox id="cmbFromIns" value="#{outBillController.bill.fromInstitution}" >
                                             <f:selectItems value="#{outBillController.fromInstitutions}" var="fronIns" itemValue="#{fronIns}" itemLabel="#{fronIns.name}"></f:selectItems>
                                             <f:ajax event="change" render="cmbFromUnit" execute="cmbFromIns" />
@@ -173,22 +173,12 @@
                         <p:panelGrid columns="2">
 
 
-                            Receiving Institution
+                            Sending to
                             <h:selectOneListbox id="cmbToIns" value="#{outBillController.bill.toInstitution}" >
                                 <f:selectItems value="#{outBillController.toInstitutions}" var="toIns" itemValue="#{toIns}" itemLabel="#{toIns.name}"></f:selectItems>
                                 <f:ajax execute="cmbToIns" render="cmbToUnit cmbToPerson" event="change" />
                             </h:selectOneListbox>
-                            Receiving Unit
-
-                            Receiving Location
-                            <h:selectOneListbox id="cmbToLocation" value="#{outBillController.bill.toLocation}" >
-                                <f:selectItems value="#{outBillController.toLocations}" var="toLoc" itemValue="#{toLoc}" itemLabel="#{toLoc.name}"></f:selectItems>
-                                <f:ajax event="change" render="cmbToPerson" execute="cmbToLocation" />
-                            </h:selectOneListbox>                      
-                            Receiving Person
-                            <h:selectOneListbox id="cmbToPerson" value="#{outBillController.bill.toPerson}" >
-                                <f:selectItems value="#{outBillController.toPersons}" var="toPer" itemValue="#{toPer}" itemLabel="#{toLoc.name}"></f:selectItems>
-                            </h:selectOneListbox>                      
+                     
                             Gross Value
                             <h:inputText disabled="true" value="#{outBillController.bill.grossValue}"/>
                             Discount

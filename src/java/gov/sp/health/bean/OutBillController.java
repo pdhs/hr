@@ -107,6 +107,8 @@ public class OutBillController {
     BillItemEntry billItemEntry;
     BillItemEntry editBillItemEntry;
 
+    Institution institution;
+    Unit unit;
 
     /**
      * Entries
@@ -468,7 +470,9 @@ public class OutBillController {
     }
 
     public DataModel<Item> getItems() {
-        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false ORDER By i.name"));
+        if (getUnit()==null) return null;
+        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM ItemUnit i WHERE i.retired=false AND i.unit.id = " + 
+                   getUnit().getId() + " ORDER By i.name"));
     }
 
     public void setItems(DataModel<Item> items) {
@@ -700,4 +704,22 @@ public class OutBillController {
     public void setItemUnitHistoryFacade(ItemUnitHistoryFacade itemUnitHistoryFacade) {
         this.itemUnitHistoryFacade = itemUnitHistoryFacade;
     }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+    
+    
 }
