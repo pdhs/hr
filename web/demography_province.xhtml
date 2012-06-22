@@ -17,7 +17,7 @@
             <p:growl autoUpdate="true" />
             <p:focus id="selectFocus" context="gpSelect" />
             <p:focus id="detailFocus" context="gpDetail" />
-            <p:panel header="Manage Provinces" >
+            <p:panel header="#{labels.manageProvinces}" >
                 <h:panelGrid id ="gpVeda" columns="2" >
 
                     <h:panelGrid id="gpSelect" columns="1"  >
@@ -25,7 +25,7 @@
 
                             <h:panelGrid id="gpSelectText" columns="2" >
 
-                                <h:outputText id="lblSelect" value="Provinces" >
+                                <h:outputText id="lblSelect" value="#{labels.Province}" >
                                 </h:outputText>
 
                                 <h:inputText id="txtSelect" value="#{provinceController.selectText}" disabled="#{provinceController.selectControlDisable}"  style="min-width: 200px" >
@@ -47,20 +47,20 @@
                             </h:panelGrid>
 
                             <h:panelGrid id="gpSelectButtons" columns="3"  >
-                                <h:commandButton id="btnAdd" value="Add" disabled="#{provinceController.selectControlDisable}" action="#{provinceController.prepareAdd()}" styleClass="buttons" >
+                                <h:commandButton id="btnAdd" value="#{labels.add}" disabled="#{provinceController.selectControlDisable}" action="#{provinceController.prepareAdd()}" styleClass="buttons" >
                                     <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName detailFocus" execute="btnEdit" >                                
                                     </f:ajax>
                                 </h:commandButton>
-                                <h:commandButton id ="btnEdit" value="Edit" disabled="#{provinceController.selectControlDisable}" action="#{provinceController.prepareEdit()}"  styleClass="buttons">
+                                <h:commandButton id ="btnEdit" value="#{labels.edit}" disabled="#{provinceController.selectControlDisable}" action="#{provinceController.prepareEdit()}"  styleClass="buttons">
                                     <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName detailFocus" execute="lstSelect" >
                                     </f:ajax>
                                 </h:commandButton>
-                                <h:commandButton id="btnDelete" onclick="confirmation.show()" value="Delete" disabled="#{provinceController.selectControlDisable}" styleClass="buttons">
+                                <h:commandButton id="btnDelete" onclick="confirmation.show()" value="#{labels.delete}" disabled="#{provinceController.selectControlDisable}" styleClass="buttons">
                                 </h:commandButton>
                             </h:panelGrid>
-                            <p:confirmDialog appendToBody="true" message="Are you sure you want to delete" header="Initiating destroy process" severity="alert" widgetVar="confirmation">  
-                                <p:commandButton value="Yes" oncomplete="confirmation.hide()" action="#{provinceController.delete()}" update="lstSelect txtName"  />  
-                                <p:commandButton value="No" onclick="confirmation.hide()" type="button" />   
+                            <p:confirmDialog appendToBody="true" message="#{labels.areYouSureYouWantToDelete}" header="Initiating destroy process" severity="alert" widgetVar="confirmation">  
+                                <p:commandButton value="#{labels.yes}" oncomplete="confirmation.hide()" action="#{provinceController.delete()}" update="lstSelect txtName"  />  
+                                <p:commandButton value="#{labels.No}" onclick="confirmation.hide()" type="button" />   
                             </p:confirmDialog>
                         </p:panel>
                     </h:panelGrid  >
@@ -68,15 +68,15 @@
                     <p:panel>
                         <h:panelGrid id="gpDetail" columns="1">
                             <h:panelGrid id="gpDetailText" columns="2">
-                                <h:outputText id="lblName" value="Province" ></h:outputText>
+                                <h:outputText id="lblName" value="#{labels.Province}" ></h:outputText>
                                 <h:inputText id="txtName" value="#{provinceController.current.name}" disabled="#{provinceController.modifyControlDisable}" ></h:inputText>
                             </h:panelGrid>
                             <h:panelGrid id="gpDetailButtons" columns="2">
-                                <h:commandButton id="btnSave" value="Save" disabled="#{provinceController.modifyControlDisable}" action="#{provinceController.saveSelected()}" styleClass="buttons">
+                                <h:commandButton id="btnSave" value="#{labels.save}" disabled="#{provinceController.modifyControlDisable}" action="#{provinceController.saveSelected()}" styleClass="buttons">
                                     <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName selectFocus"  execute="txtName    " >
                                     </f:ajax>
                                 </h:commandButton>
-                                <h:commandButton id ="btnCancel" value="Cancel" disabled="#{provinceController.modifyControlDisable}" action="#{provinceController.cancelSelect()}" styleClass="buttons">
+                                <h:commandButton id ="btnCancel" value="#{labels.cancel}" disabled="#{provinceController.modifyControlDisable}" action="#{provinceController.cancelSelect()}" styleClass="buttons">
                                     <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName selectFocus" execute=" txtName    " >                                
                                     </f:ajax>
                                 </h:commandButton>
