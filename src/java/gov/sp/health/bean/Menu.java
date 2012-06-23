@@ -387,13 +387,13 @@ public class Menu {
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue("Good Receive");
+        item.setValue("Purchase");
         item.setUrl("inventory_purchase.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue("Purchase");
-        item.setUrl("institutions.xhtml");
+        item.setValue("Issue");
+        item.setUrl("inventory_issue.xhtml");
         submenu.getChildren().add(item);
 
 item = new MenuItem();
