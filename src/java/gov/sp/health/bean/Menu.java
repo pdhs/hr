@@ -32,6 +32,9 @@ public class Menu {
 
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
+    @ManagedProperty(value = "#{messageProvider}")
+    MessageProvider messageProvider;
+    
     MenuModel model;
     String temIx = "";
 
@@ -70,7 +73,9 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel("HR");
+        submenu.setLabel(messageProvider.getValue("hr"));
+        
+        
 
         item = new MenuItem();
         item.setValue("Institution Types");
