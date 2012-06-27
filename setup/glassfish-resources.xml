@@ -21,4 +21,5 @@
         <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="ds1" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
+    <jdbc-resource enabled="true" jndi-name="dsServerJHO" object-type="user" pool-name="derby_net_healthoffice_healthofficePool"/>
 </resources>
