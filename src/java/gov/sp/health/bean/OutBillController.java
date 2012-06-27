@@ -81,6 +81,7 @@ public class OutBillController {
      */
     DataModel<Item> items;
     DataModel<Make> makes;
+    DataModel<ItemUnit> itemUnits;
     //
     DataModel<BillItemEntry> billItemEntrys;
     List<BillItemEntry> lstBillItemEntrys;
@@ -107,7 +108,12 @@ public class OutBillController {
     BillItemEntry billItemEntry;
     BillItemEntry editBillItemEntry;
 
-
+    Institution institution;
+    Unit unit;
+    ItemUnit itemUnit;
+    ItemUnit editItemUnit;
+    
+    
     /**
      * Entries
      */
@@ -468,7 +474,8 @@ public class OutBillController {
     }
 
     public DataModel<Item> getItems() {
-        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false ORDER By i.name"));
+        if (getUnit()==null) return null;
+        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i "));
     }
 
     public void setItems(DataModel<Item> items) {
@@ -548,7 +555,8 @@ public class OutBillController {
     }
 
     public DataModel<Unit> getFromUnits() {
-        return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getBill().getFromInstitution().getId()));
+        if (getInstitution()==null) return null;
+        return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getInstitution().getId()));
     }
 
     public void setFromUnits(DataModel<Unit> fromUnits) {
@@ -700,4 +708,50 @@ public class OutBillController {
     public void setItemUnitHistoryFacade(ItemUnitHistoryFacade itemUnitHistoryFacade) {
         this.itemUnitHistoryFacade = itemUnitHistoryFacade;
     }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public DataModel<ItemUnit> getItemUnits() {
+        if (getUnit()==null) return null;
+        return new ListDataModel<ItemUnit>(getItemUnitFacade().findBySQL("SELECT i FROM ItemUnit i WHERE i.retired=false AND i.unit.id = " + 
+                   getUnit().getId() + " ORDER By i.name"));
+    }
+
+    public void setItemUnits(DataModel<ItemUnit> itemUnits) {
+        this.itemUnits = itemUnits;
+    }
+
+    public ItemUnit getEditItemUnit() {
+        return editItemUnit;
+    }
+
+    public void setEditItemUnit(ItemUnit editItemUnit) {
+        this.editItemUnit = editItemUnit;
+    }
+
+    public ItemUnit getItemUnit() {
+        return itemUnit;
+    }
+
+    public void setItemUnit(ItemUnit itemUnit) {
+        this.itemUnit = itemUnit;
+    }
+    
+
+    
+    
 }
