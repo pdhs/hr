@@ -76,7 +76,7 @@ public class Menu {
         model = new DefaultMenuModel();
 //        model.addSubmenu(cadreSubmenu());
         if (sessionController.privilege.isBmeView()) model.addSubmenu(biomedSubmenu());
-        if (sessionController.privilege.isVehicleView()) model.addSubmenu(transportSubmenu());
+//        if (sessionController.privilege.isVehicleView()) model.addSubmenu(transportSubmenu());
         if (sessionController.privilege.isDemographyView()) model.addSubmenu(demographySubmenu());
         if (sessionController.privilege.isCaderView()) model.addSubmenu(humanSubmenu());
         if (sessionController.privilege.isMsView()) model.addSubmenu(medicalSubmenu());
