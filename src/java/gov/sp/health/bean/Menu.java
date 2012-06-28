@@ -32,13 +32,13 @@ public class Menu {
 
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
-    @ManagedProperty(value = "#{messageProvider}")
     MessageProvider messageProvider;
     
     MenuModel model;
     String temIx = "";
 
     public MessageProvider getMessageProvider() {
+        if(messageProvider==null) messageProvider = new MessageProvider();
         return messageProvider;
     }
 
