@@ -10,21 +10,21 @@
 
         <h:form enctype="multipart/form-data">
             <pou:growl ></pou:growl>
-            <h:outputLabel value="Enter Data of a Inventory Items" ></h:outputLabel>
+            <h:outputLabel value="#{labels.enterDOII}" ></h:outputLabel>
             <h:panelGrid columns="2" >
 
 
 
-                <h:outputLabel value="Select Item Category"/>
+                <h:outputLabel value="#{labels.selectItemCategory}"/>
                 <h:selectOneListbox value="#{inventoryExcelManager.inventoryItemCategory}" >
                     <f:selectItems value="#{inventoryItemCategoryController.items}" var="c" itemValue="#{c}" itemLabel="#{c.name}"/>
                 </h:selectOneListbox>
 
 
-                <h:outputLabel value="Start Row No" />
+                <h:outputLabel value="#{labels.StartRowNo}" />
                 <h:inputText value="#{inventoryExcelManager.startRow}"/>
 
-                <h:outputLabel value="Item Column No" />
+                <h:outputLabel value="#{labels.itemColumnNo}" />
                 <h:inputText value="#{inventoryExcelManager.iiCol}"/>
 
 
