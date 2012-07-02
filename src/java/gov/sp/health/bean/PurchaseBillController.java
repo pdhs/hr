@@ -76,6 +76,8 @@ public class PurchaseBillController {
      */
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
+    @ManagedProperty(value = "#{transferBean}")
+    TransferBean transferBean;
     /**
      * Collections
      */
@@ -121,6 +123,7 @@ public class PurchaseBillController {
      * Entries
      */
     String modalName;
+    Boolean newBill;
 
     /**
      *
@@ -138,7 +141,7 @@ public class PurchaseBillController {
         getLstBillItemEntrys().add(billItemEntry);
         calculateBillValue();
         clearEntry();
-        
+
     }
 
     private void orderBillItemEntries() {
@@ -246,8 +249,6 @@ public class PurchaseBillController {
         }
     }
 
-
-    
 //    private void saveNewBillItem(BillItemEntry temEntry) {
 //        BillItem temItem = temEntry.getBillItem();
 //        temItem.setBill(getBill());
@@ -276,12 +277,10 @@ public class PurchaseBillController {
 //        getBillItemFacade().create(temItem);
 //
 //    }
-
-    
-    private void settleBillItem(BillItemEntry temEntry){
+    private void settleBillItem(BillItemEntry temEntry) {
         BillItem temBillItem = temEntry.getBillItem();
         ItemUnit newItemUnit = temBillItem.getItemUnit();
- 
+
         newItemUnit.setBulkUnit(newItemUnit.getItem().getBulkUnit());
         newItemUnit.setCreatedAt(Calendar.getInstance().getTime());
         newItemUnit.setCreater(sessionController.getLoggedUser());
@@ -310,7 +309,7 @@ public class PurchaseBillController {
         hxIns.setQuentity(newItemUnit.getQuentity());
         hxIns.setToIn(Boolean.TRUE);
         hxIns.setToOut(Boolean.FALSE);
-        
+
 
         hxUnit.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getUnit()));
         hxUnit.setCreatedAt(Calendar.getInstance().getTime());
@@ -357,7 +356,7 @@ public class PurchaseBillController {
         hxPer.setItemUnit(newItemUnit);
         getItemUnitHistoryFacade().create(hxPer);
 
-        
+
         temBillItem.setBill(getBill());
         temBillItem.setCreatedAt(Calendar.getInstance().getTime());
         temBillItem.setCreater(sessionController.loggedUser);
@@ -383,30 +382,30 @@ public class PurchaseBillController {
         //
         getBillItemFacade().create(temBillItem);
         //
-         hxIns.setBillItem(temBillItem);
-         hxIns.setHistoryDate(getBill().getBillDate());
-         hxIns.setHistoryTimeStamp(Calendar.getInstance().getTime());
-         
-         hxUnit.setBillItem(temBillItem);
-         hxUnit.setHistoryDate(getBill().getBillDate());
-         hxUnit.setHistoryTimeStamp(Calendar.getInstance().getTime());
+        hxIns.setBillItem(temBillItem);
+        hxIns.setHistoryDate(getBill().getBillDate());
+        hxIns.setHistoryTimeStamp(Calendar.getInstance().getTime());
 
-         hxLoc.setBillItem(temBillItem);
-         hxLoc.setHistoryDate(getBill().getBillDate());
-         hxLoc.setHistoryTimeStamp(Calendar.getInstance().getTime());
-         
-         hxPer.setBillItem(temBillItem);
-         hxPer.setHistoryDate(getBill().getBillDate());
-         hxPer.setHistoryTimeStamp(Calendar.getInstance().getTime());
-         
-         getItemUnitHistoryFacade().edit(hxIns);
-         getItemUnitHistoryFacade().edit(hxUnit);
-         getItemUnitHistoryFacade().edit(hxLoc);
-         getItemUnitHistoryFacade().edit(hxPer);
-         
-        
+        hxUnit.setBillItem(temBillItem);
+        hxUnit.setHistoryDate(getBill().getBillDate());
+        hxUnit.setHistoryTimeStamp(Calendar.getInstance().getTime());
+
+        hxLoc.setBillItem(temBillItem);
+        hxLoc.setHistoryDate(getBill().getBillDate());
+        hxLoc.setHistoryTimeStamp(Calendar.getInstance().getTime());
+
+        hxPer.setBillItem(temBillItem);
+        hxPer.setHistoryDate(getBill().getBillDate());
+        hxPer.setHistoryTimeStamp(Calendar.getInstance().getTime());
+
+        getItemUnitHistoryFacade().edit(hxIns);
+        getItemUnitHistoryFacade().edit(hxUnit);
+        getItemUnitHistoryFacade().edit(hxLoc);
+        getItemUnitHistoryFacade().edit(hxPer);
+
+
     }
-    
+
 //    private void addNewToUnitStock(BillItemEntry temEntry) {
 //
 //        BillItem temBillItem = temEntry.getBillItem();
@@ -489,10 +488,8 @@ public class PurchaseBillController {
 //
 //
 //    }
-
 //    private void addToLocation() {
 //    }
-
     public void calculateItemValue() {
         getBillItemEntry().getBillItem().setNetValue(getBillItemEntry().getBillItem().getNetRate() * getBillItemEntry().getBillItem().getQuentity());
     }
@@ -556,16 +553,63 @@ public class PurchaseBillController {
         this.lstBillItemEntrys = lstBillItemEntrys;
     }
 
+//  
+//        public Bill getBill() {
+//        if (bill != null) {
+//            JsfUtil.addErrorMessage(bill.toString());
+//        } else {
+//            JsfUtil.addErrorMessage("Null");
+//        }
+//        return bill;
+//    }
+//
+//    public void setBill(Bill bill) {
+//        this.bill = bill;
+//        if (bill != null) {
+//            JsfUtil.addErrorMessage(bill.toString());
+//        } else {
+//            JsfUtil.addErrorMessage("Null");
+//        }
+//    }
+//    
+    public void prepareForNewBill() {
+        setNewBill(Boolean.TRUE);
+        bill = new InInventoryBill();
+        bill.setBillDate(Calendar.getInstance().getTime());
+
+    }
+
+    public void prepareForOldBill() {
+        setNewBill(Boolean.FALSE);
+        bill = getTransferBean().getBill();
+        String temStr = "SELECT e FROM BillItem e WHERE e.retired=false AND e.bill.id = " + bill.getId();
+        List<BillItem> temLstBillItems = new ArrayList<BillItem>(getBillItemFacade().findBySQL(temStr));
+        System.out.println(temLstBillItems.toString());
+        long i = 1;
+        for (BillItem bi:temLstBillItems){
+            BillItemEntry bie = new BillItemEntry();
+            bie.setBillItem(bi);
+            bie.setId(i);
+            getLstBillItemEntrys().add(bie);
+            i++;
+        }
+        getTransferBean().setBill(null);
+    }
+
     public Bill getBill() {
         if (bill == null) {
-            bill = new InInventoryBill();
-            bill.setBillDate(Calendar.getInstance().getTime());
+            if (getTransferBean().getBill() != null) {
+                prepareForOldBill();
+            } else {
+                prepareForNewBill();
+            }
         }
         return bill;
     }
 
     public void setBill(Bill bill) {
         this.bill = bill;
+        JsfUtil.addSuccessMessage(bill.toString());
     }
 
     public BillFacade getBillFacade() {
@@ -824,5 +868,21 @@ public class PurchaseBillController {
 
     public void setItemUnitHistoryFacade(ItemUnitHistoryFacade itemUnitHistoryFacade) {
         this.itemUnitHistoryFacade = itemUnitHistoryFacade;
+    }
+
+    public TransferBean getTransferBean() {
+        return transferBean;
+    }
+
+    public void setTransferBean(TransferBean transferBean) {
+        this.transferBean = transferBean;
+    }
+
+    public Boolean getNewBill() {
+        return newBill;
+    }
+
+    public void setNewBill(Boolean newBill) {
+        this.newBill = newBill;
     }
 }

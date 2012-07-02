@@ -74,14 +74,16 @@ public class InventoryReportController {
      */
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
+    @ManagedProperty(value = "#{transferBean}")
+    TransferBean transferBean;
     /**
      * Collections
      */
     DataModel<Item> items;
     DataModel<Make> makes;
     //
-    DataModel<LedgerEntry> ledgureEntrys;
-    List<LedgerEntry> lstLedgureEntrys;
+    DataModel<LedgerEntry> unitLedgureEntrys;
+    List<LedgerEntry> lstUnitLedgureEntrys;
     //
     DataModel<Institution> fromInstitutions;
     DataModel<Unit> fromUnits;
@@ -124,6 +126,9 @@ public class InventoryReportController {
     Unit toUnit;
     Location toLocation;
     Person toPerson;
+    //
+    DataModel<InInventoryBill> inInventoryBills;
+    Bill bill;
 
     /**
      *
@@ -500,11 +505,11 @@ public class InventoryReportController {
         this.ledgureEntry = ledgureEntry;
     }
 
-    public DataModel<LedgerEntry> getLedgureEntrys() {
-        if (getInstitution() == null) {
-            JsfUtil.addErrorMessage("Please select an institute");
-            return null;
-        }
+    public DataModel<LedgerEntry> getUnitLedgureEntrys() {
+//        if (getInstitution() == null) {
+//            JsfUtil.addErrorMessage("Please select an institute");
+//            return null;
+//        }
         if (getUnit() == null) {
             JsfUtil.addErrorMessage("Please select a Unit");
             return null;
@@ -523,7 +528,7 @@ public class InventoryReportController {
         System.out.println("To Date" + toDate);
         System.out.println("SQL" + temSQL);
 
-        List<ItemUnitHistory> lstTemHx = getItemUnitHistoryFacade().findBySQL(temSQL,temMap);
+        List<ItemUnitHistory> lstTemHx = getItemUnitHistoryFacade().findBySQL(temSQL, temMap);
         System.out.println(lstTemHx);
 
         List<LedgerEntry> lstTemLedgerEntrys = new ArrayList<LedgerEntry>();
@@ -535,10 +540,10 @@ public class InventoryReportController {
             en.setItemUnitHistory(hx);
             en.setBillItem(hx.getBillItem());
             en.setBill(hx.getBillItem().getBill());
-            if (en.getBill() instanceof InBill){
+            if (en.getBill() instanceof InBill) {
                 en.setInQty(hx.getBillItem().getQuentity());
                 en.setOutQty(null);
-            }else{
+            } else {
                 en.setOutQty(hx.getBillItem().getQuentity());
                 en.setInQty(null);
             }
@@ -547,16 +552,42 @@ public class InventoryReportController {
         return new ListDataModel<LedgerEntry>(lstTemLedgerEntrys);
     }
 
-    public void setLedgureEntrys(DataModel<LedgerEntry> ledgureEntrys) {
-        this.ledgureEntrys = ledgureEntrys;
+    public String viewBill() {
+        transferBean.setBill(getBill());
+        return "inventory_purchase";
     }
 
-    public List<LedgerEntry> getLstLedgureEntrys() {
-        return lstLedgureEntrys;
+    public DataModel<Bill> getInInventoryBills() {
+        if (getUnit() == null) {
+            return null;
+        }
+        Map temMap = new HashMap();
+        String temSQL = "SELECT b FROM InInventoryBill b WHERE b.retired=false AND b.toUnit.id=" + getUnit().getId() + " AND b.billDate BETWEEN :fromDate AND :toDate ";
+        temMap.put("fromDate", fromDate);
+        temMap.put("toDate", toDate);
+
+        System.out.println("From Date" + fromDate);
+        System.out.println("To Date" + toDate);
+        System.out.println("SQL" + temSQL);
+
+        List<Bill> lstTemBill = getBillFacade().findBySQL(temSQL, temMap);
+        return new ListDataModel<Bill>(lstTemBill);
     }
 
-    public void setLstLedgureEntrys(List<LedgerEntry> lstLedgureEntrys) {
-        this.lstLedgureEntrys = lstLedgureEntrys;
+    public void setInInventoryBills(DataModel<InInventoryBill> inInventoryBills) {
+        this.inInventoryBills = inInventoryBills;
+    }
+
+    public void setUnitLedgureEntrys(DataModel<LedgerEntry> ledgureEntrys) {
+        this.unitLedgureEntrys = ledgureEntrys;
+    }
+
+    public List<LedgerEntry> getLstUnitLedgureEntrys() {
+        return lstUnitLedgureEntrys;
+    }
+
+    public void setLstUnitLedgureEntrys(List<LedgerEntry> lstUnitLedgureEntrys) {
+        this.lstUnitLedgureEntrys = lstUnitLedgureEntrys;
     }
 
     public Date getFromDate() {
@@ -677,5 +708,31 @@ public class InventoryReportController {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public TransferBean getTransferBean() {
+        return transferBean;
+    }
+
+    public void setTransferBean(TransferBean transferBean) {
+        this.transferBean = transferBean;
+    }
+
+    public Bill getBill() {
+        if (bill != null) {
+            JsfUtil.addErrorMessage(bill.toString());
+        } else {
+            JsfUtil.addErrorMessage("Null");
+        }
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
+        if (bill != null) {
+            JsfUtil.addErrorMessage(bill.toString());
+        } else {
+            JsfUtil.addErrorMessage("Null");
+        }
     }
 }

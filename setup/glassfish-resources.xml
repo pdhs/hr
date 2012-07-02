@@ -22,4 +22,6 @@
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="ds1" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
     <jdbc-resource enabled="true" jndi-name="dsServerJHO" object-type="user" pool-name="derby_net_healthoffice_healthofficePool"/>
+    <jdbc-resource enabled="true" jndi-name="1" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
+    <jdbc-resource enabled="true" jndi-name="ds2" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
 </resources>

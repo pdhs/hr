@@ -105,15 +105,13 @@ public class OutBillController {
      *
      */
     Bill bill;
+    BillItem billItem;
     BillItemEntry billItemEntry;
     BillItemEntry editBillItemEntry;
-
     Institution institution;
     Unit unit;
     ItemUnit itemUnit;
     ItemUnit editItemUnit;
-    
-    
     /**
      * Entries
      */
@@ -130,12 +128,11 @@ public class OutBillController {
             JsfUtil.addErrorMessage("Hothing to add");
             return;
         }
-        // TODO: Warning - Need to add logic to search and save model        
         addLastBillEntryNumber(billItemEntry);
         getLstBillItemEntrys().add(billItemEntry);
         calculateBillValue();
         clearEntry();
-        
+
     }
 
     private void orderBillItemEntries() {
@@ -243,25 +240,12 @@ public class OutBillController {
         }
     }
 
-
-    
-    private void settleBillItem(BillItemEntry temEntry){
+    private void settleBillItem(BillItemEntry temEntry) {
         BillItem temBillItem = temEntry.getBillItem();
         ItemUnit newItemUnit = temBillItem.getItemUnit();
- 
-        newItemUnit.setBulkUnit(newItemUnit.getItem().getBulkUnit());
-        newItemUnit.setCreatedAt(Calendar.getInstance().getTime());
-        newItemUnit.setCreater(sessionController.getLoggedUser());
-        newItemUnit.setInstitution(getBill().getToInstitution());
-        newItemUnit.setLocation(getBill().getToLocation());
-        newItemUnit.setLooseUnit(newItemUnit.getItem().getLooseUnit());
-        newItemUnit.setLooseUnitsPerBulkUnit(newItemUnit.getItem().getLooseUnitsPerBulkUnit());
-        newItemUnit.setOwner(getBill().getToPerson());
-        newItemUnit.setWarrantyExpiary(newItemUnit.getDateOfExpiary());
-        newItemUnit.setSupplier(null);
-        newItemUnit.setUnit(getBill().getToUnit());
-        newItemUnit.setPerson(getBill().getToPerson());
-        newItemUnit.setQuentity(temBillItem.getQuentity());
+
+
+
 
         ItemUnitHistory hxUnit = new ItemUnitHistory();
         ItemUnitHistory hxLoc = new ItemUnitHistory();
@@ -275,9 +259,9 @@ public class OutBillController {
         hxIns.setInstitution(newItemUnit.getInstitution());
         hxIns.setItem(newItemUnit.getItem());
         hxIns.setQuentity(newItemUnit.getQuentity());
-        hxIns.setToIn(Boolean.TRUE);
-        hxIns.setToOut(Boolean.FALSE);
-        
+        hxIns.setToIn(Boolean.FALSE);
+        hxIns.setToOut(Boolean.TRUE);
+
 
         hxUnit.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getUnit()));
         hxUnit.setCreatedAt(Calendar.getInstance().getTime());
@@ -285,8 +269,8 @@ public class OutBillController {
         hxUnit.setUnit(newItemUnit.getUnit());
         hxUnit.setItem(newItemUnit.getItem());
         hxUnit.setQuentity(newItemUnit.getQuentity());
-        hxUnit.setToIn(Boolean.TRUE);
-        hxUnit.setToOut(Boolean.FALSE);
+        hxUnit.setToIn(Boolean.FALSE);
+        hxUnit.setToOut(Boolean.TRUE);
 
         hxLoc.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getLocation()));
         hxLoc.setCreatedAt(Calendar.getInstance().getTime());
@@ -294,8 +278,8 @@ public class OutBillController {
         hxLoc.setLocation(newItemUnit.getLocation());
         hxLoc.setItem(newItemUnit.getItem());
         hxLoc.setQuentity(newItemUnit.getQuentity());
-        hxLoc.setToIn(Boolean.TRUE);
-        hxLoc.setToOut(Boolean.FALSE);
+        hxLoc.setToIn(Boolean.FALSE);
+        hxLoc.setToOut(Boolean.TRUE);
 
         hxPer.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getPerson()));
         hxPer.setCreatedAt(Calendar.getInstance().getTime());
@@ -303,10 +287,16 @@ public class OutBillController {
         hxPer.setPerson(newItemUnit.getPerson());
         hxPer.setItem(newItemUnit.getItem());
         hxPer.setQuentity(newItemUnit.getQuentity());
-        hxPer.setToIn(Boolean.TRUE);
-        hxPer.setToOut(Boolean.FALSE);
+        hxPer.setToIn(Boolean.FALSE);
+        hxPer.setToOut(Boolean.TRUE);
 
-        getItemUnitFacade().create(newItemUnit);
+        newItemUnit.setInstitution(null);
+        newItemUnit.setLocation(null);
+        newItemUnit.setOwner(null);
+        newItemUnit.setUnit(null);
+        newItemUnit.setPerson(null);
+        newItemUnit.setQuentity(temBillItem.getQuentity());
+        getItemUnitFacade().edit(newItemUnit);
 
         hxIns.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getInstitution()));
         hxIns.setItemUnit(newItemUnit);
@@ -324,7 +314,7 @@ public class OutBillController {
         hxPer.setItemUnit(newItemUnit);
         getItemUnitHistoryFacade().create(hxPer);
 
-        
+
         temBillItem.setBill(getBill());
         temBillItem.setCreatedAt(Calendar.getInstance().getTime());
         temBillItem.setCreater(sessionController.loggedUser);
@@ -350,30 +340,30 @@ public class OutBillController {
         //
         getBillItemFacade().create(temBillItem);
         //
-         hxIns.setBillItem(temBillItem);
-         hxIns.setHistoryDate(getBill().getBillDate());
-         hxIns.setHistoryTimeStamp(Calendar.getInstance().getTime());
-         
-         hxUnit.setBillItem(temBillItem);
-         hxUnit.setHistoryDate(getBill().getBillDate());
-         hxUnit.setHistoryTimeStamp(Calendar.getInstance().getTime());
+        hxIns.setBillItem(temBillItem);
+        hxIns.setHistoryDate(getBill().getBillDate());
+        hxIns.setHistoryTimeStamp(Calendar.getInstance().getTime());
 
-         hxLoc.setBillItem(temBillItem);
-         hxLoc.setHistoryDate(getBill().getBillDate());
-         hxLoc.setHistoryTimeStamp(Calendar.getInstance().getTime());
-         
-         hxPer.setBillItem(temBillItem);
-         hxPer.setHistoryDate(getBill().getBillDate());
-         hxPer.setHistoryTimeStamp(Calendar.getInstance().getTime());
-         
-         getItemUnitHistoryFacade().edit(hxIns);
-         getItemUnitHistoryFacade().edit(hxUnit);
-         getItemUnitHistoryFacade().edit(hxLoc);
-         getItemUnitHistoryFacade().edit(hxPer);
-         
-        
+        hxUnit.setBillItem(temBillItem);
+        hxUnit.setHistoryDate(getBill().getBillDate());
+        hxUnit.setHistoryTimeStamp(Calendar.getInstance().getTime());
+
+        hxLoc.setBillItem(temBillItem);
+        hxLoc.setHistoryDate(getBill().getBillDate());
+        hxLoc.setHistoryTimeStamp(Calendar.getInstance().getTime());
+
+        hxPer.setBillItem(temBillItem);
+        hxPer.setHistoryDate(getBill().getBillDate());
+        hxPer.setHistoryTimeStamp(Calendar.getInstance().getTime());
+
+        getItemUnitHistoryFacade().edit(hxIns);
+        getItemUnitHistoryFacade().edit(hxUnit);
+        getItemUnitHistoryFacade().edit(hxLoc);
+        getItemUnitHistoryFacade().edit(hxPer);
+
+
     }
-    
+
     public void calculateItemValue() {
         getBillItemEntry().getBillItem().setNetValue(getBillItemEntry().getBillItem().getNetRate() * getBillItemEntry().getBillItem().getQuentity());
     }
@@ -439,7 +429,7 @@ public class OutBillController {
 
     public Bill getBill() {
         if (bill == null) {
-            bill = new InInventoryBill();
+            bill = new OutInventoryBill();
             bill.setBillDate(Calendar.getInstance().getTime());
         }
         return bill;
@@ -474,7 +464,9 @@ public class OutBillController {
     }
 
     public DataModel<Item> getItems() {
-        if (getUnit()==null) return null;
+        if (getUnit() == null) {
+            return null;
+        }
         return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i "));
     }
 
@@ -555,7 +547,9 @@ public class OutBillController {
     }
 
     public DataModel<Unit> getFromUnits() {
-        if (getInstitution()==null) return null;
+        if (getInstitution() == null) {
+            return null;
+        }
         return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getInstitution().getId()));
     }
 
@@ -726,9 +720,11 @@ public class OutBillController {
     }
 
     public DataModel<ItemUnit> getItemUnits() {
-        if (getUnit()==null) return null;
-        return new ListDataModel<ItemUnit>(getItemUnitFacade().findBySQL("SELECT i FROM ItemUnit i WHERE i.retired=false AND i.unit.id = " + 
-                   getUnit().getId() + " ORDER By i.name"));
+        if (getUnit() == null) {
+            return null;
+        }
+        return new ListDataModel<ItemUnit>(getItemUnitFacade().findBySQL("SELECT i FROM ItemUnit i WHERE i.retired=false AND i.unit.id = "
+                + getUnit().getId() + " ORDER By i.name"));
     }
 
     public void setItemUnits(DataModel<ItemUnit> itemUnits) {
@@ -750,8 +746,15 @@ public class OutBillController {
     public void setItemUnit(ItemUnit itemUnit) {
         this.itemUnit = itemUnit;
     }
-    
 
-    
-    
+    public BillItem getBillItem() {
+        if (billItem == null) {
+            billItem = new BillItem();
+        }
+        return billItem;
+    }
+
+    public void setBillItem(BillItem billItem) {
+        this.billItem = billItem;
+    }
 }

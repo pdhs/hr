@@ -32,19 +32,10 @@ public class Menu {
 
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
-    MessageProvider messageProvider;
+
     
     MenuModel model;
     String temIx = "";
-
-    public MessageProvider getMessageProvider() {
-        if(messageProvider==null) messageProvider = new MessageProvider();
-        return messageProvider;
-    }
-
-    public void setMessageProvider(MessageProvider messageProvider) {
-        this.messageProvider = messageProvider;
-    }
 
     public String getTemIx() {
         return temIx;
@@ -91,47 +82,47 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("hr"));
+        submenu.setLabel(getLabel("hr"));
         
         
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("InstitutionTypes"));
+        item.setValue(getLabel("InstitutionTypes"));
         item.setUrl("institution_type.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Institutions"));
+        item.setValue(getLabel("Institutions"));
         item.setUrl("institutions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("designationsCategory"));
+        item.setValue(getLabel("designationsCategory"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("institutionDesignations"));
+        item.setValue(getLabel("institutionDesignations"));
         item.setUrl("institution_designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("cadrePositions"));
+        item.setValue(getLabel("cadrePositions"));
         item.setUrl("cadre_positions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("reports"));
         item.setUrl("reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -144,45 +135,45 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("biomedical"));
+        submenu.setLabel(getLabel("biomedical"));
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("InstitutionTypes"));
+        item.setValue(getLabel("InstitutionTypes"));
         item.setUrl("institution_type.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Institutions"));
+        item.setValue(getLabel("Institutions"));
         item.setUrl("institutions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("designationsCategory"));
+        item.setValue(getLabel("designationsCategory"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("institutionDesignations"));
+        item.setValue(getLabel("institutionDesignations"));
         item.setUrl("institution_designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("cadrePositions"));
+        item.setValue(getLabel("cadrePositions"));
         item.setUrl("cadre_positions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("reports"));
         item.setUrl("reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -195,7 +186,7 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("transport"));
+        submenu.setLabel(getLabel("transport"));
 
         item = new MenuItem();
         item.setValue("Institution Types");
@@ -203,37 +194,37 @@ public class Menu {
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("InstitutionTypes"));
+        item.setValue(getLabel("InstitutionTypes"));
         item.setUrl("institutions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("designationsCategory"));
+        item.setValue(getLabel("designationsCategory"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("institutionDesignations"));
+        item.setValue(getLabel("institutionDesignations"));
         item.setUrl("institution_designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("cadrePositions"));
+        item.setValue(getLabel("cadrePositions"));
         item.setUrl("cadre_positions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("reports"));
         item.setUrl("reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -246,48 +237,48 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("demography"));
+        submenu.setLabel(getLabel("demography"));
 
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("edit"));
+        item.setValue(getLabel("edit"));
         item.setUrl("demography_edit.xhtml");
         submenu.getChildren().add(item);
 
 
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("import"));
+        item.setValue(getLabel("import"));
         item.setUrl("demography_import_excel.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("display"));
+        item.setValue(getLabel("display"));
         item.setUrl("demography_display_areas.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("institutionDesignations"));
+        item.setValue(getLabel("institutionDesignations"));
         item.setUrl("institution_designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("cadrePositions"));
+        item.setValue(getLabel("cadrePositions"));
         item.setUrl("cadre_positions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("reports"));
         item.setUrl("reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -300,45 +291,45 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("hr"));
+        submenu.setLabel(getLabel("hr"));
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("InstitutionTypes"));
+        item.setValue(getLabel("InstitutionTypes"));
         item.setUrl("institution_type.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Institutions"));
+        item.setValue(getLabel("Institutions"));
         item.setUrl("institutions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("designationsCategory"));
+        item.setValue(getLabel("designationsCategory"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("institutionDesignations"));
+        item.setValue(getLabel("institutionDesignations"));
         item.setUrl("institution_designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("cadrePositions"));
+        item.setValue(getLabel("cadrePositions"));
         item.setUrl("cadre_positions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("reports"));
         item.setUrl("reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -351,45 +342,64 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("msd"));
+        submenu.setLabel(getLabel("msd"));
 
+        /*
+         * 
+         * 
+         * msPurchase=Purchase Medicines
+msIssue=Issue Medicines
+msReceive=Receive Medicines
+msRequests=Request Medicines
+msIssueRequests=Issue Requests
+msReceiveRequests=Receive Requests
+msPrepareEstimates=Prepare Estimates
+         * 
+         * 
+         */
+        
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("InstitutionTypes"));
-        item.setUrl("institution_type.xhtml");
+        item.setValue(getLabel("msEdit"));
+        item.setUrl("ms_edit.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Institutions"));
+        item.setValue(getLabel("msPurchase"));
         item.setUrl("institutions.xhtml");
         submenu.getChildren().add(item);
 
+                item = new MenuItem();
+        item.setValue(getLabel("msReceive"));
+        item.setUrl("institutions.xhtml");
+        submenu.getChildren().add(item);
+        
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("designationsCategory"));
+        item.setValue(getLabel("msIssue"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("msRequests"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("msIssueRequests"));
         item.setUrl("designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("institutionDesignations"));
+        item.setValue(getLabel("msReceiveRequests"));
         item.setUrl("institution_designation.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("cadrePositions"));
+        item.setValue(getLabel("msReceiveRequests"));
         item.setUrl("cadre_positions.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("msPrepareEstimates"));
         item.setUrl("reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -402,41 +412,41 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("inventory"));
+        submenu.setLabel(getLabel("inventory"));
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("editData"));
+        item.setValue(getLabel("editData"));
         item.setUrl("inventory_edit.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("purchase"));
+        item.setValue(getLabel("purchase"));
         item.setUrl("inventory_purchase.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("issue"));
+        item.setValue(getLabel("issue"));
         item.setUrl("inventory_issue.xhtml");
         submenu.getChildren().add(item);
 
 item = new MenuItem();
-        item.setValue(messageProvider.getValue("Designations"));
+        item.setValue(getLabel("Designations"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("requests"));
+        item.setValue(getLabel("requests"));
         item.setUrl("designation_category.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("estimates"));
+        item.setValue(getLabel("estimates"));
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("reports"));
+        item.setValue(getLabel("reports"));
         item.setUrl("inventory_reports.xhtml");
         submenu.getChildren().add(item);
 
@@ -451,10 +461,10 @@ item = new MenuItem();
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(messageProvider.getValue("admin"));
+        submenu.setLabel(getLabel("admin"));
 
         item = new MenuItem();
-        item.setValue(messageProvider.getValue("activateAccounts"));
+        item.setValue(getLabel("activateAccounts"));
         item.setUrl("activate_users.xhtml");
         submenu.getChildren().add(item);
 

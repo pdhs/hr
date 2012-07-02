@@ -15,12 +15,16 @@
         <p:growl autoUpdate="true"/>
 
         <h:form >
+            
+            <h:inputHidden value="#{purchaseBillController.bill.id}" />
+            
+            
             <p:panel id="gpPurchase" header="Purchase">
 
                 <p:panelGrid columns="2" styleClass="pdTopAlignNoBorder">
 
                     <p:panel id="gpItemAndList" style="vertical-align: text-top;">
-                        <p:panel id="gpItem" header="Item Details" >
+                        <p:panel id="gpItem" header="Item Details" rendered="#{purchaseBillController.newBill}" >
 
 
                             <p:panelGrid  columnClasses = "pdTopAlign" styleClass="pdTopAlignNoBorder" >
@@ -53,7 +57,7 @@
                                         <h:inputText value="#{purchaseBillController.billItemEntry.billItem.itemUnit.name}" styleClass="pdPageText" ></h:inputText>
                                         <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
                                         <h:outputLabel value="Descreption" ></h:outputLabel>
-                                        <h:inputText value="#{purchaseBillController.billItemEntry.billItem.description}" ></h:inputText>
+                                        <h:inputText value="#{purchaseBillController.billItemEntry.billItem.itemUnit.description}" ></h:inputText>
                                     </p:column>                                    
                                     <p:column>
                                         <h:outputLabel value="Warranty" ></h:outputLabel>
@@ -155,30 +159,30 @@
                     <p:panel id="gpBillDetails" header="Bill Details">
                         <p:panelGrid columns="2">
                             Supplied By
-                            <h:selectOneListbox value="#{purchaseBillController.bill.fromInstitution}" >
+                            <h:selectOneListbox value="#{purchaseBillController.bill.fromInstitution}" size="4">
                                 <f:selectItems value="#{purchaseBillController.fromInstitutions}" var="fronIns" itemValue="#{fronIns}" itemLabel="#{fronIns.name}"></f:selectItems>
                             </h:selectOneListbox>
                             Receiving Institution
-                            <h:selectOneListbox id="cmbToIns" value="#{purchaseBillController.bill.toInstitution}" >
+                            <h:selectOneListbox id="cmbToIns" value="#{purchaseBillController.bill.toInstitution}"  size="4">
                                 <f:selectItems value="#{purchaseBillController.toInstitutions}" var="toIns" itemValue="#{toIns}" itemLabel="#{toIns.name}"></f:selectItems>
                                 <f:ajax execute="cmbToIns" render="cmbToUnit cmbToPerson" event="change" />
                             </h:selectOneListbox>
                             Receiving Unit
-                            <h:selectOneListbox id="cmbToUnit" value="#{purchaseBillController.bill.toUnit}" >
+                            <h:selectOneListbox id="cmbToUnit" value="#{purchaseBillController.bill.toUnit}"  size="4">
                                 <f:selectItems value="#{purchaseBillController.toUnits}" var="toUnit" itemValue="#{toUnit}" itemLabel="#{toUnit.name}"></f:selectItems>
                                 <f:ajax event="change" render="cmbToLocation" execute="cmbToUnit" />
                             </h:selectOneListbox>                      
                             Receiving Location
-                            <h:selectOneListbox id="cmbToLocation" value="#{purchaseBillController.bill.toLocation}" >
+                            <h:selectOneListbox id="cmbToLocation" value="#{purchaseBillController.bill.toLocation}"  size="4">
                                 <f:selectItems value="#{purchaseBillController.toLocations}" var="toLoc" itemValue="#{toLoc}" itemLabel="#{toLoc.name}"></f:selectItems>
                                 <f:ajax event="change" render="cmbToPerson" execute="cmbToLocation" />
                             </h:selectOneListbox>                      
                             Receiving Person
-                            <h:selectOneListbox id="cmbToPerson" value="#{purchaseBillController.bill.toPerson}" >
+                            <h:selectOneListbox id="cmbToPerson" value="#{purchaseBillController.bill.toPerson}"  size="4">
                                 <f:selectItems value="#{purchaseBillController.toPersons}" var="toPer" itemValue="#{toPer}" itemLabel="#{toLoc.name}"></f:selectItems>
                             </h:selectOneListbox>                      
                             Gross Value
-                            <h:inputText disabled="true" value="#{purchaseBillController.bill.grossValue}"/>
+                            <h:inputText disabled="true" value="#{purchaseBillController.bill.grossValue}" />
                             Discount
                             <h:inputText value="#{purchaseBillController.bill.discountValue}">
 
@@ -196,7 +200,11 @@
 
 
 
-                            <h:commandButton value="Settle" action="#{purchaseBillController.settleBill}"/>
+                            <h:commandButton rendered="#{purchaseBillController.newBill}" value="Settle" action="#{purchaseBillController.settleBill}"/>
+                            <h:commandButton rendered="#{!purchaseBillController.newBill}" value="Cancel" action="#{purchaseBillController.settleBill}"/>
+                            <h:commandButton rendered="#{!purchaseBillController.newBill}" value="Reprint" action="#{purchaseBillController.settleBill}"/>
+                            
+                            
                         </p:panelGrid>
                     </p:panel>
                 </p:panelGrid>
