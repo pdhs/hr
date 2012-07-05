@@ -4,10 +4,13 @@
  */
 package gov.sp.health.bean;
 
+import gov.sp.health.entity.*;
 import gov.sp.health.facade.PrivilegeFacade;
 import gov.sp.health.facade.WebUserFacade;
-import gov.sp.health.entity.Privilege;
-import gov.sp.health.entity.WebUser;
+import gov.sp.health.facade.AreaFacade;
+import gov.sp.health.facade.InstitutionFacade;
+import gov.sp.health.facade.LocationFacade;
+import gov.sp.health.facade.UnitFacade;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -24,6 +27,7 @@ import javax.faces.model.ListDataModel;
 @ManagedBean
 @RequestScoped
 public class UserApproveController {
+
     DataModel<WebUser> toApproveUsers;
     WebUser selectedUser;
     //
@@ -31,17 +35,117 @@ public class UserApproveController {
     WebUserFacade userFacade;
     @EJB
     PrivilegeFacade priFacade;
+    @EJB
+    AreaFacade areaFacade;
+    @EJB
+    InstitutionFacade institutionFacade;
+    @EJB
+    UnitFacade unitFacade;
+    @EJB
+    LocationFacade locationFacade;
     //
     String activateComments;
     @ManagedProperty(value = "#{sessionController}")
     private SessionController sessionController;
     Privilege privilege;
+    DataModel<Area> areas;
+    DataModel<Institution> institutions;
+    DataModel<Unit> units;
+    DataModel<Location> locations;
+
+    
+    
+    public AreaFacade getAreaFacade() {
+        return areaFacade;
+    }
+
+    public void setAreaFacade(AreaFacade areaFacade) {
+        this.areaFacade = areaFacade;
+    }
+
+    public DataModel<Area> getAreas() {
+        String temSql;
+        if (sessionController.getPrivilege().getRestrictedArea() == null) {
+            temSql = "SELECT a FROM Area a WHERE a.retired=false ORDER BY a.name ";
+        } else {
+            temSql = "SELECT a FROM Area a WHERE a.retired=false AND a.id = " + sessionController.getPrivilege().getRestrictedArea().getId();
+        }
+        return new ListDataModel<Area>(getAreaFacade().findBySQL(temSql));
+    }
+
+    public void setAreas(DataModel<Area> areas) {
+        this.areas = areas;
+    }
+
+    public InstitutionFacade getInstitutionFacade() {
+        return institutionFacade;
+    }
+
+    public void setInstitutionFacade(InstitutionFacade institutionFacade) {
+        this.institutionFacade = institutionFacade;
+    }
+
+    public DataModel<Institution> getInstitutions() {
+        String temSql;
+        if (sessionController.getPrivilege().getRestrictedInstitution() == null) {
+            temSql = "SELECT a FROM Institution a WHERE a.retired=false ORDER BY a.name ";
+        } else {
+            temSql = "SELECT a FROM Institution a WHERE a.retired=false WHERE a.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId();
+
+        }
+        return new ListDataModel<Institution>(getInstitutionFacade().findBySQL(temSql));
+    }
+
+    public void setInstitutions(DataModel<Institution> institutions) {
+        this.institutions = institutions;
+    }
+
+    public LocationFacade getLocationFacade() {
+        return locationFacade;
+    }
+
+    public void setLocationFacade(LocationFacade locationFacade) {
+        this.locationFacade = locationFacade;
+    }
+
+    public DataModel<Location> getLocations() {
+        String temSql;
+        temSql = "SELECT a FROM Location a WHERE a.retired=false ORDER BY a.name ";
+        return new ListDataModel<Location>(getLocationFacade().findBySQL(temSql));
+    }
+
+    public void setLocations(DataModel<Location> locations) {
+        this.locations = locations;
+    }
+
+    public UnitFacade getUnitFacade() {
+        return unitFacade;
+    }
+
+    public void setUnitFacade(UnitFacade unitFacade) {
+        this.unitFacade = unitFacade;
+    }
+
+    public DataModel<Unit> getUnits() {
+        String temSql;
+        if (sessionController.getPrivilege().getRestrictedInstitution() == null) {
+            temSql = "SELECT a FROM Unit a WHERE a.retired=false WHERE a.institution.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId() + " ORDER BY a.name ";
+        } else if (sessionController.getPrivilege().getRestrictedUnit() == null) {
+            temSql = "SELECT a FROM Unit a WHERE a.retired=false ORDER BY a.name ";
+        } else {
+            temSql = "SELECT a FROM Unit a WHERE a.retired=false ORDER BY a.name ";
+        }
+        return new ListDataModel<Unit>(getUnitFacade().findBySQL(temSql));
+    }
+
+    public void setUnits(DataModel<Unit> units) {
+        this.units = units;
+    }
+
     /**
      * Creates a new instance of UserApproveController
      */
     public UserApproveController() {
-        
-        
     }
 
     public String getActivateComments() {
@@ -53,7 +157,9 @@ public class UserApproveController {
     }
 
     public Privilege getPrivilege() {
-        if (privilege ==null) privilege = new Privilege();
+        if (privilege == null) {
+            privilege = new Privilege();
+        }
         return privilege;
     }
 
@@ -69,9 +175,6 @@ public class UserApproveController {
         this.sessionController = sessionController;
     }
 
-    
-    
-    
     public WebUser getSelectedUser() {
         return selectedUser;
     }
@@ -83,8 +186,8 @@ public class UserApproveController {
     public DataModel<WebUser> getToApproveUsers() {
         String temSQL;
         temSQL = "SELECT u FROM WebUser u WHERE u.retired=false AND u.activated=false";
-        List<WebUser> lst ;
-        lst=getUserFacade().findBySQL(temSQL);
+        List<WebUser> lst;
+        lst = getUserFacade().findBySQL(temSQL);
         return new ListDataModel<WebUser>(lst);
     }
 
@@ -99,10 +202,9 @@ public class UserApproveController {
     public void setUserFacade(WebUserFacade userFacade) {
         this.userFacade = userFacade;
     }
-    
-    
-    public void approveUser(){
-        if (selectedUser==null){
+
+    public void approveUser() {
+        if (selectedUser == null) {
             JsfUtil.addErrorMessage("Please select a user to approve");
             return;
         }
@@ -111,13 +213,13 @@ public class UserApproveController {
         selectedUser.setActivator(sessionController.loggedUser);
         selectedUser.setActivateComments(activateComments);
         userFacade.edit(selectedUser);
-        
+
         privilege.setWebUser(selectedUser);
         priFacade.create(privilege);
-        
-        selectedUser=null;
+
+        selectedUser = null;
         privilege = null;
-        
+
         JsfUtil.addSuccessMessage("Successfully activated");
     }
 
@@ -128,6 +230,4 @@ public class UserApproveController {
     public void setPriFacade(PrivilegeFacade priFacade) {
         this.priFacade = priFacade;
     }
-    
-    
 }
