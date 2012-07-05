@@ -8,7 +8,6 @@ import gov.sp.health.entity.*;
 import gov.sp.health.facade.BillFacade;
 import gov.sp.health.facade.BillItemFacade;
 import gov.sp.health.facade.CountryFacade;
-import gov.sp.health.facade.InInventoryBillFacade;
 import gov.sp.health.facade.InstitutionFacade;
 import gov.sp.health.facade.ItemFacade;
 import gov.sp.health.facade.ItemUnitFacade;
@@ -34,7 +33,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @ViewScoped
-public class InventoryReportController {
+public class InventoryReceivedBillListController {
 
     /**
      *
@@ -70,8 +69,6 @@ public class InventoryReportController {
     ItemUnitFacade itemUnitFacade;
     @EJB
     ItemUnitHistoryFacade itemUnitHistoryFacade;
-    @EJB
-    InInventoryBillFacade inInventoryBillFacade;
     /**
      * Managed Properties
      */
@@ -185,52 +182,7 @@ public class InventoryReportController {
         return getBillFacade().findAggregateDbl(strJQL);
     }
 
-    private boolean canProceed() {
-//        if (getEntryDate() == null) {
-//            return false;
-//        }
-//        if (getItemUnit() == null) {
-//            return false;
-//        }
-//        if (getBillItem() == null) {
-//            return false;
-//        }
-//        if (getBill() == null) {
-//            return false;
-//        }
-//        if (getInstitution() != null) {
-//            entryType = LedgerEntry.EntryType.INSTITUTION;
-//            return true;
-//        } else {
-//            if (getUnit() != null) {
-//                entryType = LedgerEntry.EntryType.UNIT;
-//                return true;
-//            } else {
-//                if (getLocation() != null) {
-//                    entryType = LedgerEntry.EntryType.LOCATION;
-//                    return true;
-//                } else {
-//                    if (getPerson() != null) {
-//                        entryType = LedgerEntry.EntryType.PERSON;
-//                        return true;
-//                    } else {
-//                        entryType = LedgerEntry.EntryType.OTHER;
-//                        return false;
-//                    }
-//                }
-//            }
-//        }
-        return false;
-
-    }
-
-    /**
-     * Creates a new instance of PurchaseBillController
-     */
-    public InventoryReportController() {
-    }
-
-    /**
+     /**
      * Getters and Setters
      */
     public BillFacade getBillFacade() {
@@ -508,16 +460,18 @@ public class InventoryReportController {
         this.ledgureEntry = ledgureEntry;
     }
 
-    public void fillGrid() {
+    public DataModel<LedgerEntry> getUnitLedgureEntrys() {
+//        if (getInstitution() == null) {
+//            JsfUtil.addErrorMessage("Please select an institute");
+//            return null;
+//        }
         if (getUnit() == null) {
             JsfUtil.addErrorMessage("Please select a Unit");
-            unitLedgureEntrys = null;
-            return;
+            return null;
         }
         if (getItem() == null) {
             JsfUtil.addErrorMessage("Please select an Item");
-            unitLedgureEntrys = null;
-            return;
+            return null;
         }
         Map temMap = new HashMap();
         String temSQL = "SELECT h FROM ItemUnitHistory h WHERE h.retired=false AND h.unit.id=" + getUnit().getId() + " AND h.itemUnit.item.id=" + getItem().getId() + " AND h.historyDate BETWEEN :fromDate AND :toDate ORDER BY h.historyTimeStamp  ";
@@ -530,14 +484,13 @@ public class InventoryReportController {
         System.out.println("SQL" + temSQL);
 
         List<ItemUnitHistory> lstTemHx = getItemUnitHistoryFacade().findBySQL(temSQL, temMap);
-        System.out.println("lstTemHx is " + lstTemHx);
+        System.out.println(lstTemHx);
 
         List<LedgerEntry> lstTemLedgerEntrys = new ArrayList<LedgerEntry>();
-
+        System.out.println(lstTemHx);
 
         for (ItemUnitHistory hx : lstTemHx) {
             LedgerEntry en = new LedgerEntry();
-            System.out.println("en is " + en);
             en.setAfterStock(hx.getAfterQty());
             en.setItemUnitHistory(hx);
             en.setBillItem(hx.getBillItem());
@@ -551,16 +504,7 @@ public class InventoryReportController {
             }
             lstTemLedgerEntrys.add(en);
         }
-        unitLedgureEntrys = new ListDataModel<LedgerEntry>(lstTemLedgerEntrys);
-
-    }
-
-    public DataModel<InInventoryBill> getInInventoryBills() {
-        return inInventoryBills;
-    }
-
-    public DataModel<LedgerEntry> getUnitLedgureEntrys() {
-        return unitLedgureEntrys;
+        return new ListDataModel<LedgerEntry>(lstTemLedgerEntrys);
     }
 
     public String viewBill() {
@@ -568,13 +512,19 @@ public class InventoryReportController {
         return "inventory_purchase";
     }
 
-    public void fillInInventoryBills() {
+    public DataModel<Bill> getInInventoryBills() {
+        String temSQL = "";
         if (getUnit() == null) {
-            inInventoryBills = null;
-            return;
+            temSQL = "SELECT b FROM InInventoryBill b WHERE b.retired=false AND b.toUnit.id=" + getUnit().getId() + " AND b.billDate BETWEEN :fromDate AND :toDate ";
+        }
+        if (getInstitution() == null) {
+            temSQL = "SELECT b FROM InInventoryBill b WHERE b.retired=false AND b.toInstitution.id=" + getInstitution().getId() + " AND b.billDate BETWEEN :fromDate AND :toDate ";
+        }     
+        if (temSQL.equals("")){
+            return null;
         }
         Map temMap = new HashMap();
-        String temSQL = "SELECT b FROM InInventoryBill b WHERE b.retired=false AND b.toUnit.id=" + getUnit().getId() + " AND b.billDate BETWEEN :fromDate AND :toDate ";
+        
         temMap.put("fromDate", fromDate);
         temMap.put("toDate", toDate);
 
@@ -582,8 +532,8 @@ public class InventoryReportController {
         System.out.println("To Date" + toDate);
         System.out.println("SQL" + temSQL);
 
-        List<InInventoryBill> lstTemBill = getInInventoryBillFacade().findBySQL(temSQL, temMap);
-        inInventoryBills = new ListDataModel<InInventoryBill>(lstTemBill);
+        List<Bill> lstTemBill = getBillFacade().findBySQL(temSQL, temMap);
+        return new ListDataModel<Bill>(lstTemBill);
     }
 
     public void setInInventoryBills(DataModel<InInventoryBill> inInventoryBills) {
@@ -746,13 +696,5 @@ public class InventoryReportController {
         } else {
             JsfUtil.addErrorMessage("Null");
         }
-    }
-
-    public InInventoryBillFacade getInInventoryBillFacade() {
-        return inInventoryBillFacade;
-    }
-
-    public void setInInventoryBillFacade(InInventoryBillFacade inInventoryBillFacade) {
-        this.inInventoryBillFacade = inInventoryBillFacade;
     }
 }

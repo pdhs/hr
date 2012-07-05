@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 public class Vtm extends PharmaceuticalItem implements Serializable {
 
     @ManyToOne
+   
     MedicineGroup medicineGroup;
 
     public MedicineGroup getMedicineGroup() {

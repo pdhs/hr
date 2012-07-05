@@ -128,6 +128,8 @@ public class OutBillController {
             JsfUtil.addErrorMessage("Hothing to add");
             return;
         }
+        /* TODO: Warning : CorrectLogic Here */
+        
         addLastBillEntryNumber(billItemEntry);
         getLstBillItemEntrys().add(billItemEntry);
         calculateBillValue();
@@ -242,7 +244,7 @@ public class OutBillController {
 
     private void settleBillItem(BillItemEntry temEntry) {
         BillItem temBillItem = temEntry.getBillItem();
-        ItemUnit newItemUnit = temBillItem.getItemUnit();
+        ItemUnit goingOutItemUnit = temBillItem.getItemUnit();
 
 
 
@@ -253,65 +255,65 @@ public class OutBillController {
         ItemUnitHistory hxPer = new ItemUnitHistory();
 
 
-        hxIns.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getInstitution()));
+        hxIns.setBeforeQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getInstitution()));
         hxIns.setCreatedAt(Calendar.getInstance().getTime());
         hxIns.setCreater(sessionController.loggedUser);
-        hxIns.setInstitution(newItemUnit.getInstitution());
-        hxIns.setItem(newItemUnit.getItem());
-        hxIns.setQuentity(newItemUnit.getQuentity());
+        hxIns.setInstitution(goingOutItemUnit.getInstitution());
+        hxIns.setItem(goingOutItemUnit.getItem());
+        hxIns.setQuentity(goingOutItemUnit.getQuentity());
         hxIns.setToIn(Boolean.FALSE);
         hxIns.setToOut(Boolean.TRUE);
 
 
-        hxUnit.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getUnit()));
+        hxUnit.setBeforeQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getUnit()));
         hxUnit.setCreatedAt(Calendar.getInstance().getTime());
         hxUnit.setCreater(sessionController.loggedUser);
-        hxUnit.setUnit(newItemUnit.getUnit());
-        hxUnit.setItem(newItemUnit.getItem());
-        hxUnit.setQuentity(newItemUnit.getQuentity());
+        hxUnit.setUnit(goingOutItemUnit.getUnit());
+        hxUnit.setItem(goingOutItemUnit.getItem());
+        hxUnit.setQuentity(goingOutItemUnit.getQuentity());
         hxUnit.setToIn(Boolean.FALSE);
         hxUnit.setToOut(Boolean.TRUE);
 
-        hxLoc.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getLocation()));
+        hxLoc.setBeforeQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getLocation()));
         hxLoc.setCreatedAt(Calendar.getInstance().getTime());
         hxLoc.setCreater(sessionController.loggedUser);
-        hxLoc.setLocation(newItemUnit.getLocation());
-        hxLoc.setItem(newItemUnit.getItem());
-        hxLoc.setQuentity(newItemUnit.getQuentity());
+        hxLoc.setLocation(goingOutItemUnit.getLocation());
+        hxLoc.setItem(goingOutItemUnit.getItem());
+        hxLoc.setQuentity(goingOutItemUnit.getQuentity());
         hxLoc.setToIn(Boolean.FALSE);
         hxLoc.setToOut(Boolean.TRUE);
 
-        hxPer.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getPerson()));
+        hxPer.setBeforeQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getPerson()));
         hxPer.setCreatedAt(Calendar.getInstance().getTime());
         hxPer.setCreater(sessionController.loggedUser);
-        hxPer.setPerson(newItemUnit.getPerson());
-        hxPer.setItem(newItemUnit.getItem());
-        hxPer.setQuentity(newItemUnit.getQuentity());
+        hxPer.setPerson(goingOutItemUnit.getPerson());
+        hxPer.setItem(goingOutItemUnit.getItem());
+        hxPer.setQuentity(goingOutItemUnit.getQuentity());
         hxPer.setToIn(Boolean.FALSE);
         hxPer.setToOut(Boolean.TRUE);
 
-        newItemUnit.setInstitution(null);
-        newItemUnit.setLocation(null);
-        newItemUnit.setOwner(null);
-        newItemUnit.setUnit(null);
-        newItemUnit.setPerson(null);
-        newItemUnit.setQuentity(temBillItem.getQuentity());
-        getItemUnitFacade().edit(newItemUnit);
+        goingOutItemUnit.setInstitution(null);
+        goingOutItemUnit.setLocation(null);
+        goingOutItemUnit.setOwner(null);
+        goingOutItemUnit.setUnit(null);
+        goingOutItemUnit.setPerson(null);
+        goingOutItemUnit.setQuentity(temBillItem.getQuentity());
+        getItemUnitFacade().edit(goingOutItemUnit);
 
-        hxIns.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getInstitution()));
-        hxIns.setItemUnit(newItemUnit);
+        hxIns.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getInstitution()));
+        hxIns.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxIns);
 
-        hxUnit.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getUnit()));
-        hxUnit.setItemUnit(newItemUnit);
+        hxUnit.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getUnit()));
+        hxUnit.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxUnit);
 
-        hxLoc.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getLocation()));
-        hxLoc.setItemUnit(newItemUnit);
+        hxLoc.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getLocation()));
+        hxLoc.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxLoc);
 
-        hxPer.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getPerson()));
-        hxPer.setItemUnit(newItemUnit);
+        hxPer.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getPerson()));
+        hxPer.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxPer);
 
 

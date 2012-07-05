@@ -50,18 +50,18 @@ Align Top
                     <pou:row>
                         <pou:column  styleClass="pdTopAlign">
                             <h:outputLabel value="From"/>
-                            <pou:calendar pattern="dd MMMM yyyy" value="#{inventoryReportController.fromDate}" >
+                            <pou:calendar id="dtpFrom" pattern="dd MMMM yyyy" value="#{inventoryReportController.fromDate}" >
                             </pou:calendar>
                         </pou:column>
                         <pou:column  styleClass="pdTopAlign">
                             <h:outputLabel value="To"/>
-                            <pou:calendar pattern="dd MMMM yyyy"  value="#{inventoryReportController.toDate}" ></pou:calendar>
+                            <pou:calendar id="dtpTo" pattern="dd MMMM yyyy"  value="#{inventoryReportController.toDate}" ></pou:calendar>
                         </pou:column>
                     </pou:row>
                     <pou:row>
                         <pou:column  styleClass="pdTopAlign" >
-                            <h:commandButton value="Display All">
-                                <f:ajax render="tblItems" execute="gpDetail" ></f:ajax>
+                            <h:commandButton value="Display All" action="#{inventoryReportController.fillGrid}">
+                                <f:ajax render="tblItems" execute="lstUnit lstItem dtpFrom dtpTo" ></f:ajax>
                             </h:commandButton>
                         </pou:column>
                     </pou:row>

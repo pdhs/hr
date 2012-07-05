@@ -430,8 +430,8 @@ msPrepareEstimates=Prepare Estimates
         submenu.getChildren().add(item);
 
 item = new MenuItem();
-        item.setValue(getLabel("Designations"));
-        item.setUrl("designation_category.xhtml");
+        item.setValue(getLabel("receiveInventoryItems"));
+        item.setUrl("inventory_institution_received_bills.xhtml");
         submenu.getChildren().add(item);
 
 

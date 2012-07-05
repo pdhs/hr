@@ -27,6 +27,9 @@ public class BillItemEntry {
 
 
     public BillItem getBillItem() {
+        if (billItem==null){
+            billItem = new BillItem();
+        }
         return billItem;
     }
 
