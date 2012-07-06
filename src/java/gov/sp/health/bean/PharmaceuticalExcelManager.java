@@ -91,7 +91,7 @@ public class PharmaceuticalExcelManager {
     int startRow;
     /**
      * DataModals
-     * 
+     *
      */
     DataModel<Vtm> vtms;
     DataModel<Amp> amps;
@@ -164,7 +164,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(itemCategoryCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temCat = pharmaceuticalItemCategoryFacade.findByField("name", temStr, true);
+                    temCat = pharmaceuticalItemCategoryFacade.findFirstBySQL("SELECT c FROM PharmaceuticalItemCategory c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temCat == null) {
                         temCat = new PharmaceuticalItemCategory();
                         temCat.setName(temStr);
@@ -179,7 +179,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(vtmCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temVtm = vtmFacade.findByField("name", temStr, true);
+                    temVtm = vtmFacade.findFirstBySQL("SELECT c FROM Vtm c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temVtm == null) {
                         temVtm = new Vtm();
                         temVtm.setName(temStr);
@@ -194,7 +194,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(atmCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temAtm = atmFacade.findByField("name", temStr, true);
+                    temAtm = atmFacade.findFirstBySQL("SELECT c FROM Atm c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temAtm == null) {
                         temAtm = new Atm();
                         temAtm.setName(temStr);
@@ -209,7 +209,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(vmpCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temVmp = vmpFacade.findByField("name", temStr, true);
+                    temVmp = vmpFacade.findFirstBySQL("SELECT c FROM Vmp c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temVmp == null) {
                         temVmp = new Vmp();
                         temVmp.setName(temStr);
@@ -224,7 +224,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(ampCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temAmp = ampFacade.findByField("name", temStr, true);
+                    temAmp = ampFacade.findFirstBySQL("SELECT c FROM Amp c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temAmp == null) {
                         temAmp = new Amp();
                         temAmp.setName(temStr);
@@ -239,7 +239,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(amppCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temAmpp = amppFacade.findByField("name", temStr, true);
+                    temAmpp = amppFacade.findFirstBySQL("SELECT c FROM Ampp c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temAmpp == null) {
                         temAmpp = new Ampp();
                         temAmpp.setName(temStr);
@@ -254,7 +254,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(vmppCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temVmpp = vmppFacade.findByField("name", temStr, true);
+                    temVmpp = vmppFacade.findFirstBySQL("SELECT c FROM Vmpp c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temVmpp == null) {
                         temVmpp = new Vmpp();
                         temVmpp.setName(temStr);
@@ -269,7 +269,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(strengthUnitCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temStrengthUnit = strengthUnitFacade.findByField("name", temStr, true);
+                    temStrengthUnit = strengthUnitFacade.findFirstBySQL("SELECT c FROM StrengthUnit c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temStrengthUnit == null) {
                         temStrengthUnit = new StrengthUnit();
                         temStrengthUnit.setName(temStr);
@@ -284,7 +284,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(packUnitCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temPackUnit = packUnitFacade.findByField("name", temStr, true);
+                    temPackUnit = packUnitFacade.findFirstBySQL("SELECT c FROM PackUnit c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temPackUnit == null) {
                         temPackUnit = new PackUnit();
                         temPackUnit.setName(temStr);
@@ -299,7 +299,7 @@ public class PharmaceuticalExcelManager {
                 cell = sheet.getCell(issueUnitCol, i);
                 temStr = cell.getContents();
                 if (!temStr.equals("")) {
-                    temIssueUnit = issueUnitFacade.findByField("name", temStr, true);
+                    temIssueUnit = issueUnitFacade.findFirstBySQL("SELECT c FROM IssueUnit c Where c.name = '" + temStr + "' AND c.retired=false");
                     if (temIssueUnit == null) {
                         temIssueUnit = new IssueUnit();
                         temIssueUnit.setName(temStr);
@@ -337,17 +337,24 @@ public class PharmaceuticalExcelManager {
                 //
                 //
                 //
-                temAtm.setVtm(temVtm);
-                atmFacade.edit(temAtm);
+                if (temAtm != null) {
+                    temAtm.setVtm(temVtm);
+                    atmFacade.edit(temAtm);
+                    JsfUtil.addSuccessMessage(temAmp.getName() + " saved.");
+                }
                 //
-                temAmp.setVmp(temVmp);
-                ampFacade.edit(temAmp);
+                if (temAmp != null) {
+                    temAmp.setVmp(temVmp);
+                    ampFacade.edit(temAmp);
+                }
                 //
-                temAmpp.setVmpp(temVmpp);
-                temAmpp.setAmp(temAmp);
-                temAmpp.setPackUnit(temPackUnit);
-                temAmpp.setIssueUnitsPerPack(issueUnitsPerPack);
-                amppFacade.edit(temAmpp);
+                if (temAmpp != null) {
+                    temAmpp.setVmpp(temVmpp);
+                    temAmpp.setAmp(temAmp);
+                    temAmpp.setPackUnit(temPackUnit);
+                    temAmpp.setIssueUnitsPerPack(issueUnitsPerPack);
+                    amppFacade.edit(temAmpp);
+                }
                 //
                 temVtmInAmp = new VtmInAmp();
                 temVtmInAmp.setAmp(temAmp);
@@ -356,12 +363,12 @@ public class PharmaceuticalExcelManager {
                 temVtmInAmp.setStrength(strengthOfIssueUnit);
                 vtmInAmpFacade.create(temVtmInAmp);
                 //
-                
-                
+
+
 
             }
-            
-            
+
+
             FacesMessage msg = new FacesMessage("Succesful", "All the data in Excel File Impoted to the database");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return "";
@@ -589,9 +596,4 @@ public class PharmaceuticalExcelManager {
     public void setVtms(DataModel<Vtm> vtms) {
         this.vtms = vtms;
     }
-
-
-
-
-
 }

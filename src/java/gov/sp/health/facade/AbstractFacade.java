@@ -136,8 +136,10 @@ public abstract class AbstractFacade<T> {
     public T findByField(String fieldName, String fieldValue, boolean withoutRetired) {
         List<T> lstAll = findExact(fieldName, fieldValue, true);
         if (lstAll.isEmpty()) {
+            System.out.println("Null");
             return null;
         } else {
+            System.out.println("Not Null " + lstAll.get(0).toString());
             return lstAll.get(0);
         }
     }
