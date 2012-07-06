@@ -21,15 +21,13 @@
             </h:panelGrid>
             <h:panelGrid columns="2" >
 
-                <h:panelGroup id="gpSelect" >
-
-                    <h:outputLabel class="pdPageText" value="Users Awaiting Acctivation" />
-
-                    <h:selectOneListbox class="pdDropDownList" value="#{userApproveController.selectedUser}" >
+                <h:panelGrid id="gpSelect" columns="1" >
+                    <h:outputLabel class="pdPageText" value="Users Awaiting Acctivation"  />
+                    <h:selectOneListbox class="pdDropDownList" value="#{userApproveController.selectedUser}" size="5" >
                         <f:selectItems value="#{userApproveController.toApproveUsers}" var="users" itemValue="#{users}" itemLabel="#{users.webUserPerson.name}" />
-
                     </h:selectOneListbox>
-                </h:panelGroup>
+                </h:panelGrid>
+
                 <h:panelGroup id="gpDetail" >
                     <h:panelGrid columns="5" >
                         <h:outputLabel value="Privilege" />
@@ -38,81 +36,78 @@
                         <h:outputLabel value="Edit" />
                         <h:outputLabel value="Delete" />
 
-                        <h:outputLabel value="Administration" />
-                        <h:selectBooleanCheckbox value="#{userApproveController.privilege.activateAccounts}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.dectivateAccounts}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.deleteAccounts}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.manageAccounts}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.activateAccounts}"  value="Administration" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.activateAccounts}" value="#{userApproveController.privilege.activateAccounts}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.dectivateAccounts}"   value="#{userApproveController.privilege.dectivateAccounts}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.deleteAccounts}"   value="#{userApproveController.privilege.deleteAccounts}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.manageAccounts}"   value="#{userApproveController.privilege.manageAccounts}"/>
 
-                        <h:outputLabel value="HR" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.caderView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.caderAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.caderEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.caderDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.caderView}"  value="HR" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.caderView}"   value="#{userApproveController.privilege.caderView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.caderAdd}"   value="#{userApproveController.privilege.caderAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.caderEdit}"   value="#{userApproveController.privilege.caderEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.caderDelete}"   value="#{userApproveController.privilege.caderDelete}"/>
 
-                        <h:outputLabel value="Finance" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.financeView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.financeAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.financeEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.financeDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.financeView}"  value="Finance" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.financeView}"   value="#{userApproveController.privilege.financeView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.financeAdd}"   value="#{userApproveController.privilege.financeAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.financeEdit}"   value="#{userApproveController.privilege.financeEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.financeDelete}"   value="#{userApproveController.privilege.financeDelete}"/>
 
-                        <h:outputLabel value="Medical Supplies" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.msView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.msAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.msEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.msDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.msView}"  value="Medical Supplies" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.msView}"   value="#{userApproveController.privilege.msView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.msAdd}"   value="#{userApproveController.privilege.msAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.msEdit}"   value="#{userApproveController.privilege.msEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.msDelete}"   value="#{userApproveController.privilege.msDelete}"/>
 
-                        <h:outputLabel value="Biomedical" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.bmeView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.bmeAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.bmeEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.bmeDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.bmeView}"  value="Biomedical" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.bmeView}"   value="#{userApproveController.privilege.bmeView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.bmeAdd}"   value="#{userApproveController.privilege.bmeAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.bmeEdit}"   value="#{userApproveController.privilege.bmeEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.bmeDelete}"   value="#{userApproveController.privilege.bmeDelete}"/>
 
 
-                        <h:outputLabel value="Demography" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.demographyView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.demographyAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.demographyEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.demographyDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.demographyView}"  value="Demography" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.demographyView}"   value="#{userApproveController.privilege.demographyView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.demographyAdd}"   value="#{userApproveController.privilege.demographyAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.demographyEdit}"   value="#{userApproveController.privilege.demographyEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.demographyDelete}"   value="#{userApproveController.privilege.demographyDelete}"/>
 
-                        <h:outputLabel value="Inventory" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.inventoryView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.inventoryAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.inventoryEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.inventoryDelete}"/>
+                        <h:outputLabel rendered="#{userApproveController.privilege.inventoryView}"  value="Inventory" />
+                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryView}"   value="#{userApproveController.privilege.inventoryView}"/>
+                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryAdd}"   value="#{userApproveController.privilege.inventoryAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryEdit}"   value="#{userApproveController.privilege.inventoryEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryDelete}"   value="#{userApproveController.privilege.inventoryDelete}"/>
 
-                        <h:outputLabel value="Library" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.libraryView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.libraryAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.libraryEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.libraryDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.libraryView}"  value="Library" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.libraryView}"   value="#{userApproveController.privilege.libraryView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.libraryAdd}"   value="#{userApproveController.privilege.libraryAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.libraryEdit}"   value="#{userApproveController.privilege.libraryEdit}"/>
+                        <h:selectBooleanCheckbox  rendered="#{sessionController.privilege.libraryDelete}"  value="#{userApproveController.privilege.libraryDelete}"/>
 
-                        <h:outputLabel value="Vehicle" />
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.vehicleView}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.vehicleAdd}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.vehicleEdit}"/>
-                        <h:selectBooleanCheckbox  value="#{userApproveController.privilege.vehicleDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.vehicleView}"  value="Vehicle" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.vehicleView}"   value="#{userApproveController.privilege.vehicleView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.vehicleAdd}"   value="#{userApproveController.privilege.vehicleAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.vehicleEdit}"   value="#{userApproveController.privilege.vehicleEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.vehicleDelete}"   value="#{userApproveController.privilege.vehicleDelete}"/>
 
-                        <h:outputLabel value="Restricted Area" />
-                        <h:selectOneListbox value="#{userApproveController.privilege.restrictedArea}" >
-                            <f:selectItems value="#{areaController.areas}"  var="ra" itemLabel="#{ra.name}" itemValue="#{ra}" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2">
+
+                        <h:outputLabel value="Area" rendered="#{sessionController.privilege.restrictedArea==null}"/>
+                        <h:selectOneListbox  rendered="#{sessionController.privilege.restrictedArea==null}" value="#{userApproveController.privilege.restrictedArea}"  size="5">
+                            <f:selectItems value="#{userApproveController.areas}"  var="ra" itemLabel="#{ra.name}" itemValue="#{ra}" />
                         </h:selectOneListbox>
-                        <h:outputLabel value="&nbsp;" />
-                        <h:outputLabel value="&nbsp;" />
 
-
-                        <h:selectOneListbox value="#{userApproveController.privilege.restrictedInstitution}" >
-                            <f:selectItems value="#{institutionController.items}" var="ri" itemValue="#{ri}" itemLabel="#{ri.name}" />
+                        <h:outputLabel rendered="#{sessionController.privilege.restrictedInstitution==null}"  value="Institution" />
+                        <h:selectOneListbox rendered="#{sessionController.privilege.restrictedInstitution==null}" value="#{userApproveController.privilege.restrictedInstitution}"  size="5">
+                            <f:selectItems value="#{userApproveController.institutions}" var="ri" itemValue="#{ri}" itemLabel="#{ri.name}" />
                         </h:selectOneListbox>
-                        <h:outputLabel value="&nbsp;" />
-                        <h:outputLabel value="&nbsp;" />
 
-                        <h:selectOneListbox value="#{userApproveController.privilege.restrictedUnit}" >
-                            <f:selectItems value="#{unitController.items}" var="ru" itemValue="#{ru}" itemLabel="#{ru.name}" />
+                        <h:outputLabel   rendered="#{sessionController.privilege.restrictedUnit==null}"  value="Unit" />
+                        <h:selectOneListbox  rendered="#{sessionController.privilege.restrictedUnit==null}"  value="#{userApproveController.privilege.restrictedUnit}"  size="5">
+                            <f:selectItems value="#{userApproveController.units}" var="ru" itemValue="#{ru}" itemLabel="#{ru.name}" />
                         </h:selectOneListbox>
-                        <h:outputLabel value="&nbsp;" />
-                        <h:outputLabel value="&nbsp;" />
-
 
 
                     </h:panelGrid>

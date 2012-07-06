@@ -5,12 +5,7 @@
 package gov.sp.health.bean;
 
 import gov.sp.health.entity.*;
-import gov.sp.health.facade.PrivilegeFacade;
-import gov.sp.health.facade.WebUserFacade;
-import gov.sp.health.facade.AreaFacade;
-import gov.sp.health.facade.InstitutionFacade;
-import gov.sp.health.facade.LocationFacade;
-import gov.sp.health.facade.UnitFacade;
+import gov.sp.health.facade.*;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -90,12 +85,15 @@ public class UserApproveController {
         if (sessionController.getPrivilege().getRestrictedInstitution() == null) {
             temSql = "SELECT a FROM Institution a WHERE a.retired=false ORDER BY a.name ";
         } else {
-            temSql = "SELECT a FROM Institution a WHERE a.retired=false WHERE a.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId();
+            temSql = "SELECT a FROM Institution a WHERE a.retired=false AND a.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId();
 
         }
         return new ListDataModel<Institution>(getInstitutionFacade().findBySQL(temSql));
     }
 
+    
+    
+    
     public void setInstitutions(DataModel<Institution> institutions) {
         this.institutions = institutions;
     }
@@ -128,10 +126,10 @@ public class UserApproveController {
 
     public DataModel<Unit> getUnits() {
         String temSql;
-        if (sessionController.getPrivilege().getRestrictedInstitution() == null) {
-            temSql = "SELECT a FROM Unit a WHERE a.retired=false WHERE a.institution.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId() + " ORDER BY a.name ";
-        } else if (sessionController.getPrivilege().getRestrictedUnit() == null) {
-            temSql = "SELECT a FROM Unit a WHERE a.retired=false ORDER BY a.name ";
+        if (sessionController.getPrivilege().getRestrictedInstitution() != null) {
+            temSql = "SELECT a FROM Unit a WHERE a.retired=false AND a.institution.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId() + " ORDER BY a.name ";
+        } else if (sessionController.getPrivilege().getRestrictedUnit() != null) {
+            temSql = "SELECT a FROM Unit a WHERE a.retired=false AND a.unit.id = " + sessionController.getPrivilege().getRestrictedUnit().getId() + "  ORDER BY a.name ";
         } else {
             temSql = "SELECT a FROM Unit a WHERE a.retired=false ORDER BY a.name ";
         }

@@ -18,7 +18,19 @@ import javax.persistence.ManyToOne;
 public class Amp extends PharmaceuticalItem implements Serializable {
     @ManyToOne
     Vmp vmp;
+    
+    @ManyToOne
+    IssueUnit issueUnit;
 
+    public IssueUnit getIssueUnit() {
+        return issueUnit;
+    }
+
+    public void setIssueUnit(IssueUnit issueUnit) {
+        this.issueUnit = issueUnit;
+    }
+    
+    
     
 
     public Vmp getVmp() {

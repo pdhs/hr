@@ -42,7 +42,7 @@ public class ConnetcionController {
     @ManagedProperty(value = "#{sessionController}")
     private SessionController sessionController;
     @ManagedProperty(value = "#{menu}")
-    private Menu menu;    
+    private Menu menu;
     //
     WebUser current;
     String userName;
@@ -74,8 +74,6 @@ public class ConnetcionController {
         this.sessionController = sessionController;
     }
 
-    
-    
     private WebUserFacade getFacede() {
         return uFacade;
     }
@@ -376,11 +374,19 @@ public class ConnetcionController {
             if (pv.isManageAccounts() == true) {
                 p.setManageAccounts(true);
             }
-            if (pv.isDeleteAccounts()==true){
+            if (pv.isDeleteAccounts() == true) {
                 p.setDeleteAccounts(true);
             }
             //
-
+            if (pv.getRestrictedArea() != null) {
+                p.setRestrictedArea(pv.getRestrictedArea());
+            }
+            if (pv.getRestrictedInstitution() != null) {
+                p.setRestrictedInstitution(pv.getRestrictedInstitution());
+            }
+            if (pv.getRestrictedUnit() != null) {
+                p.setRestrictedUnit(pv.getRestrictedUnit());
+            }
         }
 
         return p;
@@ -394,7 +400,7 @@ public class ConnetcionController {
     }
 
     public WebUser getCurrent() {
-        
+
         return current;
     }
 
@@ -552,7 +558,4 @@ public class ConnetcionController {
     public void setMenu(Menu menu) {
         this.menu = menu;
     }
-    
-    
-    
 }
