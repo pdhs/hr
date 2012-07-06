@@ -5,6 +5,8 @@
 package gov.sp.health.bean;
 
 import gov.sp.health.entity.*;
+import gov.sp.health.facade.AmpFacade;
+import gov.sp.health.facade.AmppFacade;
 import gov.sp.health.facade.BillFacade;
 import gov.sp.health.facade.BillItemFacade;
 import gov.sp.health.facade.CountryFacade;
@@ -17,6 +19,7 @@ import gov.sp.health.facade.MakeFacade;
 import gov.sp.health.facade.ManufacturerFacade;
 import gov.sp.health.facade.ModalFacade;
 import gov.sp.health.facade.PersonFacade;
+import gov.sp.health.facade.PharmaceuticalItemCategoryFacade;
 import gov.sp.health.facade.SupplierFacade;
 import gov.sp.health.facade.UnitFacade;
 import java.util.ArrayList;
@@ -44,11 +47,11 @@ public class MsPurchaseBillController {
      *
      */
     @EJB
-    private ItemFacade itemFacade;
+    private AmpFacade ampFacade;
     @EJB
-    private ModalFacade modalFacade;
+    private AmppFacade amppFacade;
     @EJB
-    private MakeFacade makeFacade;
+    private PharmaceuticalItemCategoryFacade pharmaceuticalItemCategoryFacade;
     @EJB
     private BillFacade billFacade;
     @EJB
