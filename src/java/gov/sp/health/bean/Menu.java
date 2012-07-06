@@ -344,28 +344,77 @@ public class Menu {
         submenu = new Submenu();
         submenu.setLabel(getLabel("msd"));
 
-        /*
-         * 
-         * 
-         * msPurchase=Purchase Medicines
-msIssue=Issue Medicines
-msReceive=Receive Medicines
-msRequests=Request Medicines
-msIssueRequests=Issue Requests
-msReceiveRequests=Receive Requests
-msPrepareEstimates=Prepare Estimates
-         * 
-         * 
-         */
+        Submenu editSubmenu = new Submenu();
+        editSubmenu.setLabel("Edit");
+        
+        Submenu medicinesSubmenu = new Submenu();
+        medicinesSubmenu.setLabel("Medicines");
+
+        item = new MenuItem();
+        item.setValue("Medicine Groups");
+        item.setUrl("ms_medicine_group.xhtml");
+        medicinesSubmenu.getChildren().add(item);        
+
+        item = new MenuItem();
+        item.setValue("Item Categories");
+        item.setUrl("ms_item_category.xhtml");
+        medicinesSubmenu.getChildren().add(item);         
         
         item = new MenuItem();
-        item.setValue(getLabel("msEdit"));
-        item.setUrl("ms_edit.xhtml");
-        submenu.getChildren().add(item);
+        item.setValue("Generic Names");
+        item.setUrl("ms_vtm.xhtml");
+        medicinesSubmenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Trade Names");
+        item.setUrl("ms_atm.xhtml");
+        medicinesSubmenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Item Master");
+        item.setUrl("ms_amp.xhtml");
+        medicinesSubmenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Import From Excel");
+        item.setUrl("ms_import_items.xhtml");
+        medicinesSubmenu.getChildren().add(item);
+
+        editSubmenu.getChildren().add(medicinesSubmenu);
+        
+        
+        Submenu insSubmenu = new Submenu();
+        insSubmenu.setLabel("Institutions");
+        
+        item = new MenuItem();
+        item.setValue("Units");
+        item.setUrl("inventory_unit.xhtml");
+        insSubmenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Suppliers");
+        item.setUrl("inventory_supplier.xhtml");
+        insSubmenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Manufacturers");
+        item.setUrl("inventory_manufacturer.xhtml");
+        insSubmenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Countries");
+        item.setUrl("country.xhtml");
+        insSubmenu.getChildren().add(item);
+
+        editSubmenu.getChildren().add(insSubmenu);        
+        
+        
+        submenu.getChildren().add(editSubmenu);
+        
 
         item = new MenuItem();
         item.setValue(getLabel("msPurchase"));
-        item.setUrl("institutions.xhtml");
+        item.setUrl("ms_purchase.xhtml");
         submenu.getChildren().add(item);
 
                 item = new MenuItem();
@@ -471,76 +520,7 @@ item = new MenuItem();
         return submenu;
     }
 
-    //    private Submenu editSubmenu() {
-//        Submenu submenu;
-//        Submenu childSubmenu;
-//        MenuItem item;
-//
-//        submenu = new Submenu();
-//        submenu.setLabel(getLabel("editMenu"));
-//
-//        childSubmenu = new Submenu();
-//        childSubmenu.setLabel(getLabel("investigationMenu"));
-//
-//        item = new MenuItem();
-//        item.setValue(getLabel("investigationCategoriesMenu"));
-//        item.setUrl("/faces/ix_category.xhtml");
-//        childSubmenu.getChildren().add(item);
-//
-//        submenu.getChildren().add(childSubmenu);
-//
-//        childSubmenu = new Submenu();
-//        childSubmenu.setLabel(getLabel("institutionsMenu"));
-//
-//        item = new MenuItem();
-//        item.setValue(getLabel("institutionMenu"));
-//        item.setUrl("/faces/institution.xhtml");
-//        childSubmenu.getChildren().add(item);
-//
-//        submenu.getChildren().add(childSubmenu);
-//
-//
-//        childSubmenu = new Submenu();
-//        childSubmenu.setLabel(getLabel("financeMenu"));
-//
-//        item = new MenuItem();
-//        item.setValue(getLabel("expenseMenu"));
-//        item.setUrl("/faces/expense.xhtml");
-//        childSubmenu.getChildren().add(item);
-//
-//        submenu.getChildren().add(childSubmenu);
-//
-//
-//        childSubmenu = new Submenu();
-//        childSubmenu.setLabel(getLabel("metadataMenu"));
-//
-//        item = new MenuItem();
-//        item.setValue(getLabel("contactTypeMenu"));
-//        item.setUrl("/faces/contact_type.xhtml");
-//        childSubmenu.getChildren().add(item);
-//
-//        submenu.getChildren().add(childSubmenu);
-//
-//        return submenu;
-//    }
-//
-//    private Submenu fileSubmenu() {
-//        Submenu submenu;
-//        Submenu childSubmenu;
-//        MenuItem item;
-//
-//        submenu = new Submenu();
-//        submenu.setLabel(getLabel("fileMenu"));
-//
-//        item = new MenuItem();
-//        item.setValue(getLabel("saveMenu"));
-//        item.setUrl(getLabel("#"));
-//
-//        submenu.getChildren().add(item);
-//
-//        return submenu;
-//
-//    }
+
     public MenuModel getModel() {
         return model;
     }

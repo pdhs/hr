@@ -39,38 +39,20 @@
                                         </h:selectOneListbox>
                                     </p:column>
 
-                                    <p:column styleClass="pdTopAlign">
-                                        <h:outputLabel value="Make" />
-                                        <h:selectOneListbox id="lstMake" value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.make}" styleClass="pdListBox" size="5">
-                                            <f:selectItems value="#{msPurchaseBillController.makes}" var="myMake" itemLabel="#{myMake.name}" itemValue="#{myMake}"/>
-                                        </h:selectOneListbox>
-                                    </p:column>
+                                   
                                     <p:column>
-                                        <h:outputLabel value="Modal" ></h:outputLabel>
-                                        <h:inputText value="#{msPurchaseBillController.modalName}" styleClass="pdPageText" ></h:inputText>
-                                        <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
-                                        <h:outputLabel value="Serial" ></h:outputLabel>
-                                        <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.serial}" ></h:inputText>
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputLabel value="ID" ></h:outputLabel>
+                                        <h:outputLabel value="Batch" ></h:outputLabel>
                                         <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.name}" styleClass="pdPageText" ></h:inputText>
                                         <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
                                         <h:outputLabel value="Descreption" ></h:outputLabel>
                                         <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.description}" ></h:inputText>
                                     </p:column>                                    
                                     <p:column>
-                                        <h:outputLabel value="Warranty" ></h:outputLabel>
+                                        <h:outputLabel value="Expiary" ></h:outputLabel>
                                         <p:calendar value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.dateOfExpiary}" styleClass="pdPageText" ></p:calendar>
                                         <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
                                         <h:outputLabel value="Modal No." ></h:outputLabel>
                                         <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.modalNo}" ></h:inputText>
-                                    </p:column>
-                                    <p:column styleClass="pdTopAlign">
-                                        <h:outputLabel value="Country" />
-                                        <h:selectOneListbox id="lstCountry" value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.country}" styleClass="pdListBox" size="5">
-                                            <f:selectItems value="#{msPurchaseBillController.countries}" var="myCon" itemLabel="#{myCon.name}" itemValue="#{myCon}"/>
-                                        </h:selectOneListbox>
                                     </p:column>
                                     <p:column styleClass="pdTopAlign">
                                         <h:outputLabel value="Supplier" />
@@ -122,8 +104,8 @@
                                     #{temBillItem.billItem.itemUnit.item.name}
                                 </p:column>
 
-                                <p:column headerText="Make" >
-                                    #{temBillItem.billItem.itemUnit.make.name}
+                                <p:column headerText="Batch" >
+                                    #{temBillItem.billItem.itemUnit.name}
                                 </p:column>
 
                                 <p:column headerText="Expiry" >

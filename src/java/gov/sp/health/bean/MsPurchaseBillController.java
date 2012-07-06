@@ -53,6 +53,8 @@ public class MsPurchaseBillController {
     @EJB
     private PharmaceuticalItemCategoryFacade pharmaceuticalItemCategoryFacade;
     @EJB
+    ItemFacade itemFacade;
+    @EJB
     private BillFacade billFacade;
     @EJB
     private BillItemFacade billItemFacade;
@@ -85,7 +87,6 @@ public class MsPurchaseBillController {
      * Collections
      */
     DataModel<Item> items;
-    DataModel<Make> makes;
     //
     DataModel<BillItemEntry> billItemEntrys;
     List<BillItemEntry> lstBillItemEntrys;
@@ -125,7 +126,6 @@ public class MsPurchaseBillController {
     /**
      * Entries
      */
-    String modalName;
     Boolean newBill;
 
     /**
@@ -136,7 +136,7 @@ public class MsPurchaseBillController {
     public void addItemToList() {
         orderBillItemEntries();
         if (billItemEntry == null) {
-            JsfUtil.addErrorMessage("Hothing to add");
+            JsfUtil.addErrorMessage("Nothing to add");
             return;
         }
         // TODO: Warning - Need to add logic to search and save model        
@@ -174,7 +174,6 @@ public class MsPurchaseBillController {
     }
 
     private void clearEntry() {
-        modalName = null;
         billItemEntry = new BillItemEntry();
         billItemEntry = null;
         billItemEntry = getBillItemEntry();
@@ -183,8 +182,6 @@ public class MsPurchaseBillController {
     private void clearBill() {
         bill = new Bill();
         lstBillItemEntrys = new ArrayList<BillItemEntry>();
-
-
     }
 
     public Double calculateStock(Item item) {
@@ -409,90 +406,8 @@ public class MsPurchaseBillController {
 
     }
 
-//    private void addNewToUnitStock(BillItemEntry temEntry) {
-//
-//        BillItem temBillItem = temEntry.getBillItem();
-//        ItemUnit newItemUnit = temBillItem.getItemUnit();
-//
-//        newItemUnit.setBulkUnit(newItemUnit.getItem().getBulkUnit());
-//        newItemUnit.setCreatedAt(Calendar.getInstance().getTime());
-//        newItemUnit.setCreater(sessionController.getLoggedUser());
-//        newItemUnit.setInstitution(getBill().getToInstitution());
-//        newItemUnit.setLocation(getBill().getToLocation());
-//        newItemUnit.setLooseUnit(newItemUnit.getItem().getLooseUnit());
-//        newItemUnit.setLooseUnitsPerBulkUnit(newItemUnit.getItem().getLooseUnitsPerBulkUnit());
-//        newItemUnit.setOwner(getBill().getToPerson());
-//        newItemUnit.setWarrantyExpiary(newItemUnit.getDateOfExpiary());
-//        newItemUnit.setSupplier(null);
-//        newItemUnit.setUnit(getBill().getToUnit());
-//        newItemUnit.setPerson(getBill().getToPerson());
-//        newItemUnit.setQuentity(temBillItem.getQuentity());
-//
-//        ItemUnitHistory hxUnit = new ItemUnitHistory();
-//        ItemUnitHistory hxLoc = new ItemUnitHistory();
-//        ItemUnitHistory hxIns = new ItemUnitHistory();
-//        ItemUnitHistory hxPer = new ItemUnitHistory();
-//
-//
-//        hxIns.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getInstitution()));
-//        hxIns.setCreatedAt(Calendar.getInstance().getTime());
-//        hxIns.setCreater(sessionController.loggedUser);
-//        hxIns.setInstitution(newItemUnit.getInstitution());
-//        hxIns.setItem(newItemUnit.getItem());
-//        hxIns.setQuentity(newItemUnit.getQuentity());
-//        hxIns.setToIn(Boolean.TRUE);
-//        hxIns.setToOut(Boolean.FALSE);
-//        
-//
-//        hxUnit.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getUnit()));
-//        hxUnit.setCreatedAt(Calendar.getInstance().getTime());
-//        hxUnit.setCreater(sessionController.loggedUser);
-//        hxUnit.setUnit(newItemUnit.getUnit());
-//        hxUnit.setItem(newItemUnit.getItem());
-//        hxUnit.setQuentity(newItemUnit.getQuentity());
-//        hxUnit.setToIn(Boolean.TRUE);
-//        hxUnit.setToOut(Boolean.FALSE);
-//
-//        hxLoc.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getLocation()));
-//        hxLoc.setCreatedAt(Calendar.getInstance().getTime());
-//        hxLoc.setCreater(sessionController.loggedUser);
-//        hxLoc.setLocation(newItemUnit.getLocation());
-//        hxLoc.setItem(newItemUnit.getItem());
-//        hxLoc.setQuentity(newItemUnit.getQuentity());
-//        hxLoc.setToIn(Boolean.TRUE);
-//        hxLoc.setToOut(Boolean.FALSE);
-//
-//        hxPer.setBeforeQty(calculateStock(newItemUnit.getItem(), newItemUnit.getPerson()));
-//        hxPer.setCreatedAt(Calendar.getInstance().getTime());
-//        hxPer.setCreater(sessionController.loggedUser);
-//        hxPer.setPerson(newItemUnit.getPerson());
-//        hxPer.setItem(newItemUnit.getItem());
-//        hxPer.setQuentity(newItemUnit.getQuentity());
-//        hxPer.setToIn(Boolean.TRUE);
-//        hxPer.setToOut(Boolean.FALSE);
-//
-//        getItemUnitFacade().create(newItemUnit);
-//
-//        hxIns.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getInstitution()));
-//        hxIns.setItemUnit(newItemUnit);
-//        getItemUnitHistoryFacade().create(hxIns);
-//
-//        hxUnit.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getUnit()));
-//        hxUnit.setItemUnit(newItemUnit);
-//        getItemUnitHistoryFacade().create(hxUnit);
-//
-//        hxLoc.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getLocation()));
-//        hxLoc.setItemUnit(newItemUnit);
-//        getItemUnitHistoryFacade().create(hxLoc);
-//
-//        hxPer.setAfterQty(calculateStock(newItemUnit.getItem(), newItemUnit.getPerson()));
-//        hxPer.setItemUnit(newItemUnit);
-//        getItemUnitHistoryFacade().create(hxPer);
-//
-//
-//    }
-//    private void addToLocation() {
-//    }
+
+
     public void calculateItemValue() {
         getBillItemEntry().getBillItem().setNetValue(getBillItemEntry().getBillItem().getNetRate() * getBillItemEntry().getBillItem().getQuentity());
     }
@@ -556,28 +471,10 @@ public class MsPurchaseBillController {
         this.lstBillItemEntrys = lstBillItemEntrys;
     }
 
-//  
-//        public Bill getBill() {
-//        if (bill != null) {
-//            JsfUtil.addErrorMessage(bill.toString());
-//        } else {
-//            JsfUtil.addErrorMessage("Null");
-//        }
-//        return bill;
-//    }
-//
-//    public void setBill(Bill bill) {
-//        this.bill = bill;
-//        if (bill != null) {
-//            JsfUtil.addErrorMessage(bill.toString());
-//        } else {
-//            JsfUtil.addErrorMessage("Null");
-//        }
-//    }
-//    
+    
     public void prepareForNewBill() {
         setNewBill(Boolean.TRUE);
-        bill = new InInventoryBill();
+        bill = new InMedicalBill();
         bill.setBillDate(Calendar.getInstance().getTime());
 
     }
@@ -631,46 +528,15 @@ public class MsPurchaseBillController {
         this.billItemFacade = billItemFacade;
     }
 
-    public ItemFacade getItemFacade() {
-        return itemFacade;
-    }
-
-    public void setItemFacade(ItemFacade itemFacade) {
-        this.itemFacade = itemFacade;
-    }
-
-    public DataModel<Item> getItems() {
-        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false ORDER By i.name"));
+       public DataModel<Item> getItems() {
+        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false AND type(i) = AMP ORDER By i.name"));
     }
 
     public void setItems(DataModel<Item> items) {
         this.items = items;
     }
 
-    public MakeFacade getMakeFacade() {
-        return makeFacade;
-    }
-
-    public void setMakeFacade(MakeFacade makeFacade) {
-        this.makeFacade = makeFacade;
-    }
-
-    public DataModel<Make> getMakes() {
-        return new ListDataModel(getMakeFacade().findBySQL("SELECT m FROM Make m WHERE m.retired=false ORDER BY m.name"));
-    }
-
-    public void setMakes(DataModel<Make> makes) {
-        this.makes = makes;
-    }
-
-    public ModalFacade getModalFacade() {
-        return modalFacade;
-    }
-
-    public void setModalFacade(ModalFacade modalFacade) {
-        this.modalFacade = modalFacade;
-    }
-
+   
     public SessionController getSessionController() {
         return sessionController;
     }
@@ -679,15 +545,7 @@ public class MsPurchaseBillController {
         this.sessionController = sessionController;
     }
 
-    public String getModalName() {
-        return modalName;
-    }
-
-    public void setModalName(String modalName) {
-        this.modalName = modalName;
-    }
-
-    public BillItemEntry getEditBillItemEntry() {
+   public BillItemEntry getEditBillItemEntry() {
         return editBillItemEntry;
     }
 
@@ -888,4 +746,39 @@ public class MsPurchaseBillController {
     public void setNewBill(Boolean newBill) {
         this.newBill = newBill;
     }
+
+    public AmpFacade getAmpFacade() {
+        return ampFacade;
+    }
+
+    public void setAmpFacade(AmpFacade ampFacade) {
+        this.ampFacade = ampFacade;
+    }
+
+    public AmppFacade getAmppFacade() {
+        return amppFacade;
+    }
+
+    public void setAmppFacade(AmppFacade amppFacade) {
+        this.amppFacade = amppFacade;
+    }
+
+    public PharmaceuticalItemCategoryFacade getPharmaceuticalItemCategoryFacade() {
+        return pharmaceuticalItemCategoryFacade;
+    }
+
+    public void setPharmaceuticalItemCategoryFacade(PharmaceuticalItemCategoryFacade pharmaceuticalItemCategoryFacade) {
+        this.pharmaceuticalItemCategoryFacade = pharmaceuticalItemCategoryFacade;
+    }
+
+    public ItemFacade getItemFacade() {
+        return itemFacade;
+    }
+
+    public void setItemFacade(ItemFacade itemFacade) {
+        this.itemFacade = itemFacade;
+    }
+    
+    
+    
 }
