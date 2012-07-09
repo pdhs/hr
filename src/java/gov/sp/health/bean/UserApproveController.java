@@ -194,6 +194,7 @@ public class UserApproveController {
 
     public void setSelectedUser(WebUser selectedUser) {
         this.selectedUser = selectedUser;
+        this.privilege = getPrivilege();
     }
 
     public DataModel<WebUser> getToApproveUsers() {
