@@ -25,7 +25,7 @@
                         <h:outputLabel class="pdPageText" value="Users Awaiting Acctivation"  />
                         <h:selectOneListbox class="pdDropDownList" value="#{userApproveController.selectedUser}" size="5" >
                             <f:selectItems value="#{userApproveController.toApproveUsers}" var="users" itemValue="#{users}" itemLabel="#{users.webUserPerson.name}" />
-                            <f:ajax event="change" execute="gpSelect" render="gpDetails"/>
+                            <f:ajax event="change" execute="gpSelect" render="gpDetails gpDetail"/>
                         </h:selectOneListbox>
                     </h:panelGrid>
 
