@@ -516,6 +516,12 @@ item = new MenuItem();
         item.setValue(getLabel("activateAccounts"));
         item.setUrl("activate_users.xhtml");
         submenu.getChildren().add(item);
+        
+
+        item = new MenuItem();
+        item.setValue("Manage Accounts");
+        item.setUrl("manage_users.xhtml");
+        submenu.getChildren().add(item);        
 
         return submenu;
     }

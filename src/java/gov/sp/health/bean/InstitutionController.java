@@ -10,6 +10,8 @@ package gov.sp.health.bean;
 
 import gov.sp.health.facade.InstitutionFacade;
 import gov.sp.health.entity.Institution;
+import gov.sp.health.entity.InstitutionType;
+import gov.sp.health.facade.InstitutionTypeFacade;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -34,11 +36,14 @@ public final class InstitutionController {
 
     @EJB
     private InstitutionFacade ejbFacade;
+    @EJB
+    InstitutionTypeFacade institutionTypeFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
     List<Institution> lstItems;
     private Institution current;
     private DataModel<Institution> items = null;
+    DataModel<InstitutionType> institutionTypes;
     private int selectedItemIndex;
     boolean selectControlDisable = false;
     boolean modifyControlDisable = true;
@@ -61,6 +66,22 @@ public final class InstitutionController {
 
     public void setSessionController(SessionController sessionController) {
         this.sessionController = sessionController;
+    }
+
+    public InstitutionTypeFacade getInstitutionTypeFacade() {
+        return institutionTypeFacade;
+    }
+
+    public void setInstitutionTypeFacade(InstitutionTypeFacade institutionTypeFacade) {
+        this.institutionTypeFacade = institutionTypeFacade;
+    }
+
+    public DataModel<InstitutionType> getInstitutionTypes() {
+        return new ListDataModel<InstitutionType>(getInstitutionTypeFacade().findAll());
+    }
+
+    public void setInstitutionTypes(DataModel<InstitutionType> institutionTypes) {
+        this.institutionTypes = institutionTypes;
     }
 
     

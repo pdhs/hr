@@ -4,11 +4,12 @@
                 template="./resources/template/pdhs_template_1.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
 
 
 
-    <ui:define name="content">
+    <ui:define name="login">
         <h:form>
             <table  width="400px" class="pdTable" align="center">
                 <tr>
@@ -35,8 +36,31 @@
                     <td align="left"><h:inputText value="#{connetcionController.newDesignation}"  /></td>
                 </tr>
                 <tr>
-                    <td class="pdLabel" align="right">Institute</td>
-                    <td align="left"><h:inputText value="#{connetcionController.newInstitution}"  /></td>
+                    <td class="pdLabel" align="right">Institution</td>
+                    <td align="left">
+                        <h:inputText value="#{connetcionController.newInstitution}"  />
+                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.institution}" >
+                            <f:selectItems value="#{connetcionController.institutions}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
+                        </h:selectOneListbox>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pdLabel" align="right">Unit</td>
+                    <td align="left">
+                        <h:inputText value="Unit"  />
+                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.unit}" >
+                            <f:selectItems value="#{connetcionController.units}" var="ins" itemValue="#{uni}" itemLabel="#{uni.name}"/>
+                        </h:selectOneListbox>
+                    </td>
+                </tr>                
+                <tr>
+                    <td class="pdLabel" align="right">Institution</td>
+                    <td align="left">
+                        <h:inputText value="Area"  />
+                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.area}" >
+                            <f:selectItems value="#{connetcionController.areas}" var="area" itemValue="#{area}" itemLabel="#{area.name}"/>
+                        </h:selectOneListbox>
+                    </td>
                 </tr>
                 <tr>
                     <td class="pdLabel" align="right">Username</td>

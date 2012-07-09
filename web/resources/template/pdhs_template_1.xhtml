@@ -9,10 +9,9 @@
       xmlns:f="http://java.sun.com/jsf/core"
       >
 
-    
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>#{labels.hospital1}</title>
+        <title>#{labels.topic}</title>
         <h:outputStylesheet library="css" name="pdhscss1.css" ></h:outputStylesheet>
         <style type="text/css">
             .ui-widget,
@@ -48,11 +47,11 @@
                             <ui:insert  name="top">
                                 <pou:panelGrid columns="2" style="border: 0px;">
                                     <pou:panel style="margin: 2px; padding: 2px; border: 0px;">
-                                        <h:graphicImage  class="pdLogo" library="image" name="cooplogo.jpg" ></h:graphicImage> 
+                                        <h:graphicImage  class="pdLogo" library="image" name="logo.jpg" ></h:graphicImage> 
                                     </pou:panel>
                                     <pou:panel style="margin: 2px; padding: 2px; border: 0px;">
-                                        <h:outputLabel style="font-size: 2.5em;" >#{labels.hospital1 }</h:outputLabel><br/>&nbsp;
-                                        <h:outputLabel style="font-size: 1.5em;" >#{labels.hospital1s}</h:outputLabel> 
+                                        <h:outputLabel style="font-size: 2.5em;" >#{labels.topic}</h:outputLabel><br/>&nbsp;
+                                        <h:outputLabel style="font-size: 1.5em;" >#{labels.subtopic}</h:outputLabel> 
                                     </pou:panel>
                                 </pou:panelGrid>
 
@@ -73,8 +72,41 @@
                     <pou:column style="width: 15%; margin: 0px; padding: 0px;">
                         <pou:panel style="width: 100%; min-height:700px !important; height:auto !important; height:800px !important; border: 0px; padding: 0px; margin: 0px;" >
                             <ui:insert   name="left">
-
-
+                                <pou:panel rendered="#{!connetcionController.logged}" >
+                                   <table >
+                                        <tr>  
+                                            <td>
+                                                <h:graphicImage  class="pdPotraitImage" library="image" name="governer.jpg" ></h:graphicImage><br/>
+                                                <h:outputLabel class="pdPotraitTitle">#{labels.GovernerTitel}</h:outputLabel><br/>
+                                                <h:outputLabel class="pdPotraitName">#{labels.GovernerName}</h:outputLabel><br/>
+                                                <h:outputLabel class="pdPotraitTitle">#{labels.GovernersMessage}</h:outputLabel><br/>
+                                            </td> 
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <h:graphicImage  class="pdPotraitImage" library="image" name="minister.jpg" ></h:graphicImage><br/>
+                                                <h:outputLabel class="pdPotraitTitle"> #{labels.ChiefMinisterTitel}</h:outputLabel><br/>
+                                                <h:outputLabel class="pdPotraitName"> #{labels.ChiefMinisterName}</h:outputLabel><br/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h:graphicImage  class="pdPotraitImage" library="image" name="secretary.jpg" ></h:graphicImage><br></br>
+                                                <h:outputLabel class="pdPotraitTitle">#{labels.Secretary}</h:outputLabel><br></br>
+                                                <h:outputLabel class="pdPotraitTitle">#{labels.SecretaryTitel}</h:outputLabel><br></br>
+                                                <h:outputLabel class="pdPotraitName">#{labels.SecretaryName}</h:outputLabel><br></br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h:graphicImage  class="pdPotraitImage" library="image" name="director.jpg" ></h:graphicImage><br></br>
+                                                <h:outputLabel class="pdPotraitTitle">#{labels.Director}</h:outputLabel><br/> 
+                                                <h:outputLabel class="pdPotraitTitle">#{labels.DirectorTitel}</h:outputLabel><br/>
+                                                <h:outputLabel class="pdPotraitName">#{labels.DirectorName}</h:outputLabel><br/>
+                                            </td>
+                                        </tr>
+                                    </table> 
+                                </pou:panel>
 
                                 <pou:panel rendered="#{connetcionController.logged}" header="Loggin" style="margin: 2px; padding: 2px; border: 0px;">
                                     <h:form>
@@ -102,7 +134,7 @@
                                 <pou:panel  header="Language" style="margin: 2px; padding: 2px; border: 0px;">
                                     <h:form>
                                         <h:selectOneMenu value="#{languageBean.localeCode}" onchange="submit()"
-                                                         valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
+                                                           valueChangeListener="#{languageBean.countryLocaleCodeChanged}">
                                             <f:selectItems value="#{languageBean.countriesInMap}" /> 
                                         </h:selectOneMenu>
                                     </h:form>  
@@ -113,8 +145,64 @@
                     </pou:column>
                     <pou:column  style="width: 65%; vertical-align: text-top; border: 0px;">
                         <pou:panel  style="width: 100%; border: 0px;" >
-                            <ui:insert name="content" >
-                            </ui:insert>
+                                                        <h:panelGroup rendered="#{sessionController.logged}" >
+
+                                <ui:insert name="content"   >
+                                </ui:insert>
+
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{!sessionController.logged}" >
+                                <ui:insert name="login"   >
+
+                                    <h:form>
+                                        <table render="false"  width="400px" class="pdTable" align="center">
+                                            <tr>
+                                                <td colspan="2" class="pdTableHighlightRow">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="pdLabel">&nbsp;</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td align="center" colspan="2">
+
+                                                    <span class="pdHeading1">#{labels.LogintotheApplication}</span>
+                                                </td>
+                                            </tr>                  
+                                            <tr>
+                                                <td colspan="2" class="pdLabel">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pdLabel" align="right" width="40%">#{labels.UserName}</td>
+                                                <td align="left" width="60%"><h:inputText value="#{connetcionController.userName}" autocomplete="off"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pdLabel" align="right">#{labels.Password}</td>
+                                                <td align="left"><h:inputSecret value="#{connetcionController.passord}"  autocomplete="off" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left"></td>
+                                                <td align="left">
+                                                    <h:commandButton id="btnLogin" class="pdButton" type="submit" value="#{labels.Login}" action="#{connetcionController.loginAction()}"/>
+                                                    <h:commandButton id="btnReg" class="pdButton" type="submit" value="#{labels.Register}" action="register" /> 
+                                                </td>
+                                            </tr>                  
+                                            <tr>
+                                                <td colspan="2" class="pdLabel">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"  class="pdTableHighlightRow">&nbsp;
+                                                    <pou:messages globalOnly="true" ></pou:messages>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </h:form>
+
+
+                                </ui:insert>
+                            </h:panelGroup>
+
                         </pou:panel>
                     </pou:column>
                 </pou:row>

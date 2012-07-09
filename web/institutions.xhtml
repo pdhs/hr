@@ -48,18 +48,18 @@
 
                             <h:panelGrid id="gpSelectButtons" columns="3"  >
                                 <h:commandButton id="btnAdd" value="#{labels.add}" disabled="#{institutionController.selectControlDisable}" action="#{institutionController.prepareAdd()}" styleClass="buttons" >
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName detailFocus" execute="btnEdit" >                                
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail detailFocus" execute="btnEdit" >                                
                                     </f:ajax>
                                 </h:commandButton>
                                 <h:commandButton id ="btnEdit" value="#{labels.edit}" disabled="#{institutionController.selectControlDisable}" action="#{institutionController.prepareEdit()}"  styleClass="buttons">
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName detailFocus" execute="lstSelect" >
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail detailFocus" execute="lstSelect" >
                                     </f:ajax>
                                 </h:commandButton>
                                 <h:commandButton id="btnDelete" onclick="confirmation.show()" value="#{labels.delete}" disabled="#{institutionController.selectControlDisable}" styleClass="buttons">
                                 </h:commandButton>
                             </h:panelGrid>
                             <p:confirmDialog appendToBody="true" message="#{labels.areYouSureYouWantToDelete}" header="#{labels.initiatingDestroyProcess}" severity="alert" widgetVar="confirmation">  
-                                <p:commandButton value="#{labels.yes}" oncomplete="confirmation.hide()" action="#{institutionController.delete()}" update="lstSelect txtName"  />  
+                                <p:commandButton value="#{labels.yes}" oncomplete="confirmation.hide()" action="#{institutionController.delete()}" update="lstSelect gpDetail"  />  
                                 <p:commandButton value="#{labels.No}" onclick="confirmation.hide()" type="button" />   
                             </p:confirmDialog>
                         </p:panel>
@@ -70,14 +70,17 @@
                             <h:panelGrid id="gpDetailText" columns="2">
                                 <h:outputText id="lblName" value="#{labels.Institution}" ></h:outputText>
                                 <h:inputText id="txtName" value="#{institutionController.current.name}" disabled="#{institutionController.modifyControlDisable}" ></h:inputText>
+                                <h:selectOneListbox id="cmbCat1" value="#{institutionController.current.institutionType}" disabled="#{institutionController.modifyControlDisable}" >
+                                    <f:selectItems value="#{institutionController.institutionTypes}" />
+                                </h:selectOneListbox>
                             </h:panelGrid>
                             <h:panelGrid id="gpDetailButtons" columns="2">
                                 <h:commandButton id="btnSave" value="#{labels.save}" disabled="#{institutionController.modifyControlDisable}" action="#{institutionController.saveSelected()}" styleClass="buttons">
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName selectFocus"  execute="txtName    " >
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail selectFocus"  execute="gpDetail" >
                                     </f:ajax>
                                 </h:commandButton>
                                 <h:commandButton id ="btnCancel" value="#{labels.cancel}" disabled="#{institutionController.modifyControlDisable}" action="#{institutionController.cancelSelect()}" styleClass="buttons">
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect txtName selectFocus" execute=" txtName    " >                                
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail selectFocus" execute="gpDetail" >                                
                                     </f:ajax>
                                 </h:commandButton>
                             </h:panelGrid>

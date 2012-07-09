@@ -145,8 +145,64 @@
                     </pou:column>
                     <pou:column  style="width: 65%; vertical-align: text-top; border: 0px;">
                         <pou:panel  style="width: 100%; border: 0px;" >
-                            <ui:insert name="content" >
-                            </ui:insert>
+                                                        <h:panelGroup rendered="#{sessionController.logged}" >
+
+                                <ui:insert name="content"   >
+                                </ui:insert>
+
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{!sessionController.logged}" >
+                                <ui:insert name="login"   >
+
+                                    <h:form>
+                                        <table render="false"  width="400px" class="pdTable" align="center">
+                                            <tr>
+                                                <td colspan="2" class="pdTableHighlightRow">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="pdLabel">&nbsp;</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td align="center" colspan="2">
+
+                                                    <span class="pdHeading1">#{labels.LogintotheApplication}</span>
+                                                </td>
+                                            </tr>                  
+                                            <tr>
+                                                <td colspan="2" class="pdLabel">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pdLabel" align="right" width="40%">#{labels.UserName}</td>
+                                                <td align="left" width="60%"><h:inputText value="#{connetcionController.userName}" autocomplete="off"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pdLabel" align="right">#{labels.Password}</td>
+                                                <td align="left"><h:inputSecret value="#{connetcionController.passord}"  autocomplete="off" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left"></td>
+                                                <td align="left">
+                                                    <h:commandButton id="btnLogin" class="pdButton" type="submit" value="#{labels.Login}" action="#{connetcionController.loginAction()}"/>
+                                                    <h:commandButton id="btnReg" class="pdButton" type="submit" value="#{labels.Register}" action="register" /> 
+                                                </td>
+                                            </tr>                  
+                                            <tr>
+                                                <td colspan="2" class="pdLabel">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"  class="pdTableHighlightRow">&nbsp;
+                                                    <pou:messages globalOnly="true" ></pou:messages>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </h:form>
+
+
+                                </ui:insert>
+                            </h:panelGroup>
+
                         </pou:panel>
                     </pou:column>
                 </pou:row>

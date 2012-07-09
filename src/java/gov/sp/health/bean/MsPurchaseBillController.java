@@ -529,7 +529,7 @@ public class MsPurchaseBillController {
     }
 
        public DataModel<Item> getItems() {
-        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false AND type(i) = AMP ORDER By i.name"));
+        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false AND TYPE(i) IN (Amp , Ampp) ORDER By i.name"));
     }
 
     public void setItems(DataModel<Item> items) {

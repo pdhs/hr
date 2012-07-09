@@ -15,10 +15,10 @@
         <p:growl autoUpdate="true"/>
 
         <h:form >
-            
+
             <h:inputHidden value="#{msPurchaseBillController.bill.id}" />
-            
-            
+
+
             <p:panel id="gpPurchase" header="Purchase">
 
                 <p:panelGrid columns="2" styleClass="pdTopAlignNoBorder">
@@ -29,46 +29,25 @@
 
                             <p:panelGrid  columnClasses = "pdTopAlign" styleClass="pdTopAlignNoBorder" >
 
-                                <p:row >
-                                    <p:column styleClass="pdTopAlign">
+                                <p:row  >
+                                    <p:column styleClass="pdTopAlign" colspan="2">
                                         <h:outputLabel value="Item" />
-                                        <h:selectOneListbox id="lstItem" value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.item}" styleClass="pdListBox" size="5">
+                                        <h:selectOneListbox id="lstItem" value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.item}" styleClass="pdListBox" size="10" style="width: 400px;">
                                             <f:selectItems value="#{msPurchaseBillController.items}" var="item" itemValue="#{item}" itemLabel="#{item.name}">
                                             </f:selectItems>
                                             <f:ajax execute="lstItem" render="txtTem"/>
                                         </h:selectOneListbox>
                                     </p:column>
 
-                                   
                                     <p:column>
                                         <h:outputLabel value="Batch" ></h:outputLabel>
                                         <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.name}" styleClass="pdPageText" ></h:inputText>
-                                        <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
-                                        <h:outputLabel value="Descreption" ></h:outputLabel>
-                                        <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.description}" ></h:inputText>
-                                    </p:column>                                    
-                                    <p:column>
                                         <h:outputLabel value="Expiary" ></h:outputLabel>
                                         <p:calendar value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.dateOfExpiary}" styleClass="pdPageText" ></p:calendar>
-                                        <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
-                                        <h:outputLabel value="Modal No." ></h:outputLabel>
-                                        <h:inputText value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.modalNo}" ></h:inputText>
-                                    </p:column>
-                                    <p:column styleClass="pdTopAlign">
-                                        <h:outputLabel value="Supplier" />
-                                        <h:selectOneListbox id="lstManu" value="#{msPurchaseBillController.billItemEntry.billItem.itemUnit.supplier}" styleClass="pdListBox" size="5">
-                                            <f:selectItems value="#{msPurchaseBillController.suppliers}" var="mySup" itemLabel="#{mySup.name}" itemValue="#{mySup}"/>
-                                        </h:selectOneListbox>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column >
                                         <h:outputLabel value="Rate"/>
                                         <h:inputText id="txtRate" value="#{msPurchaseBillController.billItemEntry.billItem.netRate}">
                                             <f:ajax execute="txtRate txtQty" event="change" render="txtValue" listener="#{msPurchaseBillController.calculateItemValue}" />
                                         </h:inputText>
-                                    </p:column>
-                                    <p:column >
                                         <h:outputLabel value="Quentity"/>
                                         <h:inputText id="txtQty" value="#{msPurchaseBillController.billItemEntry.billItem.quentity}">
                                             <f:ajax execute="txtRate txtQty" event="change" render="txtValue" listener="#{msPurchaseBillController.calculateItemValue}" />                                            
@@ -185,8 +164,8 @@
                             <h:commandButton rendered="#{msPurchaseBillController.newBill}" value="Settle" action="#{msPurchaseBillController.settleBill}"/>
                             <h:commandButton rendered="#{!msPurchaseBillController.newBill}" value="Cancel" action="#{msPurchaseBillController.settleBill}"/>
                             <h:commandButton rendered="#{!msPurchaseBillController.newBill}" value="Reprint" action="#{msPurchaseBillController.settleBill}"/>
-                            
-                            
+
+
                         </p:panelGrid>
                     </p:panel>
                 </p:panelGrid>

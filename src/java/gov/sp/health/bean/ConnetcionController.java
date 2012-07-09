@@ -7,19 +7,21 @@
  */
 package gov.sp.health.bean;
 
+import gov.sp.health.entity.*;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.facade.PrivilegeFacade;
 import gov.sp.health.facade.WebUserFacade;
 import gov.sp.health.facade.WebUserRoleFacade;
-import gov.sp.health.entity.Person;
-import gov.sp.health.entity.Privilege;
-import gov.sp.health.entity.WebUser;
-import gov.sp.health.entity.WebUserRole;
+import gov.sp.health.facade.AreaFacade;
+import gov.sp.health.facade.InstitutionFacade;
+import gov.sp.health.facade.UnitFacade;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import org.omg.PortableInterceptor.ACTIVE;
 
 /**
@@ -39,6 +41,12 @@ public class ConnetcionController {
     WebUserRoleFacade rFacade;
     @EJB
     PrivilegeFacade vFacade;
+    @EJB
+    InstitutionFacade institutionFacade;
+    @EJB
+    UnitFacade unitFacade;
+    @EJB
+    AreaFacade areaFacade;
     @ManagedProperty(value = "#{sessionController}")
     private SessionController sessionController;
     @ManagedProperty(value = "#{menu}")
@@ -59,6 +67,13 @@ public class ConnetcionController {
     boolean activated;
     Privilege privilege;
     String displayName;
+//
+    Institution institution;
+    Unit unit;
+    Area area;
+    DataModel<Institution> institutions;
+    DataModel<Unit> units;
+    DataModel<Area> areas;
 
     /**
      * Creates a new instance of ConnetcionController
@@ -230,8 +245,8 @@ public class ConnetcionController {
     }
 
     public String registeUser() {
-        WebUser user = new WebUser();
-        Person person = new Person();
+        WebUser user = current;
+        Person person = current.getWebUserPerson();
         person.setName(newPersonName);
         pFacade.create(person);
         user.setName(HOSecurity.encrypt(newUserName));
@@ -400,7 +415,11 @@ public class ConnetcionController {
     }
 
     public WebUser getCurrent() {
-
+        if (current == null) {
+            current = new WebUser();
+            Person p = new Person();
+            current.setWebUserPerson(p);
+        }
         return current;
     }
 
@@ -557,5 +576,81 @@ public class ConnetcionController {
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public AreaFacade getAreaFacade() {
+        return areaFacade;
+    }
+
+    public void setAreaFacade(AreaFacade areaFacade) {
+        this.areaFacade = areaFacade;
+    }
+
+    public DataModel<Area> getAreas() {
+        return new ListDataModel<Area>(getAreaFacade().findAll());
+    }
+
+    public void setAreas(DataModel<Area> areas) {
+        this.areas = areas;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public InstitutionFacade getInstitutionFacade() {
+        return institutionFacade;
+    }
+
+    public void setInstitutionFacade(InstitutionFacade institutionFacade) {
+        this.institutionFacade = institutionFacade;
+    }
+
+    public DataModel<Institution> getInstitutions() {
+        return new ListDataModel<Institution>(getInstitutionFacade().findAll());
+    }
+
+    public void setInstitutions(DataModel<Institution> institutions) {
+        this.institutions = institutions;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public UnitFacade getUnitFacade() {
+        return unitFacade;
+    }
+
+    public void setUnitFacade(UnitFacade unitFacade) {
+        this.unitFacade = unitFacade;
+    }
+
+    public DataModel<Unit> getUnits() {
+        if (getInstitution() != null) {
+            return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT u FROM Unit u WHERE u.retired=false AND u.institution.id = " + getInstitution().getId()));
+        } else {
+            return null;
+        }
+    }
+
+    public void setUnits(DataModel<Unit> units) {
+        this.units = units;
     }
 }

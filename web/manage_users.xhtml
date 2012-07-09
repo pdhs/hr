@@ -17,38 +17,20 @@
         <h:form rendered="#{sessionController.privilege.activateAccounts}">
 
             <h:panelGrid columns="1">
-                <h:outputLabel class="pdPageTitle" value="Approve User Requests" />
+                <h:outputLabel class="pdPageTitle" value="Manage User Accounts" />
             </h:panelGrid>
             <h:panelGrid columns="2" >
-                <h:panelGroup >
-                    <h:panelGrid id="gpSelect" columns="1" >
-                        <h:outputLabel class="pdPageText" value="Users Awaiting Acctivation"  />
-                        <h:selectOneListbox class="pdDropDownList" value="#{userApproveController.selectedUser}" size="5" >
-                            <f:selectItems value="#{userApproveController.toApproveUsers}" var="users" itemValue="#{users}" itemLabel="#{users.webUserPerson.name}" />
-                            <f:ajax event="change" execute="gpSelect" render="gpDetails"/>
-                        </h:selectOneListbox>
-                    </h:panelGrid>
 
-                    <h:panelGroup id="gpDetails" >
-                        <h:panelGrid  columns="2" rendered="#{userApproveController.selectedUser!=null}">
-                            <h:outputText value="Institution"/>
-                            <h:selectOneListbox id="cmbPerIns" value="#{userApproveController.selectedUser.webUserPerson.institution}" >
-                                <f:selectItems value="#{userApproveController.institutions}" var="perIns" itemValue="#{perIns}" itemLabel="#{perIns.name}"/>
-                                <f:ajax event="change" execute="cmbPerIns" render="cmbPerUnit"/>
-                            </h:selectOneListbox>
-                            <h:outputText value="Unit"/>
-                            <h:selectOneListbox id="cmbPerUnit" value="#{userApproveController.selectedUser.webUserPerson.unit}" rendered="#{userApproveController.selectedUser.webUserPerson.unit!=null}">
-                                <f:selectItems value="#{userApproveController.units}" var="perUnit" itemValue="#{perUnit}" itemLabel="#{perUnit.name}"/>
-                            </h:selectOneListbox>
-                            <h:outputText value="Area"/>
-                            <h:selectOneListbox value="#{userApproveController.selectedUser.webUserPerson.area.name}" rendered="#{userApproveController.selectedUser.webUserPerson.area!=null}">
-                                <f:selectItems value="#{userApproveController.areas}" var="perArea" itemValue="#{perArea}" itemLabel="#{perArea.name}"/>
-                            </h:selectOneListbox>
+                <h:panelGrid id="gpSelect" columns="1" >
+                    <h:outputLabel class="pdPageText" value="Users Awaiting Acctivation"  />
+                    <h:selectOneListbox class="pdDropDownList" value="#{userApproveController.selectedUser}" size="5" >
+                        <f:selectItems value="#{userApproveController.users}" var="users" itemValue="#{users}" itemLabel="#{users.webUserPerson.name}" />
+                    </h:selectOneListbox>
+                </h:panelGrid>
 
-                        </h:panelGrid>
-                    </h:panelGroup>                
-
-                </h:panelGroup>
+                
+                
+                
                 <h:panelGroup id="gpDetail" >
                     <h:panelGrid columns="5" >
                         <h:outputLabel value="Privilege" />
@@ -123,24 +105,20 @@
                         <h:outputLabel rendered="#{sessionController.privilege.restrictedInstitution==null}"  value="Institution" />
                         <h:selectOneListbox id="cmbIns" rendered="#{sessionController.privilege.restrictedInstitution==null}" value="#{userApproveController.privilege.restrictedInstitution}"  size="5">
                             <f:selectItems value="#{userApproveController.institutions}" var="ri" itemValue="#{ri}" itemLabel="#{ri.name}" />
-                            <f:ajax event="change" execute="cmbIns" render="cmbUnits txtTem"/>
+                            <f:ajax event="change" execute="cmbIns" render="cmbUnit" />
                         </h:selectOneListbox>
 
                         <h:outputLabel   rendered="#{sessionController.privilege.restrictedUnit==null}"  value="Unit" />
-                        <h:selectOneListbox id="cmbUnits"  rendered="#{sessionController.privilege.restrictedUnit==null}"  value="#{userApproveController.privilege.restrictedUnit}"  size="5">
+                        <h:selectOneListbox id="cmbUnit"  rendered="#{sessionController.privilege.restrictedUnit==null}"  value="#{userApproveController.privilege.restrictedUnit}"  size="5">
                             <f:selectItems value="#{userApproveController.units}" var="ru" itemValue="#{ru}" itemLabel="#{ru.name}" />
                         </h:selectOneListbox>
 
-                        <h:outputLabel id="txtTem" value="#{userApproveController.privilege.restrictedInstitution.name}"/>
 
                     </h:panelGrid>
 
+                  
                     <h:panelGroup>
-                        <h:inputText value="#{userApproveController.activateComments}" />
-                    </h:panelGroup>
-
-                    <h:panelGroup>
-                        <h:commandButton value="Activate" action="#{userApproveController.approveUser}"/>
+                        <h:commandButton value="Save" action="#{userApproveController.saveUser}"/>
                     </h:panelGroup>
 
 

@@ -24,6 +24,7 @@ import javax.faces.model.ListDataModel;
 public class UserApproveController {
 
     DataModel<WebUser> toApproveUsers;
+    DataModel<WebUser> users;
     WebUser selectedUser;
     //
     @EJB
@@ -48,8 +49,22 @@ public class UserApproveController {
     DataModel<Unit> units;
     DataModel<Location> locations;
 
-    
-    
+    public DataModel<WebUser> getUsers() {
+        String temSql;
+        if (sessionController.getPrivilege().getRestrictedInstitution() != null) {
+            temSql = "SELECT a FROM WebUser a WHERE a.retired=false AND a.webUserPerson.institution.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId() + " ORDER BY a.name ";
+        } else if (sessionController.getPrivilege().getRestrictedUnit() != null) {
+            temSql = "SELECT a FROM WebUser a WHERE a.retired=false AND a.webUserPerson.unit.id =  " + sessionController.getPrivilege().getRestrictedUnit().getId() + "  ORDER BY a.name ";
+        } else {
+            temSql = "SELECT a FROM WebUser a WHERE a.retired=false ORDER BY a.name ";
+        }
+        return new ListDataModel<WebUser>(getUserFacade().findBySQL(temSql));
+    }
+
+    public void setUsers(DataModel<WebUser> users) {
+        this.users = users;
+    }
+
     public AreaFacade getAreaFacade() {
         return areaFacade;
     }
@@ -91,9 +106,6 @@ public class UserApproveController {
         return new ListDataModel<Institution>(getInstitutionFacade().findBySQL(temSql));
     }
 
-    
-    
-    
     public void setInstitutions(DataModel<Institution> institutions) {
         this.institutions = institutions;
     }
@@ -126,8 +138,8 @@ public class UserApproveController {
 
     public DataModel<Unit> getUnits() {
         String temSql;
-        if (sessionController.getPrivilege().getRestrictedInstitution() != null) {
-            temSql = "SELECT a FROM Unit a WHERE a.retired=false AND a.institution.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId() + " ORDER BY a.name ";
+        if (getPrivilege().getRestrictedInstitution() != null) {
+            temSql = "SELECT a FROM Unit a WHERE a.retired=false AND a.institution.id = " + getPrivilege().getRestrictedInstitution().getId() + " ORDER BY a.name ";
         } else if (sessionController.getPrivilege().getRestrictedUnit() != null) {
             temSql = "SELECT a FROM Unit a WHERE a.retired=false AND a.unit.id = " + sessionController.getPrivilege().getRestrictedUnit().getId() + "  ORDER BY a.name ";
         } else {
@@ -155,6 +167,9 @@ public class UserApproveController {
     }
 
     public Privilege getPrivilege() {
+        if (getSelectedUser() != null) {
+            privilege = getPriFacade().findFirstBySQL("SELECT p FROM Privilege p WHERE p.webUser.id = " + getSelectedUser().getId());
+        }
         if (privilege == null) {
             privilege = new Privilege();
         }
@@ -199,6 +214,23 @@ public class UserApproveController {
 
     public void setUserFacade(WebUserFacade userFacade) {
         this.userFacade = userFacade;
+    }
+
+    public void saveUser() {
+        if (selectedUser == null) {
+            JsfUtil.addErrorMessage("Please select a user");
+            return;
+        }
+        
+        userFacade.edit(selectedUser);
+
+        privilege.setWebUser(selectedUser);
+        priFacade.edit(privilege);
+
+        selectedUser = null;
+        privilege = null;
+
+        JsfUtil.addSuccessMessage("Successfully activated");
     }
 
     public void approveUser() {

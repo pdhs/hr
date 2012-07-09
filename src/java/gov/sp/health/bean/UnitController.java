@@ -38,7 +38,6 @@ public final class UnitController {
     private UnitFacade ejbFacade;
     @EJB
     InstitutionFacade institutionFacade;
-    
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
     List<Unit> lstItems;
@@ -49,15 +48,19 @@ public final class UnitController {
     boolean selectControlDisable = false;
     boolean modifyControlDisable = true;
     String selectText = "";
-    
     Institution institution;
 
-    
     public UnitController() {
     }
 
     public DataModel<Institution> getInstitutions() {
-        return new ListDataModel<Institution>(getInstitutionFacade().findBySQL("SELECT d FROM Institution d WHERE d.retired=false ORDER BY d.name"));
+        if (sessionController.privilege.getRestrictedInstitution() != null) {
+            return new ListDataModel<Institution>(getInstitutionFacade().findBySQL("SELECT d FROM Institution d WHERE d.retired=false And d.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId() + " ORDER BY d.name"));
+        } else if (sessionController.privilege.getRestrictedUnit() != null) {
+            return new ListDataModel<Institution>(getInstitutionFacade().findBySQL("SELECT d FROM Institution d WHERE d.retired=false  And d.id = " + sessionController.getPrivilege().getRestrictedUnit().getInstitution().getId() + " ORDER BY d.name"));
+        } else {
+            return new ListDataModel<Institution>(getInstitutionFacade().findBySQL("SELECT d FROM Institution d WHERE d.retired=false ORDER BY d.name"));
+        }
     }
 
     public void setInstitutions(DataModel<Institution> institutions) {
@@ -80,8 +83,6 @@ public final class UnitController {
         this.institution = institution;
     }
 
-    
-    
     public List<Unit> getLstItems() {
         return getFacade().findBySQL("Select d From Unit d WHERE d.retired=false ORDER BY d.name");
     }
@@ -193,6 +194,7 @@ public final class UnitController {
     }
 
     public void saveSelected() {
+        current.setInstitution(institution);
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -202,6 +204,7 @@ public final class UnitController {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedNewSuccessfully"));
         }
+
         this.prepareSelect();
         recreateModel();
         getItems();
@@ -297,8 +300,6 @@ public final class UnitController {
     public void setSessionController(SessionController sessionController) {
         this.sessionController = sessionController;
     }
-    
-    
 
     @FacesConverter(forClass = Unit.class)
     public static class UnitControllerConverter implements Converter {
