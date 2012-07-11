@@ -37,17 +37,6 @@
                                 <h:outputText id="lblSelect" value="Units" >
                                 </h:outputText>
 
-
-                                <h:inputText id="txtSelect" value="#{unitController.selectText}" disabled="#{unitController.selectControlDisable}"  style="min-width: 200px" >
-                                    <f:ajax  event="keyup" render="lstSelect gpDetail" >
-                                    </f:ajax>
-                                </h:inputText>
-
-                                <h:outputLabel value="&#160;">
-                                </h:outputLabel>
-
-
-
                                 <h:selectOneListbox id="lstSelect"  disabled="#{unitController.selectControlDisable}" size="10" value="#{unitController.current}" style="min-width: 223px">
                                     <f:selectItems value="#{unitController.items}" var="myItem" itemValue="#{myItem}" itemLabel="#{myItem.name}" ></f:selectItems>
                                     <f:ajax render="gpDetail" execute="lstSelect" >                                
@@ -58,11 +47,11 @@
 
                             <h:panelGrid id="gpSelectButtons" columns="3"  >
                                 <h:commandButton id="btnAdd" value="Add" disabled="#{unitController.selectControlDisable}" action="#{unitController.prepareAdd()}" styleClass="buttons" >
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail detailFocus" execute="btnEdit" >                                
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel  lstSelect gpDetail detailFocus" execute="btnEdit" >                                
                                     </f:ajax>
                                 </h:commandButton>
                                 <h:commandButton id ="btnEdit" value="Edit" disabled="#{unitController.selectControlDisable}" action="#{unitController.prepareEdit()}"  styleClass="buttons">
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail detailFocus" execute="lstSelect" >
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel  lstSelect gpDetail detailFocus" execute="lstSelect" >
                                     </f:ajax>
                                 </h:commandButton>
                                 <h:commandButton id="btnDelete" onclick="confirmation.show()" value="Delete" disabled="#{unitController.selectControlDisable}" styleClass="buttons">
@@ -84,11 +73,11 @@
                             </h:panelGrid>
                             <h:panelGrid id="gpDetailButtons" columns="2">
                                 <h:commandButton id="btnSave" value="Save" disabled="#{unitController.modifyControlDisable}" action="#{unitController.saveSelected()}" styleClass="buttons">
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail selectFocus"  execute="gpDetail" >
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel  lstSelect gpDetail selectFocus"  execute="gpDetail" >
                                     </f:ajax>
                                 </h:commandButton>
                                 <h:commandButton id ="btnCancel" value="Cancel" disabled="#{unitController.modifyControlDisable}" action="#{unitController.cancelSelect()}" styleClass="buttons">
-                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail selectFocus" execute="gpDetail" >                                
+                                    <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel  lstSelect gpDetail selectFocus" execute="gpDetail" >                                
                                     </f:ajax>
                                 </h:commandButton>
                             </h:panelGrid>

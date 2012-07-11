@@ -38,26 +38,24 @@
                 <tr>
                     <td class="pdLabel" align="right">Institution</td>
                     <td align="left">
-                        <h:inputText value="#{connetcionController.newInstitution}"  />
-                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.institution}" >
+                        <h:selectOneListbox id="cmbIns" value="#{connetcionController.institution}" size="5">
                             <f:selectItems value="#{connetcionController.institutions}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
+                            <f:ajax event="change" execute="cmbIns" render="cmbUnit" />
                         </h:selectOneListbox>
                     </td>
                 </tr>
                 <tr>
                     <td class="pdLabel" align="right">Unit</td>
                     <td align="left">
-                        <h:inputText value="Unit"  />
-                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.unit}" >
-                            <f:selectItems value="#{connetcionController.units}" var="ins" itemValue="#{uni}" itemLabel="#{uni.name}"/>
+                        <h:selectOneListbox id="cmbUnit" value="#{connetcionController.unit}" size="5">
+                            <f:selectItems value="#{connetcionController.units}" var="uni" itemValue="#{uni}" itemLabel="#{uni.name}"/>
                         </h:selectOneListbox>
                     </td>
                 </tr>                
                 <tr>
-                    <td class="pdLabel" align="right">Institution</td>
+                    <td class="pdLabel" align="right">Area</td>
                     <td align="left">
-                        <h:inputText value="Area"  />
-                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.area}" >
+                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.area}" size="5">
                             <f:selectItems value="#{connetcionController.areas}" var="area" itemValue="#{area}" itemLabel="#{area.name}"/>
                         </h:selectOneListbox>
                     </td>

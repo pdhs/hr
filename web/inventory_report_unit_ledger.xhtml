@@ -19,11 +19,11 @@
             </f:facet>
         </pou:ajaxStatus>
         <h:form>
-<!--ToDO:
-Align Top
-
--->
-<pou:growl id="g" autoUpdate="true"></pou:growl>
+            <!--ToDO:
+            Align Top
+            
+            -->
+            <pou:growl id="g" autoUpdate="true"></pou:growl>
             <pou:panel id="gpDetail" style="vertical-align: text-top;">
                 <h:panelGrid columnClasses = "pdTopAlign" styleClass="pdTopAlignNoBorder"  >
                     <pou:row>
@@ -61,8 +61,17 @@ Align Top
                     <pou:row>
                         <pou:column  styleClass="pdTopAlign" >
                             <h:commandButton value="Display All" action="#{inventoryReportController.fillGrid}">
-                                <f:ajax render="tblItems" execute="lstUnit lstItem dtpFrom dtpTo" ></f:ajax>
+                                <f:ajax render="tblItems ajaxStatusPanel1" execute="lstUnit lstItem dtpFrom dtpTo" ></f:ajax>
                             </h:commandButton>
+                            <pou:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel1" >
+                                <f:facet name="start">
+                                    <h:graphicImage library="image" value="ajaxloading.gif" />
+                                </f:facet>
+
+                                <f:facet name="complete">
+                                    <h:outputText value="" />
+                                </f:facet>
+                            </pou:ajaxStatus>                            
                         </pou:column>
                     </pou:row>
                 </h:panelGrid>
@@ -108,6 +117,7 @@ Align Top
                         From/To
                     </f:facet>
                     <h:outputText value="#{demo.bill.fromInstitution.name}"/>
+                    <h:outputText value="#{demo.bill.toInstitution.name}"/>
                 </pou:column>                
 
                 <pou:column>

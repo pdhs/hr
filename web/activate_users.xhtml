@@ -94,11 +94,11 @@
                         <h:selectBooleanCheckbox rendered="#{sessionController.privilege.demographyEdit}"   value="#{userApproveController.privilege.demographyEdit}"/>
                         <h:selectBooleanCheckbox rendered="#{sessionController.privilege.demographyDelete}"   value="#{userApproveController.privilege.demographyDelete}"/>
 
-                        <h:outputLabel rendered="#{userApproveController.privilege.inventoryView}"  value="Inventory" />
-                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryView}"   value="#{userApproveController.privilege.inventoryView}"/>
-                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryAdd}"   value="#{userApproveController.privilege.inventoryAdd}"/>
-                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryEdit}"   value="#{userApproveController.privilege.inventoryEdit}"/>
-                        <h:selectBooleanCheckbox rendered="#{userApproveController.privilege.inventoryDelete}"   value="#{userApproveController.privilege.inventoryDelete}"/>
+                        <h:outputLabel rendered="#{sessionController.privilege.inventoryView}"  value="Inventory" />
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.inventoryView}"   value="#{userApproveController.privilege.inventoryView}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.inventoryAdd}"   value="#{userApproveController.privilege.inventoryAdd}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.inventoryEdit}"   value="#{userApproveController.privilege.inventoryEdit}"/>
+                        <h:selectBooleanCheckbox rendered="#{sessionController.privilege.inventoryDelete}"   value="#{userApproveController.privilege.inventoryDelete}"/>
 
                         <h:outputLabel rendered="#{sessionController.privilege.libraryView}"  value="Library" />
                         <h:selectBooleanCheckbox rendered="#{sessionController.privilege.libraryView}"   value="#{userApproveController.privilege.libraryView}"/>
@@ -123,7 +123,7 @@
                         <h:outputLabel rendered="#{sessionController.privilege.restrictedInstitution==null}"  value="Institution" />
                         <h:selectOneListbox id="cmbIns" rendered="#{sessionController.privilege.restrictedInstitution==null}" value="#{userApproveController.privilege.restrictedInstitution}"  size="5">
                             <f:selectItems value="#{userApproveController.institutions}" var="ri" itemValue="#{ri}" itemLabel="#{ri.name}" />
-                            <f:ajax event="change" execute="cmbIns" render="cmbUnits txtTem"/>
+                            <f:ajax event="change" execute="cmbIns" render="cmbUnits"/>
                         </h:selectOneListbox>
 
                         <h:outputLabel   rendered="#{sessionController.privilege.restrictedUnit==null}"  value="Unit" />
@@ -131,7 +131,6 @@
                             <f:selectItems value="#{userApproveController.units}" var="ru" itemValue="#{ru}" itemLabel="#{ru.name}" />
                         </h:selectOneListbox>
 
-                        <h:outputLabel id="txtTem" value="#{userApproveController.privilege.restrictedInstitution.name}"/>
 
                     </h:panelGrid>
 
@@ -139,12 +138,15 @@
                         <h:inputText value="#{userApproveController.activateComments}" />
                     </h:panelGroup>
 
-                    <h:panelGroup>
-                        <h:commandButton value="Activate" action="#{userApproveController.approveUser}"/>
-                    </h:panelGroup>
+
 
 
                 </h:panelGroup>
+
+                <h:panelGroup>
+                    <h:commandButton value="Activate" action="#{userApproveController.approveUser}"/>
+                </h:panelGroup>                
+
             </h:panelGrid>
         </h:form>        
         <h:form rendered="#{!sessionController.privilege.activateAccounts}">

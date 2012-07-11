@@ -292,6 +292,9 @@ public class OutBillController {
         hxPer.setToIn(Boolean.FALSE);
         hxPer.setToOut(Boolean.TRUE);
 
+        System.out.println("Before Stock" + calculateStock(goingOutItemUnit.getItem(), getBill().getFromInstitution()));
+        System.out.println("Before Save" + goingOutItemUnit);
+        
         goingOutItemUnit.setInstitution(null);
         goingOutItemUnit.setLocation(null);
         goingOutItemUnit.setOwner(null);
@@ -299,20 +302,24 @@ public class OutBillController {
         goingOutItemUnit.setPerson(null);
         goingOutItemUnit.setQuentity(temBillItem.getQuentity());
         getItemUnitFacade().edit(goingOutItemUnit);
-
-        hxIns.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getInstitution()));
+        
+        System.out.println("After Save" + goingOutItemUnit);
+        System.out.println("After Stock" + calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getInstitution()));
+        
+        hxIns.setAfterQty(calculateStock(goingOutItemUnit.getItem(), getBill().getFromInstitution()));
+        
         hxIns.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxIns);
 
-        hxUnit.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getUnit()));
+        hxUnit.setAfterQty(calculateStock(goingOutItemUnit.getItem(), getBill().getFromUnit()));
         hxUnit.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxUnit);
 
-        hxLoc.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getLocation()));
+        hxLoc.setAfterQty(calculateStock(goingOutItemUnit.getItem(), getBill().getFromLocation()));
         hxLoc.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxLoc);
 
-        hxPer.setAfterQty(calculateStock(goingOutItemUnit.getItem(), goingOutItemUnit.getPerson()));
+        hxPer.setAfterQty(calculateStock(goingOutItemUnit.getItem(), getBill().getFromPerson()));
         hxPer.setItemUnit(goingOutItemUnit);
         getItemUnitHistoryFacade().create(hxPer);
 

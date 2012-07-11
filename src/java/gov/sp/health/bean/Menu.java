@@ -66,6 +66,17 @@ public class Menu {
     public void createMenu() {
         model = new DefaultMenuModel();
 //        model.addSubmenu(cadreSubmenu());
+        
+        
+        MenuItem item;
+
+        
+
+        item = new MenuItem();
+        item.setValue(getLabel("home"));
+        item.setUrl("index.xhtml");
+        model.addMenuItem(item);
+        
         if (sessionController.privilege.isBmeView()) model.addSubmenu(biomedSubmenu());
 //        if (sessionController.privilege.isVehicleView()) model.addSubmenu(transportSubmenu());
         if (sessionController.privilege.isDemographyView()) model.addSubmenu(demographySubmenu());
@@ -463,10 +474,87 @@ public class Menu {
         submenu = new Submenu();
         submenu.setLabel(getLabel("inventory"));
 
+        Submenu editMenu = new Submenu();
+        editMenu.setLabel("Edit");
+        
         item = new MenuItem();
-        item.setValue(getLabel("editData"));
-        item.setUrl("inventory_edit.xhtml");
-        submenu.getChildren().add(item);
+        item.setValue("Institution Types");
+        item.setUrl("institution_type.xhtml");
+        editMenu.getChildren().add(item);
+        
+        item = new MenuItem();
+        item.setValue("Institutions");
+        item.setUrl("institutions.xhtml");
+        editMenu.getChildren().add(item);
+ 
+        item = new MenuItem();
+        item.setValue("Units");
+        item.setUrl("inventory_unit.xhtml");
+        editMenu.getChildren().add(item);
+               
+        
+
+        item = new MenuItem();
+        item.setValue("Locations");
+        item.setUrl("inventory_location.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        item = new MenuItem();
+        item.setValue("Persons");
+        item.setUrl("person.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        item = new MenuItem();
+        item.setValue("Suppliers");
+        item.setUrl("inventory_supplier.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        item = new MenuItem();
+        item.setValue("Manufacturers");
+        item.setUrl("inventory_manufacturer.xhtml");
+        editMenu.getChildren().add(item);
+
+        
+        
+        item = new MenuItem();
+        item.setValue("Countries");
+        item.setUrl("country.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        item = new MenuItem();
+        item.setValue("Item Categories");
+        item.setUrl("inventory_item_category.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        
+        item = new MenuItem();
+        item.setValue("Make");
+        item.setUrl("inventory_make.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        item = new MenuItem();
+        item.setValue("Model");
+        item.setUrl("inventory_modal.xhtml");
+        editMenu.getChildren().add(item);        
+        
+         item = new MenuItem();
+        item.setValue("Items");
+        item.setUrl("inventory_item.xhtml");
+        editMenu.getChildren().add(item);
+        
+        
+        item = new MenuItem();
+        item.setValue("Import Items From Excel");
+        item.setUrl("inventory_import_items.xhtml");
+        editMenu.getChildren().add(item);         
+        
+        submenu.getChildren().add(editMenu);
 
         item = new MenuItem();
         item.setValue(getLabel("purchase"));

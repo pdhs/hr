@@ -8,9 +8,11 @@
  */
 package gov.sp.health.bean;
 
+import gov.sp.health.entity.Institution;
 import gov.sp.health.entity.Unit;
 import gov.sp.health.facade.LocationFacade;
 import gov.sp.health.entity.Location;
+import gov.sp.health.facade.InstitutionFacade;
 import gov.sp.health.facade.UnitFacade;
 import java.util.Calendar;
 import java.util.List;
@@ -38,23 +40,73 @@ public final class LocationController {
     private LocationFacade ejbFacade;
     @EJB
     UnitFacade unitFacade;
-    
+    @EJB
+    InstitutionFacade institutionFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
     List<Location> lstItems;
     private Location current;
     private DataModel<Location> items = null;
     DataModel<Unit> units;
+    DataModel<Institution> institutions;
     private int selectedItemIndex;
     boolean selectControlDisable = false;
     boolean modifyControlDisable = true;
     String selectText = "";
+    Institution institution;
+    Unit unit;
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public InstitutionFacade getInstitutionFacade() {
+        return institutionFacade;
+    }
+
+    public void setInstitutionFacade(InstitutionFacade institutionFacade) {
+        this.institutionFacade = institutionFacade;
+    }
+
+    public DataModel<Institution> getInstitutions() {
+        String temSQL;
+        if (sessionController.getPrivilege().getRestrictedInstitution() != null) {
+            temSQL = "SELECT i FROM Institution i WHERE i.retired=false AND i.id = " + sessionController.getPrivilege().getRestrictedInstitution().getId();
+        } else {
+            temSQL = "SELECT i FROM Institution i WHERE i.retired=false ORDER BY i.name";
+        }
+        return new ListDataModel<Institution>(getInstitutionFacade().findBySQL(temSQL));
+    }
+
+    public void setInstitutions(DataModel<Institution> institutions) {
+        this.institutions = institutions;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
 
     public LocationController() {
     }
 
     public DataModel<Unit> getUnits() {
-        return new ListDataModel<Unit>(getUnitFacade().findBySQL("SELECT d FROM Unit d WHERE d.retired=false ORDER BY d.name"));
+        String temSql;
+        if (sessionController.getPrivilege().getRestrictedUnit() != null) {
+            temSql = "SELECT u from Unit u where u.id = " + sessionController.getPrivilege().getRestrictedUnit().getId();
+        } else if (getInstitution() != null) {
+            temSql = "select u from Unit u where u.retired=false and u.institution.id = " + getInstitution().getId() + " order by u.name";
+        } else {
+            return null;
+        }
+        return new ListDataModel<Unit>(getUnitFacade().findBySQL(temSql));
     }
 
     public void setUnits(DataModel<Unit> units) {
@@ -69,8 +121,6 @@ public final class LocationController {
         this.unitFacade = unitFacade;
     }
 
-    
-    
     public List<Location> getLstItems() {
         return getFacade().findBySQL("Select d From Location d WHERE d.retired=false ORDER BY d.name");
     }
@@ -103,8 +153,12 @@ public final class LocationController {
     }
 
     public DataModel<Location> getItems() {
-        items = new ListDataModel(getFacade().findAll("name", true));
-        return items;
+        if (getUnit() != null) {
+            items = new ListDataModel(getFacade().findBySQL("select l from Location l where l.retired=false and l.unit.id = " + getUnit().getId()));
+            return items;
+        } else {
+            return null;
+        }
     }
 
     public static int intValue(long value) {
@@ -179,6 +233,7 @@ public final class LocationController {
     }
 
     public void saveSelected() {
+        current.setUnit(unit);
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -283,8 +338,6 @@ public final class LocationController {
     public void setSessionController(SessionController sessionController) {
         this.sessionController = sessionController;
     }
-    
-    
 
     @FacesConverter(forClass = Location.class)
     public static class LocationControllerConverter implements Converter {

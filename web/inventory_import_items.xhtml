@@ -16,7 +16,7 @@
 
 
                 <h:outputLabel value="#{labels.selectItemCategory}"/>
-                <h:selectOneListbox value="#{inventoryExcelManager.inventoryItemCategory}" >
+                <h:selectOneListbox value="#{inventoryExcelManager.inventoryItemCategory}" size="5">
                     <f:selectItems value="#{inventoryItemCategoryController.items}" var="c" itemValue="#{c}" itemLabel="#{c.name}"/>
                 </h:selectOneListbox>
 

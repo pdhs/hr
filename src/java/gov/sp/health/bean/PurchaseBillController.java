@@ -637,7 +637,7 @@ public class PurchaseBillController {
     }
 
     public DataModel<Item> getItems() {
-        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false ORDER By i.name"));
+        return new ListDataModel<Item>(getItemFacade().findBySQL("SELECT i FROM Item i WHERE i.retired=false AND type(i) = InventoryItem ORDER By i.name"));
     }
 
     public void setItems(DataModel<Item> items) {

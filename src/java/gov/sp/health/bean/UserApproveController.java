@@ -167,11 +167,16 @@ public class UserApproveController {
     }
 
     public Privilege getPrivilege() {
-        if (getSelectedUser() != null) {
-            privilege = getPriFacade().findFirstBySQL("SELECT p FROM Privilege p WHERE p.webUser.id = " + getSelectedUser().getId());
-        }
+
         if (privilege == null) {
-            privilege = new Privilege();
+            if (getSelectedUser() != null) {
+                privilege = getPriFacade().findFirstBySQL("SELECT p FROM Privilege p WHERE p.webUser.id = " + getSelectedUser().getId());
+                if (privilege == null) {
+                    privilege = new Privilege();
+                }
+            } else {
+                privilege = new Privilege();
+            }
         }
         return privilege;
     }
@@ -194,6 +199,7 @@ public class UserApproveController {
 
     public void setSelectedUser(WebUser selectedUser) {
         this.selectedUser = selectedUser;
+        this.privilege = null;
         this.privilege = getPrivilege();
     }
 
@@ -222,7 +228,7 @@ public class UserApproveController {
             JsfUtil.addErrorMessage("Please select a user");
             return;
         }
-        
+
         userFacade.edit(selectedUser);
 
         privilege.setWebUser(selectedUser);

@@ -248,6 +248,9 @@ public class ConnetcionController {
         WebUser user = current;
         Person person = current.getWebUserPerson();
         person.setName(newPersonName);
+        person.setInstitution(institution);
+        person.setUnit(unit);
+        person.setArea(area);
         pFacade.create(person);
         user.setName(HOSecurity.encrypt(newUserName));
         user.setWebUserPassword(HOSecurity.hash(newPassword));
