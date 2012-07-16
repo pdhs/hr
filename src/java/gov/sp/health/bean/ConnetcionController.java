@@ -108,7 +108,7 @@ public class ConnetcionController {
             prepareFirstVisit();
             return true;
         } else {
-            JsfUtil.addSuccessMessage("Checking Old Users");
+//            JsfUtil.addSuccessMessage("Checking Old Users");
             return checkUsers();
         }
     }
@@ -276,7 +276,7 @@ public class ConnetcionController {
     }
 
     private boolean checkUsers() {
-        JsfUtil.addSuccessMessage("Going to check users");
+//        JsfUtil.addSuccessMessage("Going to check users");
         String temSQL;
         temSQL = "SELECT u FROM WebUser u WHERE u.retired = false";
         List<WebUser> allUsers = getFacede().findBySQL(temSQL);

@@ -40,7 +40,7 @@
 
                                 <h:selectOneListbox id="lstSelect"  disabled="#{institutionController.selectControlDisable}" size="10" value="#{institutionController.current}" style="min-width: 223px">
                                     <f:selectItems value="#{institutionController.items}" var="myItem" itemValue="#{myItem}" itemLabel="#{myItem.name}" ></f:selectItems>
-                                    <f:ajax render="txtName" execute="lstSelect" >                                
+                                    <f:ajax render="gpDetail" execute="lstSelect" >                                
                                     </f:ajax>
                                 </h:selectOneListbox>
 
@@ -70,6 +70,7 @@
                             <h:panelGrid id="gpDetailText" columns="2">
                                 <h:outputText id="lblName" value="#{labels.Institution}" ></h:outputText>
                                 <h:inputText id="txtName" value="#{institutionController.current.name}" disabled="#{institutionController.modifyControlDisable}" ></h:inputText>
+                                <h:outputText id="lblCat" value="#{labels.InstitutionType}" ></h:outputText>
                                 <h:selectOneListbox id="cmbCat1" value="#{institutionController.current.institutionType}" disabled="#{institutionController.modifyControlDisable}" >
                                     <f:selectItems value="#{institutionController.institutionTypes}" />
                                 </h:selectOneListbox>
@@ -89,9 +90,9 @@
                 </h:panelGrid>
             </p:panel>
         </h:form>        
-        
-        
-        
+
+
+
     </ui:define>
 
 </ui:composition>
