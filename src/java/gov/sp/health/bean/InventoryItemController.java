@@ -61,7 +61,7 @@ public final class InventoryItemController {
     
     
     public List<InventoryItem> getLstItems() {
-        return getFacade().findBySQL("Select d From InventoryItem d");
+        return getFacade().findBySQL("Select d From InventoryItem d where d.retired=false order by i.name");
     }
 
     public void setLstItems(List<InventoryItem> lstItems) {
