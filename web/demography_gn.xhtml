@@ -72,7 +72,7 @@
                                 <h:outputText id="lblName" value="#{labels.gnArea}" ></h:outputText>
                                 <h:inputText id="txtName" value="#{gnController.current.name}" disabled="#{gnController.modifyControlDisable}" ></h:inputText>
                                 <h:outputText id="lblProvince" value="#{labels.phmArea}" ></h:outputText>
-                                <h:selectOneListbox id="cmbProvince" value="#{gnController.current.superArea}" disabled="#{gnController.modifyControlDisable}" >
+                                <h:selectOneListbox id="cmbProvince" value="#{gnController.current.superArea}" disabled="#{gnController.modifyControlDisable}" class="pdListBox" >
                                     <f:selectItems value="#{gnController.phmAreas}" var="p" itemValue="#{p}" itemLabel="#{p.name}" />
                                 </h:selectOneListbox>
                             

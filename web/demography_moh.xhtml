@@ -71,11 +71,16 @@
                             <h:panelGrid id="gpDetailText" columns="2">
                                 <h:outputText id="lblName" value="#{labels.MOHArea}" ></h:outputText>
                                 <h:inputText id="txtName" value="#{mohController.current.name}" disabled="#{mohController.modifyControlDisable}" ></h:inputText>
+                                <h:outputText id="lblProvince1" value="#{labels.DPDHSArea}" ></h:outputText>
+                                <p:selectOneListbox id="cmbProvince1" value="#{mohController.current.superArea}" disabled="#{mohController.modifyControlDisable}" style="size:5;height: 200px;">
+                                    <f:selectItems value="#{mohController.dpdhsAreas}" var="p" itemValue="#{p}" itemLabel="#{p.name}" />
+                                </p:selectOneListbox>
+
                                 <h:outputText id="lblProvince" value="#{labels.DPDHSArea}" ></h:outputText>
-                                <h:selectOneListbox id="cmbProvince" value="#{mohController.current.superArea}" disabled="#{mohController.modifyControlDisable}" >
+                                <h:selectOneListbox id="cmbProvince" value="#{mohController.current.superArea}" disabled="#{mohController.modifyControlDisable}" style="size:5;height: 200px;">
                                     <f:selectItems value="#{mohController.dpdhsAreas}" var="p" itemValue="#{p}" itemLabel="#{p.name}" />
                                 </h:selectOneListbox>
-                            
+                                
                             </h:panelGrid>
                             <h:panelGrid id="gpDetailButtons" columns="2">
                                 <h:commandButton id="btnSave" value="#{labels.save}" disabled="#{mohController.modifyControlDisable}" action="#{mohController.saveSelected()}" styleClass="buttons">

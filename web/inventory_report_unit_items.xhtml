@@ -37,7 +37,8 @@
 
 
 
-            <pou:dataTable id="tblItems"  var="demo" value="#{itemUnitController.itemsUni}" >
+            <pou:dataTable id="tblItems"  var="demo" value="#{itemUnitController.itemsUni}" editable="true">
+                <pou:ajax update="@this" event="rowEdit"/>  
                 <pou:column>
                     <f:facet name="header">
                         Item
@@ -49,7 +50,15 @@
                     <f:facet name="header">
                         Serial
                     </f:facet>
-                    <h:outputText value="#{demo.serial}"/>
+
+                    <pou:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{demo.serial}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <pou:inputText value="#{demo.serial}" style="width:100%"/>  
+                        </f:facet>  
+                    </pou:cellEditor> 
                 </pou:column>                
 
 
@@ -57,8 +66,21 @@
                     <f:facet name="header">
                         Quantity
                     </f:facet>
-                    <h:outputText value="#{demo.quentity}"/>
+                    <pou:cellEditor>  
+                        <f:facet name="output">  
+                            <h:outputText value="#{demo.quentity}" />  
+                        </f:facet>  
+                        <f:facet name="input">  
+                            <pou:inputText value="#{demo.quentity}" style="width:100%"/>  
+                        </f:facet>  
+                    </pou:cellEditor>                     
+
                 </pou:column>
+
+                <pou:column headerText="Options" style="width:50px">  
+                    <pou:rowEditor >
+                    </pou:rowEditor>
+                </pou:column> 
 
             </pou:dataTable>
 

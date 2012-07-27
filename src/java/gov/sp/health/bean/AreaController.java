@@ -13,6 +13,8 @@ import java.util.ArrayList;
 // Entities
 // Other
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -55,7 +57,7 @@ public class AreaController {
     @EJB
     PopulationFacade popFacade;
     @EJB
-            AreaFacade areaFacade;
+    AreaFacade areaFacade;
     /**
      * Lists
      */
@@ -113,8 +115,6 @@ public class AreaController {
     public void setAreaFacade(AreaFacade areaFacade) {
         this.areaFacade = areaFacade;
     }
-    
-    
 
     public PopulationFacade getPopFacade() {
         return popFacade;
@@ -124,9 +124,6 @@ public class AreaController {
         this.popFacade = popFacade;
     }
 
-    
-    
-    
     public static int intValue(long value) {
         int valueInt = (int) value;
         if (valueInt != value) {
@@ -383,7 +380,6 @@ public class AreaController {
         this.sessionController = sessionController;
     }
 
-    
     public List<DemoTblRow> listGnPopOfDPDHS() {
         String temSQL;
         double area;
@@ -438,9 +434,16 @@ public class AreaController {
 
             }
         }
-
-
+        Collections.sort(lst, new GnComparator());
         return lst;
+    }
+
+    public class GnComparator implements Comparator<DemoTblRow> {
+
+        @Override
+        public int compare(DemoTblRow o1, DemoTblRow o2) {
+            return o1.getGn().getName().compareTo(o2.getGn().getName());
+        }
     }
 
     @FacesConverter(forClass = Area.class)

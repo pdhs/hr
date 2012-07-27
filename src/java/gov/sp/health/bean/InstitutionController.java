@@ -77,7 +77,9 @@ public final class InstitutionController {
     }
 
     public DataModel<InstitutionType> getInstitutionTypes() {
-        return new ListDataModel<InstitutionType>(getInstitutionTypeFacade().findAll());
+        String temSQL;
+        temSQL = "SELECT i FROM InstitutionType i WHERE i.retired = false ORDER BY i.orderNo";
+        return new ListDataModel<InstitutionType>(getInstitutionTypeFacade().findBySQL(temSQL));
     }
 
     public void setInstitutionTypes(DataModel<InstitutionType> institutionTypes) {

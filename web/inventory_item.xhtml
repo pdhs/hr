@@ -55,7 +55,7 @@
                                     <f:ajax render="btnAdd btnEdit btnDelete btnSave btnCancel txtSelect lstSelect gpDetail detailFocus" execute="lstSelect" >
                                     </f:ajax>
                                 </h:commandButton>
-                                <h:commandButton id="btnDelete" onclick="confirmation.show()" value="Delete" disabled="#{inventoryItemController.selectControlDisable}" styleClass="buttons">
+                                <h:commandButton id="btnDelete" action="#{inventoryItemController.delete()}"  value="Delete" disabled="#{inventoryItemController.selectControlDisable}" styleClass="buttons">
                                 </h:commandButton>
                             </h:panelGrid>
                             <p:confirmDialog appendToBody="true" message="Are you sure you want to delete" header="Initiating destroy process" severity="alert" widgetVar="confirmation">  

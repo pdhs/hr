@@ -152,6 +152,7 @@ html, body{
 
 .pdListBox{
     width: 200px;
+    height: 300px;
 }
 
 
@@ -226,8 +227,9 @@ html, body{
 
 
 .pdListAll{
-    height: 300px;
+    height: 200px;
     width: 200px;
+    size:5;
 }
 
 .pdDropDownList{

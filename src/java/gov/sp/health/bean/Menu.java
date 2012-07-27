@@ -582,6 +582,11 @@ item = new MenuItem();
         item.setUrl("designation_level.xhtml");
         submenu.getChildren().add(item);
 
+                item = new MenuItem();
+        item.setValue("Adjust");
+        item.setUrl("inventory_adjust.xhtml");
+        submenu.getChildren().add(item);
+        
         item = new MenuItem();
         item.setValue(getLabel("reports"));
         item.setUrl("inventory_reports.xhtml");
