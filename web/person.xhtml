@@ -72,7 +72,7 @@
                                 <h:outputText id="lblName" value="Person" ></h:outputText>
                                 <h:inputText id="txtName" value="#{personController.current.name}" disabled="#{personController.modifyControlDisable}" ></h:inputText>
                                 <h:outputText id="lblProvince" value="Institution" ></h:outputText>
-                                <h:selectOneListbox id="cmbProvince" value="#{personController.current.institution}" disabled="#{personController.modifyControlDisable}" >
+                                <h:selectOneListbox id="cmbProvince" value="#{personController.current.institution}" disabled="#{personController.modifyControlDisable}" size="5">
                                     <f:selectItems value="#{personController.institutions}" var="p" itemValue="#{p}" itemLabel="#{p.name}" />
                                 </h:selectOneListbox>
                             

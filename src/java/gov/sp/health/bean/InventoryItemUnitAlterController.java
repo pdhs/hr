@@ -349,7 +349,7 @@ public final class InventoryItemUnitAlterController {
 
     private void saveNewBillItems() {
         for (BillItemEntry temEntry : lstBillItemEntrys) {
-            addToItemUnits(temEntry);
+//            addToItemUnits(temEntry);
         }
     }
 
@@ -491,46 +491,46 @@ public final class InventoryItemUnitAlterController {
         getItemUnitHistoryFacade().create(hxPer);
 
 
-        temBillItem.setBill(getBill());
-        temBillItem.setCreatedAt(Calendar.getInstance().getTime());
-        temBillItem.setCreater(sessionController.loggedUser);
-        //
-        temBillItem.setDiscountCostPercentRate(getBill().getDiscountValuePercent());
-        temBillItem.setDiscountCostPercentValue(getBill().getDiscountValuePercent());
-        temBillItem.setDiscountCostValue(temBillItem.getNetValue() * getBill().getDiscountValue() / 100);
-        temBillItem.setDiscountCostRate(temBillItem.getNetRate() * getBill().getDiscountValue() / 100);
-        //
-        temBillItem.setDiscountRate(temBillItem.getNetRate() * getBill().getDiscountValuePercent() / 100);
-        temBillItem.setDiscountRatePercent(getBill().getDiscountValuePercent());
-        temBillItem.setDiscountValue(temBillItem.getNetValue() * getBill().getDiscountValuePercent() / 100);
-        temBillItem.setDiscountValuePercent(getBill().getDiscountValuePercent());
-        //
-        temBillItem.setGrossCostRate(temBillItem.getNetRate());
-        temBillItem.setGrossCostValue(temBillItem.getNetValue());
-        temBillItem.setGrossRate(temBillItem.getNetRate());
-        temBillItem.setGrossCostValue(temBillItem.getNetValue());
-        temBillItem.setNetCostRate(temBillItem.getNetRate());
-        temBillItem.setNetCostValue(temBillItem.getNetValue());
-        temBillItem.setPurchaseQuentity(temBillItem.getQuentity());
-        temBillItem.setFreeQuentity(0l);
-        //
-        getBillItemFacade().create(temBillItem);
-        //
-        hxIns.setBillItem(temBillItem);
-        hxIns.setHistoryDate(getBill().getBillDate());
-        hxIns.setHistoryTimeStamp(Calendar.getInstance().getTime());
-
-        hxUnit.setBillItem(temBillItem);
-        hxUnit.setHistoryDate(getBill().getBillDate());
-        hxUnit.setHistoryTimeStamp(Calendar.getInstance().getTime());
-
-        hxLoc.setBillItem(temBillItem);
-        hxLoc.setHistoryDate(getBill().getBillDate());
-        hxLoc.setHistoryTimeStamp(Calendar.getInstance().getTime());
-
-        hxPer.setBillItem(temBillItem);
-        hxPer.setHistoryDate(getBill().getBillDate());
-        hxPer.setHistoryTimeStamp(Calendar.getInstance().getTime());
+//        temBillItem.setBill(getBill());
+//        temBillItem.setCreatedAt(Calendar.getInstance().getTime());
+//        temBillItem.setCreater(sessionController.loggedUser);
+//        //
+//        temBillItem.setDiscountCostPercentRate(getBill().getDiscountValuePercent());
+//        temBillItem.setDiscountCostPercentValue(getBill().getDiscountValuePercent());
+//        temBillItem.setDiscountCostValue(temBillItem.getNetValue() * getBill().getDiscountValue() / 100);
+//        temBillItem.setDiscountCostRate(temBillItem.getNetRate() * getBill().getDiscountValue() / 100);
+//        //
+//        temBillItem.setDiscountRate(temBillItem.getNetRate() * getBill().getDiscountValuePercent() / 100);
+//        temBillItem.setDiscountRatePercent(getBill().getDiscountValuePercent());
+//        temBillItem.setDiscountValue(temBillItem.getNetValue() * getBill().getDiscountValuePercent() / 100);
+//        temBillItem.setDiscountValuePercent(getBill().getDiscountValuePercent());
+//        //
+//        temBillItem.setGrossCostRate(temBillItem.getNetRate());
+//        temBillItem.setGrossCostValue(temBillItem.getNetValue());
+//        temBillItem.setGrossRate(temBillItem.getNetRate());
+//        temBillItem.setGrossCostValue(temBillItem.getNetValue());
+//        temBillItem.setNetCostRate(temBillItem.getNetRate());
+//        temBillItem.setNetCostValue(temBillItem.getNetValue());
+//        temBillItem.setPurchaseQuentity(temBillItem.getQuentity());
+//        temBillItem.setFreeQuentity(0l);
+//        //
+//        getBillItemFacade().create(temBillItem);
+//        //
+//        hxIns.setBillItem(temBillItem);
+//        hxIns.setHistoryDate(getBill().getBillDate());
+//        hxIns.setHistoryTimeStamp(Calendar.getInstance().getTime());
+//
+//        hxUnit.setBillItem(temBillItem);
+//        hxUnit.setHistoryDate(getBill().getBillDate());
+//        hxUnit.setHistoryTimeStamp(Calendar.getInstance().getTime());
+//
+//        hxLoc.setBillItem(temBillItem);
+//        hxLoc.setHistoryDate(getBill().getBillDate());
+//        hxLoc.setHistoryTimeStamp(Calendar.getInstance().getTime());
+//
+//        hxPer.setBillItem(temBillItem);
+//        hxPer.setHistoryDate(getBill().getBillDate());
+//        hxPer.setHistoryTimeStamp(Calendar.getInstance().getTime());
 
         getItemUnitHistoryFacade().edit(hxIns);
         getItemUnitHistoryFacade().edit(hxUnit);
