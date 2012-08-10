@@ -121,7 +121,14 @@ public final class InstitutionController {
     }
 
     public DataModel<Institution> getItems() {
-        items = new ListDataModel(getFacade().findAll("name", true));
+        String temSql;
+        if (getSelectText().equals("")) {
+            items = new ListDataModel<Institution>(getFacade().findAll("name", true));    
+        }else{
+            temSql = "SELECT i FROM Institution i where i.retired=false and LOWER(i.name) like '%" + getSelectText().toLowerCase() + "%' order by i.name";
+            items= new ListDataModel<Institution>(getFacade().findBySQL(temSql));
+            System.out.println(temSql);
+        }
         return items;
     }
 

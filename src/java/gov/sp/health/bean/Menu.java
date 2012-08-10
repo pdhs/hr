@@ -474,6 +474,8 @@ public class Menu {
         submenu = new Submenu();
         submenu.setLabel(getLabel("inventory"));
 
+        
+        
         Submenu editMenu = new Submenu();
         editMenu.setLabel("Edit");
         
@@ -556,6 +558,12 @@ public class Menu {
         
         submenu.getChildren().add(editMenu);
 
+        item = new MenuItem();
+        item.setValue("Record Room");
+        item.setUrl("record_room.xhtml");
+        submenu.getChildren().add(item);
+        
+        
         item = new MenuItem();
         item.setValue(getLabel("purchase"));
         item.setUrl("inventory_purchase.xhtml");

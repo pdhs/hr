@@ -29,7 +29,7 @@
                                 </h:outputText>
 
                                 <h:inputText id="txtSelect" value="#{institutionController.selectText}" disabled="#{institutionController.selectControlDisable}"  style="min-width: 200px" >
-                                    <f:ajax  event="keyup" render="lstSelect txtName" >
+                                    <f:ajax execute="txtSelect"  event="keyup" render="lstSelect gpDetail" >
                                     </f:ajax>
                                 </h:inputText>
 

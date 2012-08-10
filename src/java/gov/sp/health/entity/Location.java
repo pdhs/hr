@@ -37,7 +37,8 @@ public class Location implements Serializable {
     String retireComments;
     @ManyToOne
     Unit unit;
-    
+    @ManyToOne
+    Location superLocation;
 
     public String getCode() {
         return code;
@@ -51,6 +52,16 @@ public class Location implements Serializable {
         return createdAt;
     }
 
+    public Location getSuperLocation() {
+        return superLocation;
+    }
+
+    public void setSuperLocation(Location superLocation) {
+        this.superLocation = superLocation;
+    }
+
+    
+    
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
