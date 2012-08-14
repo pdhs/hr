@@ -35,11 +35,18 @@
                     <h:panelGrid id="gpSelect" columns="1"  >
                         <p:panel >
                             <h:panelGrid id="gpSelectText" columns="2" >
-                                 <h:outputText  value="Search" >
+                                <h:outputText  value="Search by file number" >
                                 </h:outputText>
-                                <h:inputText value="#{fileController.selectText}" id="txtSelect" >
+                                <h:inputText value="#{fileController.selectText}" id="txtSelect"  style="width: 200px;">
                                     <f:ajax event="keyup" execute="txtSelect" render="lstSelect gpDetail"/>
                                 </h:inputText>
+
+                                <h:outputText  value="Search by file name" >
+                                </h:outputText>
+                                <h:inputText value="#{fileController.selectName}" id="txtSelectName" style="width: 200px;">
+                                    <f:ajax event="keyup" execute="txtSelectName" render="lstSelect gpDetail"/>
+                                </h:inputText>                                
+
                                 <h:outputText id="lblSelect" value="Files" >
                                 </h:outputText>
                                 <h:selectOneListbox id="lstSelect"  disabled="#{fileController.selectControlDisable}" size="10" value="#{fileController.current}" style="min-width: 223px">
@@ -75,11 +82,14 @@
                                 <h:inputText id="txtName" value="#{fileController.current.name}" disabled="#{fileController.modifyControlDisable}" style="width: 200px"></h:inputText>
                                 <h:outputText id="lblDes" value="Name" ></h:outputText>
                                 <h:inputText id="txtDes" value="#{fileController.current.description}" disabled="#{fileController.modifyControlDisable}" style="width: 300px"></h:inputText>
-                                
+
                                 <h:outputText id="lblBox" value="Box" ></h:outputText>
-                                <h:selectOneListbox id="cmbLoc" value="#{fileController.current.location}" disabled="#{fileController.modifyControlDisable}" size="5" style="width: 300px">
+                                <h:selectOneListbox id="cmbLoc" value="#{fileController.current.location}" rendered ="#{!fileController.modifyControlDisable}"   disabled="#{fileController.modifyControlDisable}" size="5" style="width: 300px">
                                     <f:selectItems value="#{fileController.locations}" var="loc" itemValue="#{loc}" itemLabel="#{loc.name}"/>
                                 </h:selectOneListbox>
+                                <h:outputText id="txtLoc" value="#{fileController.current.location.name}" rendered ="#{fileController.modifyControlDisable}"   size="5" style="width: 300px">
+                                </h:outputText>                                
+
                             </h:panelGrid>
                             <h:panelGrid id="gpDetailButtons" columns="2">
                                 <h:commandButton id="btnSave" value="Save" disabled="#{fileController.modifyControlDisable}" action="#{fileController.saveSelected()}" styleClass="buttons">
