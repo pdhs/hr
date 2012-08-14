@@ -79,6 +79,7 @@ public final class FileController {
     }
 
     public void setSelectName(String selectName) {
+        this.selectText = "";
         this.selectName = selectName;
     }
 
@@ -228,10 +229,10 @@ public final class FileController {
         if (unit == null) {
             return null;
         }
-        if (selectText.equals("")) {
+        if (!selectText.equals("")) {
             temSql = "select f from File f where f.retired=false and lower(f.name) like '%" + selectText.toLowerCase() + "%' and f.unit.id = " + unit.getId() + " order by f.name";
-        } else if (selectName.equals("")) {
-            temSql = "select f from File f where f.retired=false  and lower(f.descreption) like '%" + selectName.toLowerCase() + "%' and f.unit.id = " + unit.getId() + " order by f.name";
+        } else if (!selectName.equals("")) {
+            temSql = "select f from File f where f.retired=false  and lower(f.description) like '%" + selectName.toLowerCase() + "%' and f.unit.id = " + unit.getId() + " order by f.name";
         } else {
             temSql = "select f from File f where f.retired=false and f.unit.id = " + unit.getId() + " order by f.name";
         }
@@ -439,7 +440,7 @@ public final class FileController {
 
     public void setSelectText(String selectText) {
         this.selectText = selectText;
-        searchItems();
+        this.selectName = "";
     }
 
     public void prepareSelectControlDisable() {
