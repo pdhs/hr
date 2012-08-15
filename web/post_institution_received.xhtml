@@ -23,64 +23,59 @@
 
             <h:panelGrid columns="2" >
                 <h:outputLabel value="Institution"/>
-                <h:selectOneListbox id="lstIns" value="#{unitController.institution}" size="5">
-                    <f:selectItems value="#{institutionController.items}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
-                    <f:ajax execute="lstIns" render="lstUnit" event="change"/>
+                <h:selectOneListbox id="lstIns" value="#{letterController.toInstitution}" size="5">
+                    <f:selectItems value="#{letterController.institutions}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
                 </h:selectOneListbox>
-                <h:outputLabel value="Unit"/>
-                <h:selectOneListbox id="lstUnit" value="#{itemUnitController.unit}" size="5">
-                    <f:selectItems value="#{unitController.items}" var="uni" itemValue="#{uni}" itemLabel="#{uni.name}"/>
-                </h:selectOneListbox>
+                <h:outputLabel value="From"/>
+                <pou:calendar id="dtpFrom" pattern="dd MMMM yyyy" value="#{letterController.fromDate}" >
+                </pou:calendar>
+                <h:outputLabel value="To"/>
+                <pou:calendar id="dtpTo" pattern="dd MMMM yyyy"  value="#{letterController.toDate}" ></pou:calendar>
                 <h:commandButton value="Display All"/>
             </h:panelGrid>
 
 
 
 
-            <pou:dataTable id="tblItems"  var="demo" value="#{itemUnitController.itemsUni}" editable="true">
+            <pou:dataTable id="tblItems"  var="demo" value="#{letterController.itemsIns}" editable="true">
                 <pou:ajax update="@this" event="rowEdit"/>  
                 <pou:column>
                     <f:facet name="header">
-                        Item
+                        Received Date
                     </f:facet>
-                    <h:outputText value="#{demo.item.name}"/>
+                    <h:outputText value="#{demo.receivedDate}"/>
                 </pou:column>
 
                 <pou:column>
                     <f:facet name="header">
-                        Serial
+                        Letter Date
                     </f:facet>
-
-                    <pou:cellEditor>  
-                        <f:facet name="output">  
-                            <h:outputText value="#{demo.serial}" />  
-                        </f:facet>  
-                        <f:facet name="input">  
-                            <pou:inputText value="#{demo.serial}" style="width:100%"/>  
-                        </f:facet>  
-                    </pou:cellEditor> 
+                    <h:outputText value="#{demo.lettterDate}" />  
                 </pou:column>                
 
 
                 <pou:column>
                     <f:facet name="header">
-                        Quantity
+                        Number
                     </f:facet>
-                    <pou:cellEditor>  
-                        <f:facet name="output">  
-                            <h:outputText value="#{demo.quentity}" />  
-                        </f:facet>  
-                        <f:facet name="input">  
-                            <pou:inputText value="#{demo.quentity}" style="width:100%"/>  
-                        </f:facet>  
-                    </pou:cellEditor>                     
-
+                    <h:outputText value="#{demo.name}" />  
                 </pou:column>
 
-                <pou:column headerText="Options" style="width:50px">  
-                    <pou:rowEditor >
-                    </pou:rowEditor>
-                </pou:column> 
+
+                <pou:column>
+                    <f:facet name="header">
+                        Topic
+                    </f:facet>
+                    <h:outputText value="#{demo.description}" />  
+                </pou:column>
+                
+
+                <pou:column>
+                    <f:facet name="header">
+                        Content
+                    </f:facet>
+                    <h:outputText value="#{demo.letterContent}" />  
+                </pou:column>                
 
             </pou:dataTable>
 
