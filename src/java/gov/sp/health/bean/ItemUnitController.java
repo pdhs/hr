@@ -8,12 +8,10 @@
  */
 package gov.sp.health.bean;
 
-import gov.sp.health.entity.Institution;
+import gov.sp.health.entity.*;
+import gov.sp.health.facade.ItemFacade;
 import gov.sp.health.facade.ItemUnitFacade;
-import gov.sp.health.entity.ItemUnit;
-import gov.sp.health.entity.Location;
-import gov.sp.health.entity.Person;
-import gov.sp.health.entity.Unit;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -38,15 +36,26 @@ public final class ItemUnitController {
 
     @EJB
     private ItemUnitFacade ejbFacade;
+    @EJB
+    ItemFacade itemFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
     List<ItemUnit> lstItems;
     private ItemUnit current;
+    private Item currentItem;
+    private ItemCount currentItemCount;
     private DataModel<ItemUnit> items = null;
     private DataModel<ItemUnit> itemsIns = null;
     private DataModel<ItemUnit> itemsUni = null;
     private DataModel<ItemUnit> itemsLoc = null;
     private DataModel<ItemUnit> itemsPer = null;
+    //
+    DataModel<ItemUnit> insItemsSingle;
+    DataModel<ItemCount> itemCounts;
+    DataModel<ItemCount> insItemCounts;
+    DataModel<ItemCount> uniItemCounts;
+    DataModel<ItemCount> locItemCounts;
+    DataModel<ItemCount> perItemCounts;
     private int selectedItemIndex;
     boolean selectControlDisable = false;
     boolean modifyControlDisable = true;
@@ -55,6 +64,109 @@ public final class ItemUnitController {
     Location location;
     Person person;
     Institution institution;
+
+    public ItemCount getCurrentItemCount() {
+        return currentItemCount;
+    }
+
+    public void setCurrentItemCount(ItemCount currentItemCount) {
+        this.currentItemCount = currentItemCount;
+    }
+
+    
+    
+    
+    public Item getCurrentItem() {
+        return currentItem;
+    }
+
+    public void setCurrentItem(Item currentItem) {
+        this.currentItem = currentItem;
+    }
+
+    public void tempMethod(){
+        
+    }
+ 
+    public DataModel<ItemUnit> getInsItemsSingle() {
+        if (institution != null && getCurrentItem() !=null) {
+            return new ListDataModel<ItemUnit>(getFacade().findBySQL("SELECT i From ItemUnit i WHERE i.retired=false AND i.institution.id = " + institution.getId() + " and i.item.id = " + getCurrentItem().getId() + " " ));
+        } else {
+            return null;
+        }
+    }
+
+    public void setInsItemsSingle(DataModel<ItemUnit> insItemsSingle) {
+        this.insItemsSingle = insItemsSingle;
+    }
+
+    public String insItemsList() {
+        setCurrentItem(currentItemCount.getItem());
+        System.out.print("Getting Item " + currentItem.getName());
+        return "inventory_report_institution_items_counts_list";
+    }
+
+    public DataModel<ItemCount> getInsItemCounts() {
+        if (getInstitution() == null) {
+            return null;
+        }
+        List<ItemCount> temItemCounts = new ArrayList();
+        String temSql;
+        temSql = "SELECT i From Item i where i.retired=false and i.id in (select iu.item.id from ItemUnit iu where iu.institution.id = " + getInstitution().getId() + " ) order by i.name";
+        List<Item> temItems = getItemFacade().findBySQL(temSql);
+        for (Item temItem : temItems) {
+            temSql = "select count(iu) From ItemUnit iu where iu.retired=false and iu.institution.id = " + getInstitution().getId() + " and iu.item.id = " + temItem.getId();
+            ItemCount temItemCount = new ItemCount();
+            temItemCount.setItem(temItem);
+            temItemCount.setCount(getItemFacade().countBySql(temSql));
+            temItemCounts.add(temItemCount);
+        }
+        return new ListDataModel<ItemCount>(temItemCounts);
+    }
+
+    public void setInsItemCounts(DataModel<ItemCount> insItemCounts) {
+        this.insItemCounts = insItemCounts;
+    }
+
+    public DataModel<ItemCount> getItemCounts() {
+        return itemCounts;
+    }
+
+    public void setItemCounts(DataModel<ItemCount> itemCounts) {
+        this.itemCounts = itemCounts;
+    }
+
+    public DataModel<ItemCount> getLocItemCounts() {
+        return locItemCounts;
+    }
+
+    public void setLocItemCounts(DataModel<ItemCount> locItemCounts) {
+        this.locItemCounts = locItemCounts;
+    }
+
+    public DataModel<ItemCount> getPerItemCounts() {
+        return perItemCounts;
+    }
+
+    public void setPerItemCounts(DataModel<ItemCount> perItemCounts) {
+        this.perItemCounts = perItemCounts;
+    }
+
+    public DataModel<ItemCount> getUniItemCounts() {
+        return uniItemCounts;
+    }
+
+    public void setUniItemCounts(DataModel<ItemCount> uniItemCounts) {
+        this.uniItemCounts = uniItemCounts;
+    }
+
+    public ItemFacade getItemFacade() {
+        return itemFacade;
+    }
+
+    public void setItemFacade(ItemFacade itemFacade) {
+        this.itemFacade = itemFacade;
+    }
 
     public Institution getInstitution() {
         return institution;

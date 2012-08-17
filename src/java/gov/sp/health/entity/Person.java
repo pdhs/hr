@@ -61,6 +61,18 @@ public class Person implements Serializable {
     @ManyToOne
     Location location;
     
+    Double heightInMeters ;
+
+    public Double getHeightInMeters() {
+        return heightInMeters;
+    }
+
+    public void setHeightInMeters(Double heightInMeters) {
+        this.heightInMeters = heightInMeters;
+    }
+    
+    
+    
     public String getRetireComments() {
         return retireComments;
     }

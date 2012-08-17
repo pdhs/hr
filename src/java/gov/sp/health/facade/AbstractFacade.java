@@ -84,6 +84,11 @@ public abstract class AbstractFacade<T> {
     private void test(Class myClass, Object ob) {
     }
 
+    public Long countBySql(String sql){
+        Query q = getEntityManager().createQuery(sql);
+        return (Long)q.getSingleResult();
+    } 
+    
     public List<T> findAll(String fieldName, String fieldValue, boolean withoutRetired) {
         javax.persistence.criteria.CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         javax.persistence.criteria.CriteriaQuery<T> cq = cb.createQuery(entityClass);

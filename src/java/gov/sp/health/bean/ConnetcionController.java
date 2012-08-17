@@ -245,6 +245,14 @@ public class ConnetcionController {
     }
 
     public String registeUser() {
+        if (!userNameAvailable(newUserName)){
+            JsfUtil.addErrorMessage("User name already Exists. Plese enter another user name");
+            return "";
+        }
+        if (!newPassword.equals(newPasswordConfirm)){
+            JsfUtil.addErrorMessage("Password and Re-entered password are not maching");
+            return "";
+        }
         WebUser user = current;
         Person person = current.getWebUserPerson();
         person.setName(newPersonName);
@@ -264,6 +272,18 @@ public class ConnetcionController {
         return "index";
     }
 
+    public Boolean userNameAvailable(String userName){
+        Boolean available = true;
+        List<WebUser> allUsers = getFacede().findAll();
+        for (WebUser w:allUsers){
+            if (userName.toLowerCase().equals(HOSecurity.decrypt(w.getName()).toLowerCase())){
+                available=false;
+            }
+        }
+        return available;
+    }
+    
+    
     private boolean isFirstVisit() {
         if (getFacede().count() <= 0) {
 //            JsfUtil.addSuccessMessage("First Visit");

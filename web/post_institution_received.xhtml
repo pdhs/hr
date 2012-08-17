@@ -36,48 +36,79 @@
 
 
 
-
-            <pou:dataTable id="tblItems"  var="demo" value="#{letterController.itemsIns}" editable="true">
-                <pou:ajax update="@this" event="rowEdit"/>  
-                <pou:column>
+            <h:dataTable id="tblItems"  var="demo" value="#{letterController.itemsIns}" >
+                <h:column>
                     <f:facet name="header">
                         Received Date
                     </f:facet>
-                    <h:outputText value="#{demo.receivedDate}"/>
-                </pou:column>
+                    <h:outputText value="#{demo.receivedDate}">
+                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                    </h:outputText>
+                </h:column>
 
-                <pou:column>
+                <h:column>
                     <f:facet name="header">
                         Letter Date
                     </f:facet>
-                    <h:outputText value="#{demo.lettterDate}" />  
-                </pou:column>                
+                    <h:outputText value="#{demo.lettterDate}" >
+                        <f:convertDateTime pattern="dd MMMM yyyy" />
+                    </h:outputText>  
+                </h:column>                
 
+                <h:column>
+                    <f:facet name="header">
+                        From (Institution)
+                    </f:facet>
+                    <h:outputText value="#{demo.fromInstitution.name}" />  
+                </h:column>  
 
-                <pou:column>
+                <h:column>
+                    <f:facet name="header">
+                        From (Person)
+                    </f:facet>
+                    <h:outputText value="#{demo.fromPerson.name}" />  
+                </h:column>  
+
+                <h:column>
                     <f:facet name="header">
                         Number
                     </f:facet>
                     <h:outputText value="#{demo.name}" />  
-                </pou:column>
+                </h:column>
 
 
-                <pou:column>
+                <h:column>
                     <f:facet name="header">
                         Topic
                     </f:facet>
                     <h:outputText value="#{demo.description}" />  
-                </pou:column>
-                
+                </h:column>
 
-                <pou:column>
+
+                <h:column>
                     <f:facet name="header">
                         Content
                     </f:facet>
                     <h:outputText value="#{demo.letterContent}" />  
-                </pou:column>                
+                </h:column>                
 
-            </pou:dataTable>
+                <h:column>
+                    <f:facet name="header">
+                        Assigned to
+                    </f:facet>
+                    <h:outputText value="#{demo.toPerson.givenName} ( #{demo.toPerson.name} )" />  
+                </h:column>  
+
+                <h:column >
+                    <h:commandButton value="View" action="#{letterController.toView()}">
+                    </h:commandButton>
+                </h:column>
+
+            </h:dataTable>
+
+            <h:commandButton value="Print" type="button">
+                <pou:printer target="tblItems" />
+            </h:commandButton>
 
             <pou:panel header="Export All Data">
                 <!--                <h:commandLink>

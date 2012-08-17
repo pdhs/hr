@@ -194,11 +194,12 @@ public final class UnitController {
     }
 
     public void saveSelected() {
-        current.setInstitution(institution);
+        
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
         } else {
+            current.setInstitution(institution);
             current.setCreatedAt(Calendar.getInstance().getTime());
             current.setCreater(sessionController.loggedUser);
             getFacade().create(current);

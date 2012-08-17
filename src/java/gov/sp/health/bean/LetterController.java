@@ -15,6 +15,7 @@ import gov.sp.health.facade.LocationFacade;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.facade.SubjectFacade;
 import gov.sp.health.facade.UnitFacade;
+import java.io.Serializable;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +35,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class LetterController {
+public final class LetterController implements Serializable {
 
     @EJB
     private LetterFacade ejbFacade;
@@ -58,6 +59,7 @@ public final class LetterController {
     private DataModel<Letter> itemsUni = null;
     private DataModel<Letter> itemsLoc = null;
     private DataModel<Letter> itemsPer = null;
+    private DataModel temItems = null;
     //
     //
     DataModel<Institution> institutions;
@@ -93,6 +95,14 @@ public final class LetterController {
     Date fromDate;
     Date toDate;
 
+    public DataModel getTemItems() {
+        return new ListDataModel(getFacade().findAll());
+    }
+
+    public void setTemItems(DataModel temItems) {
+        this.temItems = temItems;
+    }
+
     public Date getFromDate() {
         return fromDate;
     }
@@ -109,8 +119,6 @@ public final class LetterController {
         this.toDate = toDate;
     }
 
-    
-    
     public String getSelectName() {
         return selectName;
     }
@@ -291,7 +299,6 @@ public final class LetterController {
 //        }
 //        return new ListDataModel<Unit>(getUnitFacade().findBySQL(temSql));
 //    }
-
     public Institution getFromInstitution() {
         return fromInstitution;
     }
@@ -392,7 +399,6 @@ public final class LetterController {
 
     public DataModel<Letter> getItemsIns() {
         if (getToInstitution() == null) {
-            JsfUtil.addErrorMessage("Please select a Unit");
             return null;
         }
         Map temMap = new HashMap();
@@ -493,6 +499,19 @@ public final class LetterController {
         this.prepareModifyControlDisable();
     }
 
+    public String toEdit() {
+        current = getItemsIns().getRowData();
+        return "post_new_letter";
+    }
+
+    public String toView() {
+        current = getItemsIns().getRowData();
+        return "post_view_letter";
+    }
+
+    public void toDelete() {
+    }
+
     public void prepareEdit() {
         if (current != null) {
             selectedItemIndex = intValue(current.getId());
@@ -525,21 +544,29 @@ public final class LetterController {
         selectedItemIndex = intValue(current.getId());
     }
 
-    public void addDirectly() {
-        JsfUtil.addSuccessMessage("1");
+    public String addDirectly() {
         try {
             current.setFromInstitution(fromInstitution);
             current.setToInstitution(toInstitution);
             current.setCreatedAt(Calendar.getInstance().getTime());
             current.setCreater(sessionController.loggedUser);
-
             getFacade().create(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedNewSuccessfully"));
+            setFromDate(current.getReceivedDate());
+            setToDate(current.getReceivedDate());
             current = new Letter();
+            return "post_institution_received";
+
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Error");
+            JsfUtil.addErrorMessage(e, "Error" + e.getMessage());
+            return "";
         }
 
+    }
+
+    public String prepareAddNew() {
+        current = new Letter();
+        return "post_new_letter";
     }
 
     public void cancelSelect() {
