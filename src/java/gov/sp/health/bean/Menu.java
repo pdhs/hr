@@ -502,7 +502,10 @@ public class Menu {
         item.setUrl("inventory_unit.xhtml");
         editMenu.getChildren().add(item);
 
-
+        item = new MenuItem();
+        item.setValue("Units Images");
+        item.setUrl("unit_add_image.xhtml");
+        editMenu.getChildren().add(item);
 
         item = new MenuItem();
         item.setValue("Locations");
