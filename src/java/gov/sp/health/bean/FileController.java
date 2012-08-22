@@ -17,6 +17,7 @@ import gov.sp.health.entity.Unit;
 import gov.sp.health.facade.InstitutionFacade;
 import gov.sp.health.facade.LocationFacade;
 import gov.sp.health.facade.UnitFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,6 +30,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import org.jboss.weld.logging.messages.JsfMessage;
 
 /**
  *
@@ -37,12 +39,14 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class FileController {
+public final class FileController implements Serializable {
 
     @EJB
     private FileFacade ejbFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
+    @ManagedProperty(value = "#{imageController}")
+    ImageController imageController;
     List<File> lstItems;
     private File current;
     private DataModel<File> items = null;
@@ -240,6 +244,16 @@ public final class FileController {
         return items;
     }
 
+    public DataModel<File> getLocItems() {
+        String temSql;
+        if (location == null) {
+            return null;
+        }
+        temSql = "select f from File f where f.retired=false and f.location.id = " + location.getId() + " order by f.name";
+        items = new ListDataModel(getFacade().findBySQL(temSql));
+        return items;
+    }
+
     public DataModel<File> getItemsIns() {
         if (institution != null) {
             return new ListDataModel<File>(getFacade().findBySQL("SELECT i From File i WHERE i.retired=false AND i.institution.id = " + institution.getId()));
@@ -360,6 +374,10 @@ public final class FileController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         current.setItem(null);
         current.setUnit(unit);
         current.setInstitution(institution);
@@ -401,6 +419,10 @@ public final class FileController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());
@@ -424,6 +446,34 @@ public final class FileController {
 
     public void setModifyControlDisable(boolean modifyControlDisable) {
         this.modifyControlDisable = modifyControlDisable;
+    }
+
+    public String viewBoxImages() {
+        if (current != null && current.getLocation() != null) {
+            imageController.setLocation(current.getLocation());
+            return "item_unit_image";
+        } else {
+            JsfUtil.addErrorMessage("Please select a file");
+            return "";
+        }
+
+    }
+
+    public ImageController getImageController() {
+        return imageController;
+    }
+
+    public void setImageController(ImageController imageController) {
+        this.imageController = imageController;
+    }
+
+    public String viewFileImages() {
+        if (current == null) {
+            JsfUtil.addErrorMessage("Please select a file");
+            return "";
+        }
+        imageController.setItemUnit(current);
+        return "location_image";
     }
 
     public boolean isSelectControlDisable() {

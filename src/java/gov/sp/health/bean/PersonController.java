@@ -11,7 +11,12 @@ package gov.sp.health.bean;
 import gov.sp.health.entity.Institution;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.entity.Person;
+import gov.sp.health.entity.PersonContact;
+import gov.sp.health.facade.ContactTypeFacade;
 import gov.sp.health.facade.InstitutionFacade;
+import gov.sp.health.facade.PersonContactFacade;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,23 +37,99 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class PersonController {
+public final class PersonController implements Serializable {
 
     @EJB
     private PersonFacade ejbFacade;
     @EJB
     InstitutionFacade institutionFacade;
-    
+    @EJB
+    PersonContactFacade perConFacade;
+    @EJB
+    ContactTypeFacade ctFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
     List<Person> lstItems;
     private Person current;
+    List<PersonContact> currentContacts;
+    DataModel<PersonContact> personContacts;
+    PersonContact currentContact;
     private DataModel<Person> items = null;
     DataModel<Institution> institutions;
     private int selectedItemIndex;
     boolean selectControlDisable = false;
     boolean modifyControlDisable = true;
     String selectText = "";
+
+    public ContactTypeFacade getCtFacade() {
+        return ctFacade;
+    }
+
+    public void setCtFacade(ContactTypeFacade ctFacade) {
+        this.ctFacade = ctFacade;
+    }
+
+    public DataModel<PersonContact> getPersonContacts() {
+        personContacts = new ListDataModel<PersonContact>(getCurrentContacts());
+        return personContacts;
+    }
+
+    public void setPersonContacts(DataModel<PersonContact> personContacts) {
+        this.personContacts = personContacts;
+    }
+
+    public PersonContact getCurrentContact() {
+        if (currentContact == null) {
+            currentContact = new PersonContact();
+            currentContact.setContactType(getCtFacade().findFirstBySQL("select ct from ContactType ct"));
+            System.out.print("Getting new Contact" + currentContact.getContactType().getName());
+        }
+        return currentContact;
+    }
+
+    public void setCurrentContact(PersonContact currentContact) {
+        this.currentContact = currentContact;
+    }
+
+    public void addContact() {
+        if (currentContact == null) {
+            JsfUtil.addErrorMessage("No Contact to add");
+            return;
+        }
+        currentContact.setPerson(current);
+        getCurrentContacts().add(currentContact);
+        getPerConFacade().create(currentContact);
+        currentContact = new PersonContact();
+    }
+
+    public void removeContact() {
+        if (currentContact == null) {
+            return;
+        }
+        if (currentContact.getId() != 0) {
+            getPerConFacade().remove(currentContact);
+        }
+        currentContact = new PersonContact();
+    }
+
+    public List<PersonContact> getCurrentContacts() {
+        if (currentContacts == null) {
+            currentContacts = new ArrayList<PersonContact>();
+        }
+        return currentContacts;
+    }
+
+    public void setCurrentContacts(List<PersonContact> currentContacts) {
+        this.currentContacts = currentContacts;
+    }
+
+    public PersonContactFacade getPerConFacade() {
+        return perConFacade;
+    }
+
+    public void setPerConFacade(PersonContactFacade perConFacade) {
+        this.perConFacade = perConFacade;
+    }
 
     public PersonController() {
     }
@@ -69,8 +150,6 @@ public final class PersonController {
         this.institutionFacade = institutionFacade;
     }
 
-    
-    
     public List<Person> getLstItems() {
         return getFacade().findBySQL("Select d From Person d WHERE d.retired=false ORDER BY d.name");
     }
@@ -96,6 +175,16 @@ public final class PersonController {
 
     public void setCurrent(Person current) {
         this.current = current;
+        String temSql = "";
+        if (current != null && current.getId() != null) {
+            temSql = "select c from PersonContact c where c.retired = false and c.person.id = " + current.getId();
+            currentContacts = getPerConFacade().findBySQL(temSql);
+            System.out.println("Getting new set of contacts " + currentContacts.size());
+        } else {
+            currentContacts = null;
+            System.out.println("Setting new set of contacts to null");
+        }
+        currentContact = new PersonContact();
     }
 
     private PersonFacade getFacade() {
@@ -103,7 +192,23 @@ public final class PersonController {
     }
 
     public DataModel<Person> getItems() {
-        items = new ListDataModel(getFacade().findAll("name", true));
+        String temSql;
+        if (selectText.trim().equals("")) {
+            temSql = "select p from Person p where p.retired=false order by p.name";
+        } else {
+            temSql = "select p from Person p where p.retired=false and lower(p.name) like '%" + selectText.toLowerCase() + "%' order by p.name";
+        }
+        System.out.println(temSql);
+        List<Person> temLstPer = getFacade().findBySQL(temSql);
+        items = new ListDataModel(temLstPer);
+        System.out.println(temLstPer.size());
+        if (temLstPer.size() == 1) {
+            current = temLstPer.get(0);
+            System.out.println("CUrrent is " + current.getName());
+        }else{
+            System.out.println("CUrrent is null");
+            current = null;
+        }
         return items;
     }
 
@@ -174,11 +279,15 @@ public final class PersonController {
 
     public void prepareAdd() {
         selectedItemIndex = -1;
-        current = new Person();
+        setCurrent(new Person());
         this.prepareSelectControlDisable();
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -188,6 +297,17 @@ public final class PersonController {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedNewSuccessfully"));
         }
+//        for (PersonContact pc : currentContacts) {
+//            if (pc != null && pc.getId() != null) {
+//                if (pc.getId() == 0) {
+//                    getPerConFacade().create(pc);
+//                } else {
+//                    getPerConFacade().edit(pc);
+//                }
+//            }
+//        }
+        currentContact = null;
+        currentContacts = null;
         this.prepareSelect();
         recreateModel();
         getItems();
@@ -213,9 +333,15 @@ public final class PersonController {
 
     public void cancelSelect() {
         this.prepareSelect();
+        currentContacts = null;
+        currentContact = null;
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());
@@ -283,8 +409,6 @@ public final class PersonController {
     public void setSessionController(SessionController sessionController) {
         this.sessionController = sessionController;
     }
-    
-    
 
     @FacesConverter(forClass = Person.class)
     public static class PersonControllerConverter implements Converter {

@@ -11,6 +11,7 @@ package gov.sp.health.bean;
 import gov.sp.health.entity.*;
 import gov.sp.health.facade.ItemFacade;
 import gov.sp.health.facade.ItemUnitFacade;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -32,7 +33,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class ItemUnitController {
+public final class ItemUnitController implements Serializable {
 
     @EJB
     private ItemUnitFacade ejbFacade;
@@ -73,9 +74,6 @@ public final class ItemUnitController {
         this.currentItemCount = currentItemCount;
     }
 
-    
-    
-    
     public Item getCurrentItem() {
         return currentItem;
     }
@@ -84,13 +82,12 @@ public final class ItemUnitController {
         this.currentItem = currentItem;
     }
 
-    public void tempMethod(){
-        
+    public void tempMethod() {
     }
- 
+
     public DataModel<ItemUnit> getInsItemsSingle() {
-        if (institution != null && getCurrentItem() !=null) {
-            return new ListDataModel<ItemUnit>(getFacade().findBySQL("SELECT i From ItemUnit i WHERE i.retired=false AND i.institution.id = " + institution.getId() + " and i.item.id = " + getCurrentItem().getId() + " " ));
+        if (institution != null && getCurrentItem() != null) {
+            return new ListDataModel<ItemUnit>(getFacade().findBySQL("SELECT i From ItemUnit i WHERE i.retired=false AND i.institution.id = " + institution.getId() + " and i.item.id = " + getCurrentItem().getId() + " "));
         } else {
             return null;
         }
@@ -124,6 +121,48 @@ public final class ItemUnitController {
         return new ListDataModel<ItemCount>(temItemCounts);
     }
 
+    public DataModel<ItemCount> getInsItemSum() {
+        if (getInstitution() == null) {
+            return null;
+        }
+//        ItemUnit iu = new ItemUnit();
+//        iu.getQuentity();
+        List<ItemCount> temItemCounts = new ArrayList();
+        String temSql;
+        temSql = "SELECT i From Item i where i.retired=false and i.id in (select iu.item.id from ItemUnit iu where iu.institution.id = " + getInstitution().getId() + " ) order by i.name";
+        List<Item> temItems = getItemFacade().findBySQL(temSql);
+        for (Item temItem : temItems) {
+            temSql = "select sum(iu.quentity) From ItemUnit iu where iu.retired=false and iu.institution.id = " + getInstitution().getId() + " and iu.item.id = " + temItem.getId();
+            ItemCount temItemCount = new ItemCount();
+            temItemCount.setItem(temItem);
+            temItemCount.setSum(getItemFacade().sumBySql(temSql));
+            temItemCounts.add(temItemCount);
+        }
+        return new ListDataModel<ItemCount>(temItemCounts);
+    }
+
+    
+    public DataModel<ItemCount> getUnitItemSum() {
+        if (getUnit() == null) {
+            return null;
+        }
+//        ItemUnit iu = new ItemUnit();
+//        iu.getQuentity();
+        List<ItemCount> temItemCounts = new ArrayList();
+        String temSql;
+        temSql = "SELECT i From Item i where i.retired=false and i.id in (select iu.item.id from ItemUnit iu where iu.unit.id = " + getUnit().getId() + " ) order by i.name";
+        List<Item> temItems = getItemFacade().findBySQL(temSql);
+        for (Item temItem : temItems) {
+            temSql = "select sum(iu.quentity) From ItemUnit iu where iu.retired=false and iu.unit.id = " + getUnit().getId() + " and iu.item.id = " + temItem.getId();
+            ItemCount temItemCount = new ItemCount();
+            temItemCount.setItem(temItem);
+            temItemCount.setSum(getItemFacade().sumBySql(temSql));
+            temItemCounts.add(temItemCount);
+        }
+        return new ListDataModel<ItemCount>(temItemCounts);
+    }
+    
+    
     public void setInsItemCounts(DataModel<ItemCount> insItemCounts) {
         this.insItemCounts = insItemCounts;
     }
@@ -375,6 +414,10 @@ public final class ItemUnitController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit() == false) {
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -412,6 +455,10 @@ public final class ItemUnitController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete() == false) {
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

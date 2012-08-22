@@ -10,6 +10,7 @@ package gov.sp.health.bean;
 
 import gov.sp.health.facade.AtmFacade;
 import gov.sp.health.entity.Atm;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,7 +30,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class AtmController {
+public final class AtmController  implements Serializable {
 
     @EJB
     private AtmFacade ejbFacade;
@@ -153,6 +154,10 @@ public final class AtmController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isMsEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));

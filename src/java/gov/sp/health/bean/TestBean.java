@@ -7,6 +7,7 @@
  */
 package gov.sp.health.bean;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -17,7 +18,7 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class TestBean {
+public class TestBean  implements Serializable {
 
     /**
      * Creates a new instance of TestBean

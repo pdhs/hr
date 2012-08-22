@@ -12,6 +12,7 @@ import gov.sp.health.entity.DpdhsArea;
 import gov.sp.health.facade.MohFacade;
 import gov.sp.health.entity.MohArea;
 import gov.sp.health.facade.DpdhsFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,7 +33,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class MohController {
+public final class MohController  implements Serializable {
 
     @EJB
     private MohFacade ejbFacade;
@@ -179,6 +180,10 @@ public final class MohController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isDemographyEdit() ==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -216,6 +221,10 @@ public final class MohController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isDemographyDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

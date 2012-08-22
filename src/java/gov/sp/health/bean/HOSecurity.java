@@ -7,6 +7,7 @@
  */
 package gov.sp.health.bean;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -19,7 +20,7 @@ import org.jasypt.util.text.BasicTextEncryptor;
  */
 @ManagedBean
 @SessionScoped
-public class HOSecurity {
+public class HOSecurity  implements Serializable {
 
     /**
      * Creates a new instance of HOSecurity

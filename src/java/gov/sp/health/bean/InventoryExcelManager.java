@@ -14,9 +14,7 @@ import gov.sp.health.entity.*;
 import gov.sp.health.facade.InventoryItemCategoryFacade;
 import gov.sp.health.facade.InventoryItemFacade;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,7 +41,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @RequestScoped
-public class InventoryExcelManager {
+public class InventoryExcelManager  implements Serializable {
 
     /**
      *

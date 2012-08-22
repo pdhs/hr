@@ -28,7 +28,7 @@
                                 <p:row>
                                     <p:column styleClass="pdTopAlign">
                                         <h:outputLabel value="Select Institution" ></h:outputLabel>
-                                        <h:selectOneListbox id="cmbFromIns" value="#{outBillController.institution}" >
+                                        <h:selectOneListbox id="cmbFromIns" value="#{outBillController.institution}"  size="5" >
                                             <f:selectItems value="#{outBillController.fromInstitutions}" var="fronIns" itemValue="#{fronIns}" itemLabel="#{fronIns.name}"></f:selectItems>
                                             <f:ajax event="change" render="cmbFromUnit" execute="cmbFromIns" />
                                         </h:selectOneListbox>
@@ -60,7 +60,7 @@
                                     </p:column>
                                     <p:column>
                                         <h:outputLabel value="Modal" ></h:outputLabel>
-                                        <h:inputText rendered="#{outBillController.billItemEntry.billItem.itemUnit.modal != null}"  value="#{outBillController.billItemEntry.billItem.itemUnit.modal.name}" styleClass="pdPageText" ></h:inputText>
+                                        <h:inputText rendered="#{outBillController.billItemEntry.billItem.itemUnit.modal != null}"  value="#{outBillController.billItemEntry.billItem.itemUnit.modal.name}" styleClass="pdPageText"  size="5"></h:inputText>
                                         <h:outputLabel value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ></h:outputLabel>
                                         <h:outputLabel value="Serial" ></h:outputLabel>
                                         <h:inputText   rendered="#{outBillController.billItemEntry.billItem.itemUnit != null}"    value="#{outBillController.billItemEntry.billItem.itemUnit.serial}" ></h:inputText>
@@ -174,7 +174,7 @@
 
 
                             Sending to
-                            <h:selectOneListbox id="cmbToIns" value="#{outBillController.bill.toInstitution}" >
+                            <h:selectOneListbox id="cmbToIns" value="#{outBillController.bill.toInstitution}"  size="5">
                                 <f:selectItems value="#{outBillController.toInstitutions}" var="toIns" itemValue="#{toIns}" itemLabel="#{toIns.name}"></f:selectItems>
                             </h:selectOneListbox>
                      

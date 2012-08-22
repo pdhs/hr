@@ -25,7 +25,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @RequestScoped
-public class FileUploadController {
+public class FileUploadController  implements Serializable {
 
     /**
      * Creates a new instance of FileUploadController

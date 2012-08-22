@@ -4,10 +4,15 @@
  */
 package gov.sp.health.bean;
 
-import gov.sp.health.entity.Unit;
-import gov.sp.health.entity.AppImage;
+import gov.sp.health.entity.*;
 import gov.sp.health.facade.UnitFacade;
 import gov.sp.health.facade.AppImageFacade;
+import gov.sp.health.facade.CategoryFacade;
+import gov.sp.health.facade.InstitutionFacade;
+import gov.sp.health.facade.ItemFacade;
+import gov.sp.health.facade.ItemUnitFacade;
+import gov.sp.health.facade.LocationFacade;
+import gov.sp.health.facade.PersonFacade;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -42,7 +47,7 @@ import org.apache.commons.io.IOUtils;
  */
 @ManagedBean
 @SessionScoped
-public class ImageController {
+public class ImageController  implements Serializable {
 
     StreamedContent scImage;
     StreamedContent scImageById;
@@ -51,7 +56,29 @@ public class ImageController {
     AppImageFacade appImageFacade;
     @EJB
     UnitFacade unitFacade;
+    @EJB
+    InstitutionFacade insFacade;
+    @EJB
+    LocationFacade locFacade;
+    @EJB
+    PersonFacade perFacade;
+    @EJB
+    ItemFacade itemFacade;
+    @EJB
+    ItemUnitFacade itemUnitFacade;
+    @EJB
+    CategoryFacade catFacade;
+    //
+    //
     Unit unit;
+    Location location;
+    Institution institution;
+    Person person;
+    Item item;
+    ItemUnit itemUnit;
+    Category category;
+    Letter letter;
+    //
     AppImage appImage;
     List<AppImage> appImages;
 
@@ -64,17 +91,8 @@ public class ImageController {
             // So, browser is requesting the image. Get ID value from actual request param.
             String id = context.getExternalContext().getRequestParameterMap().get("id");
             AppImage temImg = getAppImageFacade().find(Long.valueOf(id));
-            return  new DefaultStreamedContent(new ByteArrayInputStream(temImg.getBaImage()), temImg.getFileType());
+            return new DefaultStreamedContent(new ByteArrayInputStream(temImg.getBaImage()), temImg.getFileType());
         }
-//        String id = context.getExternalContext().getRequestParameterMap().get("id");
-//        try {
-//            System.out.println("Getting the id as " + Long.valueOf(id));
-//            AppImage temImg = getAppImageFacade().find(Long.valueOf(id));
-//            return new DefaultStreamedContent(new ByteArrayInputStream(temImg.getBaImage()), temImg.getFileType());
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());
-//            return null;
-//        }
     }
 
     public void setScImageById(StreamedContent scImageById) {
@@ -86,6 +104,10 @@ public class ImageController {
     }
 
     public List<AppImage> getAppImages() {
+        if (appImages == null) {
+            appImages = new ArrayList<AppImage>();
+        }
+        System.out.println("Getting app images - count is" + appImages.size());
         return appImages;
     }
 
@@ -101,8 +123,26 @@ public class ImageController {
         return unit;
     }
 
+    public Letter getLetter() {
+        return letter;
+    }
+
+    public void setLetter(Letter letter) {
+        this.letter = letter;
+        if (letter != null) {
+            prepareImages("Select ai from AppImage ai Where ai.letter.id = " + letter.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
     public void setUnit(Unit unit) {
         this.unit = unit;
+        if (unit != null) {
+            prepareImages("Select ai from AppImage ai Where ai.unit.id = " + unit.getId());
+        } else {
+            appImages = null;
+        }
     }
 
     public UnitFacade getUnitFacade() {
@@ -164,6 +204,10 @@ public class ImageController {
         }
     }
 
+    private void prepareImages(String sql) {
+        appImages = getAppImageFacade().findBySQL(sql);
+    }
+
     public void dispplayUnitImages() {
         if (unit == null) {
             appImages = null;
@@ -184,26 +228,201 @@ public class ImageController {
         appImages = lstImgs;
     }
 
+    public CategoryFacade getCatFacade() {
+        return catFacade;
+    }
+
+    public void setCatFacade(CategoryFacade catFacade) {
+        this.catFacade = catFacade;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        if (category == null && category.getId() != null) {
+            prepareImages("Select ai from AppImage ai Where ai.category.id = " + category.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
+    public InstitutionFacade getInsFacade() {
+        return insFacade;
+    }
+
+    public void setInsFacade(InstitutionFacade insFacade) {
+        this.insFacade = insFacade;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+        if (institution == null && institution.getId() != null) {
+            prepareImages("Select ai from AppImage ai Where ai.institution.id = " + institution.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+        if (item == null && item.getId() != null) {
+            prepareImages("Select ai from AppImage ai Where ai.item.id = " + item.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
+    public ItemFacade getItemFacade() {
+        return itemFacade;
+    }
+
+    public void setItemFacade(ItemFacade itemFacade) {
+        this.itemFacade = itemFacade;
+    }
+
+    public ItemUnit getItemUnit() {
+        return itemUnit;
+    }
+
+    public void setItemUnit(ItemUnit itemUnit) {
+        this.itemUnit = itemUnit;
+        if (itemUnit == null && itemUnit.getId() != null) {
+            prepareImages("Select ai from AppImage ai Where ai.itemUnit.id = " + itemUnit.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
+    public ItemUnitFacade getItemUnitFacade() {
+        return itemUnitFacade;
+    }
+
+    public void setItemUnitFacade(ItemUnitFacade itemUnitFacade) {
+        this.itemUnitFacade = itemUnitFacade;
+    }
+
+    public LocationFacade getLocFacade() {
+        return locFacade;
+    }
+
+    public void setLocFacade(LocationFacade locFacade) {
+        this.locFacade = locFacade;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+        if (location != null && location.getId() != null) {
+            prepareImages("Select ai from AppImage ai Where ai.location.id = " + location.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
+    public PersonFacade getPerFacade() {
+        return perFacade;
+    }
+
+    public void setPerFacade(PersonFacade perFacade) {
+        this.perFacade = perFacade;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+        if (person == null && person.getId() != null) {
+            prepareImages("Select ai from AppImage ai Where ai.person.id = " + person.getId());
+        } else {
+            appImages = null;
+        }
+    }
+
     public void saveUnitImage() {
-        InputStream in;
         if (unit == null) {
             JsfUtil.addErrorMessage("Please select a unit");
             return;
         }
+        appImage = new AppImage();
+        appImage.setUnit(unit);
+        saveImage();
+        setUnit(unit);
+    }
+
+    public void saveItemUnitImage() {
+        if (itemUnit == null) {
+            JsfUtil.addErrorMessage("Please select a location");
+            return;
+        }
+        appImage = new AppImage();
+        appImage.setItemUnit(itemUnit);
+        saveImage();
+        setItemUnit(itemUnit);
+    }
+
+    public void saveLetterImage() {
+        if (letter == null) {
+            JsfUtil.addErrorMessage("Please select a letter");
+            return;
+        }
+        appImage = new AppImage();
+        appImage.setLetter(letter);
+        saveImage();
+        setLetter(letter);
+    }
+
+        public void saveLocationImage() {
+        if (location == null) {
+            JsfUtil.addErrorMessage("Please select a location");
+            return;
+        }
+        appImage = new AppImage();
+        appImage.setLocation(location);
+        saveImage();
+        setLocation(location);
+    }
+    
+       public void savePersonImage() {
+        if (person == null) {
+            JsfUtil.addErrorMessage("Please select a Person");
+            return;
+        }
+        appImage = new AppImage();
+        appImage.setPerson(person);
+        saveImage();
+        setPerson(person);
+    }
+
+    public void saveImage() {
+        InputStream in;
         if (file == null) {
             JsfUtil.addErrorMessage("Please upload an image");
             return;
         }
         JsfUtil.addSuccessMessage(file.getFileName());
         try {
-            appImage = new AppImage();
             appImage.setFileName(file.getFileName());
             appImage.setFileType(file.getContentType());
-            appImage.setUnit(unit);
-            JsfUtil.addSuccessMessage(file.getFileName());
             in = file.getInputstream();
             appImage.setBaImage(IOUtils.toByteArray(in));
             appImageFacade.create(appImage);
+            JsfUtil.addSuccessMessage(file.getFileName() + " saved successfully");
         } catch (Exception e) {
             System.out.println("Error " + e.getMessage());
         }

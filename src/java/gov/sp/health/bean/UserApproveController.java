@@ -6,6 +6,7 @@ package gov.sp.health.bean;
 
 import gov.sp.health.entity.*;
 import gov.sp.health.facade.*;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -21,7 +22,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @RequestScoped
-public class UserApproveController {
+public class UserApproveController  implements Serializable {
 
     DataModel<WebUser> toApproveUsers;
     DataModel<WebUser> users;
@@ -48,7 +49,25 @@ public class UserApproveController {
     DataModel<Institution> institutions;
     DataModel<Unit> units;
     DataModel<Location> locations;
+    @ManagedProperty(value = "#{imageController}")
+    private ImageController imageController;
 
+    public ImageController getImageController() {
+        return imageController;
+    }
+
+    public void setImageController(ImageController imageController) {
+        this.imageController = imageController;
+    }
+    
+    public String viewPerImage(){
+        System.out.println("VIew Per Img" );
+        System.out.println("VIew Per Img" + selectedUser.getWebUserPerson().getName());
+        imageController.setPerson(selectedUser.getWebUserPerson());
+        System.out.println("person_image");
+        return "person_image";
+    }
+    
     public DataModel<WebUser> getUsers() {
         String temSql;
         if (sessionController.getPrivilege().getRestrictedInstitution() != null) {

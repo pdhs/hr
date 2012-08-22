@@ -9,6 +9,7 @@ import gov.sp.health.facade.PhiFacade;
 import gov.sp.health.facade.PhmFacade;
 import gov.sp.health.facade.PopulationFacade;
 import gov.sp.health.facade.ProvinceFacade;
+import java.io.Serializable;
 import java.util.ArrayList;
 // Entities
 // Other
@@ -35,7 +36,7 @@ import org.primefaces.component.datalist.DataList;
  */
 @ManagedBean
 @RequestScoped
-public class AreaController {
+public class AreaController  implements Serializable {
 
     /**
      * EJBs

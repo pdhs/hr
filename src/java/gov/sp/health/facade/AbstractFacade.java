@@ -66,29 +66,33 @@ public abstract class AbstractFacade<T> {
         return qry.getResultList();
     }
 
-    
     public List<T> findBySQL(String temSQL, Map<String, Date> parameters) {
         TypedQuery<T> qry = getEntityManager().createQuery(temSQL, entityClass);
-        Set s=parameters.entrySet();
-        Iterator it=s.iterator();
-        while (it.hasNext()){
-            Map.Entry m=(Map.Entry)it.next();
-            Date pVal =  (Date) m.getValue();
-            String pPara=(String) m.getKey();
+        Set s = parameters.entrySet();
+        Iterator it = s.iterator();
+        while (it.hasNext()) {
+            Map.Entry m = (Map.Entry) it.next();
+            Date pVal = (Date) m.getValue();
+            String pPara = (String) m.getKey();
             qry.setParameter(pPara, pVal, TemporalType.DATE);
             System.out.println("Parameter " + pPara + "\tVal" + pVal);
         }
         return qry.getResultList();
-    }    
-    
+    }
+
     private void test(Class myClass, Object ob) {
     }
 
-    public Long countBySql(String sql){
+    public Long countBySql(String sql) {
         Query q = getEntityManager().createQuery(sql);
-        return (Long)q.getSingleResult();
-    } 
-    
+        return (Long) q.getSingleResult();
+    }
+
+    public Double sumBySql(String sql) {
+        Query q = getEntityManager().createQuery(sql);
+        return (Double) q.getSingleResult();
+    }
+
     public List<T> findAll(String fieldName, String fieldValue, boolean withoutRetired) {
         javax.persistence.criteria.CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         javax.persistence.criteria.CriteriaQuery<T> cq = cb.createQuery(entityClass);
@@ -200,17 +204,14 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
-    
-    public Double findAggregateDbl(String strJQL){
-        Query q= getEntityManager().createQuery(strJQL);
-        try{
+
+    public Double findAggregateDbl(String strJQL) {
+        Query q = getEntityManager().createQuery(strJQL);
+        try {
             return (Double) q.getSingleResult();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return 0.0;
         }
     }
-    
-    
 }

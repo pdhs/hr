@@ -9,6 +9,7 @@ package gov.sp.health.bean;
 
 import gov.sp.health.entity.Privilege;
 import gov.sp.health.entity.WebUser;
+import java.io.Serializable;
 import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -21,7 +22,7 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 @Stateless
-public class SessionController {
+public class SessionController  implements Serializable {
 
     WebUser loggedUser = null;
     boolean logged = false;

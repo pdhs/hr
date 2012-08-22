@@ -49,6 +49,8 @@ public final class LetterController implements Serializable {
     SubjectFacade subjectFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
+    @ManagedProperty(value = "#{imageController}")
+    ImageController imageController;    
     //
     //
     //
@@ -505,10 +507,20 @@ public final class LetterController implements Serializable {
     }
 
     public String toView() {
-        current = getItemsIns().getRowData();
+        imageController.setLetter(current);
         return "post_view_letter";
     }
 
+    public ImageController getImageController() {
+        return imageController;
+    }
+
+    public void setImageController(ImageController imageController) {
+        this.imageController = imageController;
+    }
+
+    
+    
     public void toDelete() {
     }
 
@@ -528,6 +540,10 @@ public final class LetterController implements Serializable {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (current.getId() != 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -574,6 +590,10 @@ public final class LetterController implements Serializable {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

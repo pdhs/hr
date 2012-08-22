@@ -8,7 +8,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <h:form >
+        <h:form  enctype="multipart/form-data">
             <p:growl autoUpdate="true" />
             <p:panel header="Record Room" >
 
@@ -47,11 +47,22 @@
                     <h:outputLabel id="cmbSub" value="#{letterController.current.subject.name}" />
                     <h:outputLabel value="Assigned to" >
                     </h:outputLabel>
-                    <h:outputLabel id="cmbToIns" value="#{letterController.toInstitution.name}" />
+                    <h:outputLabel id="txtToIns" value="#{letterController.toInstitution.name}" />
                     <h:outputLabel value="" >
                     </h:outputLabel>
-                    <h:selectOneListbox id="cmbToPer" value="#{letterController.current.toPerson.givenName}" />
+                    <h:outputLabel id="txtToPer" value="#{letterController.current.toPerson.givenName}" />
                 </p:panelGrid>
+                <p:dataGrid id="gal" value="#{imageController.appImages}" var="img">
+                    <p:column>
+                        <p:graphicImage value="#{imageController.scImageById}" >
+                            <f:param name="id" value="#{img.id}" />
+                        </p:graphicImage>
+                    </p:column>
+                </p:dataGrid>  
+                <h:panelGrid columns="2" >
+                    <p:fileUpload value="#{imageController.file}" mode="simple"/>
+                    <h:commandButton value="Save" action="#{imageController.saveLetterImage()}"/>
+                </h:panelGrid>                
             </p:panel>
 
 

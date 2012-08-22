@@ -36,6 +36,8 @@ public class AppImage implements Serializable {
     String retireComments;
     
     @ManyToOne
+    Location location;
+    @ManyToOne
     Unit unit;
     @ManyToOne
     Person person;
@@ -49,7 +51,12 @@ public class AppImage implements Serializable {
     Item item;
     @ManyToOne
     ItemUnit itemUnit;
-    
+    @ManyToOne
+    Encounter encounter;
+    @ManyToOne
+    Finding finding;
+    @ManyToOne
+    Letter letter;
     
     
     @Lob
@@ -57,6 +64,33 @@ public class AppImage implements Serializable {
     String fileName;
     String fileType;
 
+    public Encounter getEncounter() {
+        return encounter;
+    }
+
+    public void setEncounter(Encounter encounter) {
+        this.encounter = encounter;
+    }
+
+    public Finding getFinding() {
+        return finding;
+    }
+
+    public void setFinding(Finding finding) {
+        this.finding = finding;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    
+    
+    
     public String getFileName() {
         return fileName;
     }
@@ -218,6 +252,16 @@ public class AppImage implements Serializable {
         this.id = id;
     }
 
+    public Letter getLetter() {
+        return letter;
+    }
+
+    public void setLetter(Letter letter) {
+        this.letter = letter;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -11,6 +11,7 @@ package gov.sp.health.bean;
 import gov.sp.health.entity.*;
 import gov.sp.health.facade.InventoryItemFacade;
 import gov.sp.health.facade.*;
+import java.io.Serializable;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -30,7 +31,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class InventoryItemUnitAlterController {
+public final class InventoryItemUnitAlterController  implements Serializable {
 
 
     /**

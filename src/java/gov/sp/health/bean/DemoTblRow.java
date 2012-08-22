@@ -11,6 +11,7 @@ import gov.sp.health.entity.PhiArea;
 import gov.sp.health.entity.PhmArea;
 import gov.sp.health.entity.Population;
 import gov.sp.health.entity.Province;
+import java.io.Serializable;
 
 /**
  *
@@ -18,7 +19,7 @@ import gov.sp.health.entity.Province;
  */
 
 
-public class DemoTblRow {
+public class DemoTblRow  implements Serializable {
     Province province;
     DpdhsArea dpdhs;
     MohArea moh;

@@ -14,6 +14,7 @@ import gov.sp.health.facade.LocationFacade;
 import gov.sp.health.entity.Location;
 import gov.sp.health.facade.InstitutionFacade;
 import gov.sp.health.facade.UnitFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -34,7 +35,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class LocationController {
+public final class LocationController  implements Serializable {
 
     @EJB
     private LocationFacade ejbFacade;
@@ -44,6 +45,8 @@ public final class LocationController {
     InstitutionFacade institutionFacade;
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
+    @ManagedProperty(value = "#{imageController}")
+    ImageController imageController;    
     List<Location> lstItems;
     private Location current;
     private DataModel<Location> items = null;
@@ -59,6 +62,16 @@ public final class LocationController {
     public Institution getInstitution() {
         return institution;
     }
+
+    public ImageController getImageController() {
+        return imageController;
+    }
+
+    public void setImageController(ImageController imageController) {
+        this.imageController = imageController;
+    }
+
+    
 
     public void setInstitution(Institution institution) {
         this.institution = institution;
@@ -141,10 +154,12 @@ public final class LocationController {
         if (current == null) {
             current = new Location();
         }
+        imageController.setLocation(current);
         return current;
     }
 
     public void setCurrent(Location current) {
+        imageController.setLocation(current);
         this.current = current;
     }
 
@@ -154,7 +169,7 @@ public final class LocationController {
 
     public DataModel<Location> getItems() {
         if (getUnit() != null) {
-            items = new ListDataModel(getFacade().findBySQL("select l from Location l where l.retired=false and l.unit.id = " + getUnit().getId()));
+            items = new ListDataModel(getFacade().findBySQL("select l from Location l where l.retired=false and l.unit.id = " + getUnit().getId() + "order by l.name"  ));
             return items;
         } else {
             return null;
@@ -233,6 +248,10 @@ public final class LocationController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         current.setUnit(unit);
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
@@ -271,6 +290,10 @@ public final class LocationController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

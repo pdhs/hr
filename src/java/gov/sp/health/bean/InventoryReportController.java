@@ -20,6 +20,7 @@ import gov.sp.health.facade.ModalFacade;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.facade.SupplierFacade;
 import gov.sp.health.facade.UnitFacade;
+import java.io.Serializable;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +35,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @ViewScoped
-public class InventoryReportController {
+public class InventoryReportController  implements Serializable {
 
     /**
      *

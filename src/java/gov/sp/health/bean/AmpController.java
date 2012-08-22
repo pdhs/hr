@@ -17,6 +17,7 @@ import gov.sp.health.entity.Supplier;
 import gov.sp.health.entity.VtmInAmp;
 import gov.sp.health.facade.MedicineGroupFacade;
 import gov.sp.health.facade.VtmFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -36,7 +37,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class AmpController {
+public final class AmpController  implements Serializable {
 
     @EJB
     private AmpFacade ejbFacade;
@@ -290,6 +291,10 @@ public final class AmpController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isMsEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));

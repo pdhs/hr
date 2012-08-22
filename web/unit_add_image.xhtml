@@ -24,16 +24,11 @@
         <h:form>
             <pou:graphicImage value="#{imageController.scImage}" >
             </pou:graphicImage>
-            <pou:dataTable value="#{imageController.appImages}" var="img">
-                <pou:column>
-                    <pou:graphicImage value="#{imageController.scImageById}" >
-                        <f:param name="id" value="#{img.id}" />
-                    </pou:graphicImage>
-                </pou:column>
-                <pou:column>
-                    #{img.id}"
-                </pou:column>                
-            </pou:dataTable>
+            <pou:galleria value="#{imageController.appImages}" var="img">
+                <pou:graphicImage value="#{imageController.scImageById}" >
+                    <f:param name="id" value="#{img.id}" />
+                </pou:graphicImage>
+            </pou:galleria>
 
         </h:form>
     </ui:define>

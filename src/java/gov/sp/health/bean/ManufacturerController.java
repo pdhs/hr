@@ -10,10 +10,12 @@ package gov.sp.health.bean;
 
 import gov.sp.health.facade.ManufacturerFacade;
 import gov.sp.health.entity.Manufacturer;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,11 +31,12 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class ManufacturerController {
+public final class ManufacturerController  implements Serializable {
 
     @EJB
     private ManufacturerFacade ejbFacade;
-    SessionController sessionController = new SessionController();
+    @ManagedProperty(value = "#{sessionController}")
+    SessionController sessionController;
     List<Manufacturer> lstItems;
     private Manufacturer current;
     private DataModel<Manufacturer> items = null;
@@ -42,6 +45,24 @@ public final class ManufacturerController {
     boolean modifyControlDisable = true;
     String selectText = "";
 
+    public ManufacturerFacade getEjbFacade() {
+        return ejbFacade;
+    }
+
+    public void setEjbFacade(ManufacturerFacade ejbFacade) {
+        this.ejbFacade = ejbFacade;
+    }
+
+    public SessionController getSessionController() {
+        return sessionController;
+    }
+
+    public void setSessionController(SessionController sessionController) {
+        this.sessionController = sessionController;
+    }
+
+    
+    
     public ManufacturerController() {
     }
 
@@ -153,6 +174,10 @@ public final class ManufacturerController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             current.setOutSide(true);
             getFacade().edit(current);
@@ -192,6 +217,10 @@ public final class ManufacturerController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

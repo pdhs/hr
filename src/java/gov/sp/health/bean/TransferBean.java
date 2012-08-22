@@ -5,6 +5,9 @@
 package gov.sp.health.bean;
 
 import gov.sp.health.entity.Bill;
+import gov.sp.health.entity.Location;
+import gov.sp.health.entity.Unit;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -14,9 +17,13 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class TransferBean {
+public class TransferBean  implements Serializable {
 
     Bill bill;
+    Unit unit;
+    Location location;
+    
+    
     /**
      * Creates a new instance of TransferBean
      */

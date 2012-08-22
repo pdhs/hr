@@ -8,6 +8,7 @@
 package gov.sp.health.bean;
 
 import gov.sp.health.entity.*;
+import gov.sp.health.facade.AppImageFacade;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.facade.PrivilegeFacade;
 import gov.sp.health.facade.WebUserFacade;
@@ -15,6 +16,7 @@ import gov.sp.health.facade.WebUserRoleFacade;
 import gov.sp.health.facade.AreaFacade;
 import gov.sp.health.facade.InstitutionFacade;
 import gov.sp.health.facade.UnitFacade;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -23,6 +25,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import org.omg.PortableInterceptor.ACTIVE;
+import org.primefaces.event.CaptureEvent;
 
 /**
  *
@@ -31,8 +34,9 @@ import org.omg.PortableInterceptor.ACTIVE;
  */
 @ManagedBean
 @RequestScoped
-public class ConnetcionController {
+public class ConnetcionController implements Serializable {
 
+    byte[] photo;
     @EJB
     WebUserFacade uFacade;
     @EJB
@@ -51,6 +55,10 @@ public class ConnetcionController {
     private SessionController sessionController;
     @ManagedProperty(value = "#{menu}")
     private Menu menu;
+    @ManagedProperty(value = "#{imageController}")
+    private ImageController imageController;
+    @EJB
+    AppImageFacade imageFacade;
     //
     WebUser current;
     String userName;
@@ -79,6 +87,36 @@ public class ConnetcionController {
      * Creates a new instance of ConnetcionController
      */
     public ConnetcionController() {
+    }
+
+    public AppImageFacade getImageFacade() {
+        return imageFacade;
+    }
+
+    public void setImageFacade(AppImageFacade imageFacade) {
+        this.imageFacade = imageFacade;
+    }
+
+    
+    
+    public ImageController getImageController() {
+        return imageController;
+    }
+
+    public void setImageController(ImageController imageController) {
+        this.imageController = imageController;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public void oncapture(CaptureEvent captureEvent) {
+        photo = captureEvent.getData();
     }
 
     public SessionController getSessionController() {
@@ -245,11 +283,11 @@ public class ConnetcionController {
     }
 
     public String registeUser() {
-        if (!userNameAvailable(newUserName)){
+        if (!userNameAvailable(newUserName)) {
             JsfUtil.addErrorMessage("User name already Exists. Plese enter another user name");
             return "";
         }
-        if (!newPassword.equals(newPasswordConfirm)){
+        if (!newPassword.equals(newPasswordConfirm)) {
             JsfUtil.addErrorMessage("Password and Re-entered password are not maching");
             return "";
         }
@@ -265,6 +303,16 @@ public class ConnetcionController {
         user.setWebUserPerson(person);
         user.setActivated(false);
         uFacade.create(user);
+        //
+        //
+//        AppImage perImage = new AppImage();
+//        perImage.setPerson(person);
+//        perImage.setFileName("initial_photo_" + person.getId() + ".png");
+//        perImage.setBaImage(photo);
+//        perImage.setFileType("image/png");
+//        imageFacade.create(perImage);
+        //
+        //
         JsfUtil.addSuccessMessage("New User Registered. You will be able to access the system when the administrater activate your account.");
         sessionController.setLoggedUser(user);
         sessionController.setLogged(Boolean.TRUE);
@@ -272,18 +320,37 @@ public class ConnetcionController {
         return "index";
     }
 
-    public Boolean userNameAvailable(String userName){
+
+    public String changePassword() {
+        WebUser user = sessionController.loggedUser;
+        if (!HOSecurity.matchPassword(passord, user.getWebUserPassword())){
+            JsfUtil.addErrorMessage("The old password you entered is incorrect");
+            return "";
+        }
+        if (!newPassword.equals(newPasswordConfirm)) {
+            JsfUtil.addErrorMessage("Password and Re-entered password are not maching");
+            return "";
+        }
+        
+        user.setWebUserPassword(HOSecurity.hash(newPassword));
+        uFacade.edit(user);
+        //
+        JsfUtil.addSuccessMessage("Password changed");
+        return "index";
+    }
+
+    
+    public Boolean userNameAvailable(String userName) {
         Boolean available = true;
         List<WebUser> allUsers = getFacede().findAll();
-        for (WebUser w:allUsers){
-            if (userName.toLowerCase().equals(HOSecurity.decrypt(w.getName()).toLowerCase())){
-                available=false;
+        for (WebUser w : allUsers) {
+            if (userName.toLowerCase().equals(HOSecurity.decrypt(w.getName()).toLowerCase())) {
+                available = false;
             }
         }
         return available;
     }
-    
-    
+
     private boolean isFirstVisit() {
         if (getFacede().count() <= 0) {
 //            JsfUtil.addSuccessMessage("First Visit");

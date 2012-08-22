@@ -19,6 +19,7 @@ import gov.sp.health.facade.ModalFacade;
 import gov.sp.health.facade.PersonFacade;
 import gov.sp.health.facade.SupplierFacade;
 import gov.sp.health.facade.UnitFacade;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -35,7 +36,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @ViewScoped
-public class PurchaseBillController {
+public class PurchaseBillController  implements Serializable {
 
     /**
      *

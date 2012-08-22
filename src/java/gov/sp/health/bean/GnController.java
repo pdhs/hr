@@ -13,6 +13,7 @@ import gov.sp.health.entity.GnArea;
 import gov.sp.health.entity.MohArea;
 import gov.sp.health.entity.PhmArea;
 import gov.sp.health.facade.PhmFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -33,7 +34,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class GnController {
+public final class GnController  implements Serializable {
 
     @EJB
     private GnFacade ejbFacade;
@@ -181,6 +182,10 @@ public final class GnController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));

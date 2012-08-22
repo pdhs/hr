@@ -12,6 +12,7 @@ import gov.sp.health.facade.DpdhsFacade;
 import gov.sp.health.entity.DpdhsArea;
 import gov.sp.health.entity.Province;
 import gov.sp.health.facade.ProvinceFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,7 +33,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class DpdhsController {
+public final class DpdhsController  implements Serializable {
 
     @EJB
     private DpdhsFacade ejbFacade;
@@ -182,6 +183,10 @@ public final class DpdhsController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isDemographyEdit() ==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));

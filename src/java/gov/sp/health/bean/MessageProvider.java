@@ -11,6 +11,7 @@ package gov.sp.health.bean;
  *
  * @author Dr. M. H. B. Ariyaratne, MBBS, PGIM Trainee for MSc(Biomedical Informatics)
  */
+import java.io.Serializable;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -18,7 +19,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 
-public class MessageProvider {
+public class MessageProvider  implements Serializable {
 
     private ResourceBundle bundle;
 

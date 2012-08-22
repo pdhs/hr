@@ -10,6 +10,7 @@ package gov.sp.health.bean;
 
 import gov.sp.health.entity.*;
 import gov.sp.health.facade.SupplierFacade;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -29,7 +30,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class SupplierController {
+public final class SupplierController  implements Serializable {
 
     @EJB
     private SupplierFacade ejbFacade;
@@ -153,6 +154,10 @@ public final class SupplierController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }        
         if (selectedItemIndex > 0) {
             current.setOutSide(true);
             getFacade().edit(current);
@@ -192,6 +197,10 @@ public final class SupplierController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

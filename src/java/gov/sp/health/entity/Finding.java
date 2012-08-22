@@ -13,7 +13,7 @@ import javax.persistence.*;
  * @author buddhika
  */
 @Entity
-public class PersonEncounterFinding implements Serializable {
+public class Finding implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,10 +22,6 @@ public class PersonEncounterFinding implements Serializable {
     String name;
     String code;
     String description;
-    @Lob
-    byte[] letterImage;
-    @Lob
-    String letterContent;
     Boolean registered;
     //Created Properties
     @ManyToOne
@@ -43,19 +39,88 @@ public class PersonEncounterFinding implements Serializable {
     @ManyToOne
     Person person;
     @ManyToOne
-    PersonEncounter encounter;
+    Institution institution;
+    @ManyToOne
+    Area area;
+    @ManyToOne
+    Unit unit;
+    @ManyToOne
+    Location location;
+    @ManyToOne
+    Item item;
+    @ManyToOne
+    ItemUnit itemUnit;
+    
+    @ManyToOne
+    Encounter encounter;
     Double doubleValue;
     String stringValue;
     Long longValue;
     Boolean booleanValue;
     @Lob
     String lobStringValue;
-    @Lob
-    byte[] imageValue;
     //
     @ManyToOne
     Category category;
 
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public Encounter getEncounter() {
+        return encounter;
+    }
+
+    public void setEncounter(Encounter encounter) {
+        this.encounter = encounter;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public ItemUnit getItemUnit() {
+        return itemUnit;
+    }
+
+    public void setItemUnit(ItemUnit itemUnit) {
+        this.itemUnit = itemUnit;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    
+    
     public Long getId() {
         return id;
     }
@@ -120,38 +185,7 @@ public class PersonEncounterFinding implements Serializable {
         this.doubleValue = doubleValue;
     }
 
-    public PersonEncounter getEncounter() {
-        return encounter;
-    }
-
-    public void setEncounter(PersonEncounter encounter) {
-        this.encounter = encounter;
-    }
-
-    public byte[] getImageValue() {
-        return imageValue;
-    }
-
-    public void setImageValue(byte[] imageValue) {
-        this.imageValue = imageValue;
-    }
-
-    public String getLetterContent() {
-        return letterContent;
-    }
-
-    public void setLetterContent(String letterContent) {
-        this.letterContent = letterContent;
-    }
-
-    public byte[] getLetterImage() {
-        return letterImage;
-    }
-
-    public void setLetterImage(byte[] letterImage) {
-        this.letterImage = letterImage;
-    }
-
+     
     public String getLobStringValue() {
         return lobStringValue;
     }
@@ -244,10 +278,10 @@ public class PersonEncounterFinding implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PersonEncounterFinding)) {
+        if (!(object instanceof Finding)) {
             return false;
         }
-        PersonEncounterFinding other = (PersonEncounterFinding) object;
+        Finding other = (Finding) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

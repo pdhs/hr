@@ -12,6 +12,7 @@ import gov.sp.health.facade.InventoryItemFacade;
 import gov.sp.health.entity.InventoryItem;
 import gov.sp.health.entity.InventoryItemCategory;
 import gov.sp.health.entity.ItemCategory;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,7 +33,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class InventoryItemController {
+public final class InventoryItemController  implements Serializable {
 
     @EJB
     private InventoryItemFacade ejbFacade;
@@ -171,6 +172,10 @@ public final class InventoryItemController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isInventoryEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             current.setCategory(currentCat);
             getFacade().edit(current);
@@ -194,6 +199,10 @@ public final class InventoryItemController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isInventoryDelete()==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

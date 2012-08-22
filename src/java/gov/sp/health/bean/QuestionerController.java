@@ -2,6 +2,7 @@ package gov.sp.health.bean;
 // Facades
 import gov.sp.health.entity.*;
 import gov.sp.health.facade.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 // Entities
 // Other
@@ -28,7 +29,7 @@ import org.primefaces.component.datalist.DataList;
  */
 @ManagedBean
 @RequestScoped
-public class QuestionerController {
+public class QuestionerController  implements Serializable {
 
     /**
      * EJBs

@@ -5,6 +5,7 @@
 package gov.sp.health.bean;
 
 import gov.sp.health.facade.WebUserFacade;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import javax.faces.bean.ManagedProperty;
  */
 @ManagedBean
 @SessionScoped
-public class ThemeSwitcherBean {
+public class ThemeSwitcherBean  implements Serializable {
 
     @EJB
     WebUserFacade facade;

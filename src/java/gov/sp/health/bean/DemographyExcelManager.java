@@ -12,9 +12,7 @@ import gov.sp.health.facade.PhmFacade;
 import gov.sp.health.facade.MohFacade;
 import gov.sp.health.entity.*;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,7 +39,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @RequestScoped
-public class DemographyExcelManager {
+public class DemographyExcelManager  implements Serializable {
 
     /**
      *

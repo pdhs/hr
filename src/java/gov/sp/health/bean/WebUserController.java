@@ -12,6 +12,7 @@ import gov.sp.health.facade.PrivilegeFacade;
 import gov.sp.health.facade.WebUserFacade;
 import gov.sp.health.facade.WebUserRoleFacade;
 import gov.sp.health.entity.WebUser;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -31,7 +32,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class WebUserController {
+public final class WebUserController implements Serializable {
 
     @EJB
     private WebUserFacade ejbFacade;
@@ -160,6 +161,10 @@ public final class WebUserController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isManageAccounts()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));
@@ -197,6 +202,10 @@ public final class WebUserController {
     }
 
     public void delete() {
+        if (sessionController.getPrivilege().isManageAccounts() ==false){
+            JsfUtil.addErrorMessage("You are not autherized to delete any content");
+            return;
+        }
         if (current != null) {
             current.setRetired(true);
             current.setRetiredAt(Calendar.getInstance().getTime());

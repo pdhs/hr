@@ -13,9 +13,7 @@ import gov.sp.health.facade.MohFacade;
 import gov.sp.health.entity.*;
 import gov.sp.health.facade.*;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,7 +40,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @RequestScoped
-public class PharmaceuticalExcelManager {
+public class PharmaceuticalExcelManager  implements Serializable {
 
     /**
      *

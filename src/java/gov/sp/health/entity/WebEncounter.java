@@ -12,6 +12,6 @@ import javax.persistence.Entity;
  * @author buddhika
  */
 @Entity
-public class WebEncounter extends PersonEncounter implements Serializable {
+public class WebEncounter extends Encounter implements Serializable {
     
 }

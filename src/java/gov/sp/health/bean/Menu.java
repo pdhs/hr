@@ -7,6 +7,7 @@
  */
 package gov.sp.health.bean;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
@@ -28,7 +29,7 @@ import org.primefaces.component.menuitem.MenuItem;
  */
 @ManagedBean
 @SessionScoped
-public class Menu {
+public class Menu implements Serializable {
 
     @ManagedProperty(value = "#{sessionController}")
     SessionController sessionController;
@@ -73,6 +74,15 @@ public class Menu {
         item.setUrl("index.xhtml");
         model.addMenuItem(item);
 
+        if (sessionController.privilege.isInventoryView()) {
+            model.addSubmenu(recordRoomSubmenu());
+            model.addSubmenu(postSubmenu());
+            model.addSubmenu(inventorySubmenu());
+            model.addSubmenu(storesSubmenu());
+            model.addSubmenu(librarySubmenu());
+            model.addSubmenu(commonSubmenu());
+        }
+
         if (sessionController.privilege.isBmeView()) {
             model.addSubmenu(biomedSubmenu());
         }
@@ -86,13 +96,145 @@ public class Menu {
         if (sessionController.privilege.isMsView()) {
             model.addSubmenu(medicalSubmenu());
         }
-        if (sessionController.privilege.isInventoryView()) {
-            model.addSubmenu(inventorySubmenu());
-        }
         if (sessionController.privilege.isManageAccounts()) {
             model.addSubmenu(adminSubmenu());
         }
 
+        model.addSubmenu(userSubmenu());
+    }
+
+    private Submenu commonSubmenu() {
+        Submenu submenu = new Submenu();
+        submenu.setLabel("Common");
+
+        MenuItem item;
+
+        item = new MenuItem();
+        item.setValue("Institution Types");
+        item.setUrl("institution_type.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Institutions");
+        item.setUrl("institutions.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Units");
+        item.setUrl("inventory_unit.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Units Images");
+        item.setUrl("unit_add_image.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Locations");
+        item.setUrl("inventory_location.xhtml");
+        submenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Location Images");
+        item.setUrl("location_add_image.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Persons");
+        item.setUrl("person.xhtml");
+        submenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Suppliers");
+        item.setUrl("inventory_supplier.xhtml");
+        submenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Manufacturers");
+        item.setUrl("inventory_manufacturer.xhtml");
+        submenu.getChildren().add(item);
+
+
+
+        item = new MenuItem();
+        item.setValue("Countries");
+        item.setUrl("country.xhtml");
+        submenu.getChildren().add(item);
+
+        return submenu;
+
+    }
+
+    private Submenu recordRoomSubmenu() {
+        Submenu submenu;
+
+        MenuItem item;
+
+        submenu = new Submenu();
+        submenu.setLabel("Record Room");
+
+
+
+        item = new MenuItem();
+        item.setValue("Boxes");
+        item.setUrl("record_room_boxes.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Files");
+        item.setUrl("record_room_files.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Box Files");
+        item.setUrl("record_room_files_in_boxes.xhtml");
+        submenu.getChildren().add(item);        
+        
+        return submenu;
+    }
+
+     private Submenu userSubmenu() {
+        Submenu submenu = new Submenu();
+        submenu.setLabel("User");
+
+        MenuItem item;
+
+        item = new MenuItem();
+        item.setValue("Change Password");
+        item.setUrl("change_password.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Preferances");
+        item.setUrl("under_construction.xhtml");
+        submenu.getChildren().add(item);
+
+        return submenu;
+    }
+
+    
+    private Submenu postSubmenu() {
+        Submenu submenu;
+
+        MenuItem item;
+
+        submenu = new Submenu();
+        submenu.setLabel("Post");
+
+        item = new MenuItem();
+        item.setValue("New Letter");
+        item.setUrl("post_new_letter.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Letters to institution");
+        item.setUrl("post_institution_received.xhtml");
+        submenu.getChildren().add(item);
+
+        return submenu;
     }
 
     private Submenu cadreSubmenu() {
@@ -480,62 +622,13 @@ public class Menu {
         MenuItem item;
 
         submenu = new Submenu();
-        submenu.setLabel(getLabel("inventory"));
+        submenu.setLabel("Inventory");
 
 
 
         Submenu editMenu = new Submenu();
         editMenu.setLabel("Edit");
 
-        item = new MenuItem();
-        item.setValue("Institution Types");
-        item.setUrl("institution_type.xhtml");
-        editMenu.getChildren().add(item);
-
-        item = new MenuItem();
-        item.setValue("Institutions");
-        item.setUrl("institutions.xhtml");
-        editMenu.getChildren().add(item);
-
-        item = new MenuItem();
-        item.setValue("Units");
-        item.setUrl("inventory_unit.xhtml");
-        editMenu.getChildren().add(item);
-
-        item = new MenuItem();
-        item.setValue("Units Images");
-        item.setUrl("unit_add_image.xhtml");
-        editMenu.getChildren().add(item);
-
-        item = new MenuItem();
-        item.setValue("Locations");
-        item.setUrl("inventory_location.xhtml");
-        editMenu.getChildren().add(item);
-
-
-        item = new MenuItem();
-        item.setValue("Persons");
-        item.setUrl("person.xhtml");
-        editMenu.getChildren().add(item);
-
-
-        item = new MenuItem();
-        item.setValue("Suppliers");
-        item.setUrl("inventory_supplier.xhtml");
-        editMenu.getChildren().add(item);
-
-
-        item = new MenuItem();
-        item.setValue("Manufacturers");
-        item.setUrl("inventory_manufacturer.xhtml");
-        editMenu.getChildren().add(item);
-
-
-
-        item = new MenuItem();
-        item.setValue("Countries");
-        item.setUrl("country.xhtml");
-        editMenu.getChildren().add(item);
 
 
         item = new MenuItem();
@@ -568,16 +661,6 @@ public class Menu {
         editMenu.getChildren().add(item);
 
         submenu.getChildren().add(editMenu);
-
-        item = new MenuItem();
-        item.setValue("Record Room");
-        item.setUrl("record_room.xhtml");
-        submenu.getChildren().add(item);
-
-        item = new MenuItem();
-        item.setValue("Post");
-        item.setUrl("post.xhtml");
-        submenu.getChildren().add(item);
 
         item = new MenuItem();
         item.setValue(getLabel("purchase"));
@@ -616,10 +699,97 @@ public class Menu {
         submenu.getChildren().add(item);
 
 
-
         return submenu;
     }
 
+    
+    private Submenu storesSubmenu() {
+        Submenu submenu;
+
+        MenuItem item;
+
+        submenu = new Submenu();
+        submenu.setLabel("Stores");
+
+
+
+        Submenu editMenu = new Submenu();
+        editMenu.setLabel("Edit");
+
+
+
+        item = new MenuItem();
+        item.setValue("Item Categories");
+        item.setUrl("inventory_item_category.xhtml");
+        editMenu.getChildren().add(item);
+
+
+
+        item = new MenuItem();
+        item.setValue("Make");
+        item.setUrl("inventory_make.xhtml");
+        editMenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Model");
+        item.setUrl("inventory_modal.xhtml");
+        editMenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Items");
+        item.setUrl("inventory_item.xhtml");
+        editMenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Import Items From Excel");
+        item.setUrl("inventory_import_items.xhtml");
+        editMenu.getChildren().add(item);
+
+        submenu.getChildren().add(editMenu);
+
+        item = new MenuItem();
+        item.setValue(getLabel("purchase"));
+        item.setUrl("stores_purchase.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue(getLabel("issue"));
+        item.setUrl("inventory_issue.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue(getLabel("receiveInventoryItems"));
+        item.setUrl("inventory_institution_received_bills.xhtml");
+        submenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue(getLabel("requests"));
+        item.setUrl("designation_category.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue(getLabel("estimates"));
+        item.setUrl("designation_level.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Adjust");
+        item.setUrl("inventory_adjust.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue(getLabel("reports"));
+        item.setUrl("stores_reports.xhtml");
+        submenu.getChildren().add(item);
+
+
+        return submenu;
+    }
+    
+    
     private Submenu adminSubmenu() {
         Submenu submenu;
 
@@ -639,9 +809,70 @@ public class Menu {
         item.setUrl("manage_users.xhtml");
         submenu.getChildren().add(item);
 
+        item = new MenuItem();
+        item.setValue("Edit");
+        item.setUrl("admin_edit.xhtml");
+        submenu.getChildren().add(item);
+
         return submenu;
     }
 
+    
+        private Submenu librarySubmenu() {
+        Submenu submenu;
+
+        MenuItem item;
+
+        submenu = new Submenu();
+        submenu.setLabel("Library");
+
+
+        item = new MenuItem();
+        item.setValue("Publishers");
+        item.setUrl("library_publisher.xhtml");
+        submenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Books");
+        item.setUrl("library_books.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Issue Books");
+        item.setUrl("library_issue_books.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Return Books");
+        item.setUrl("library_return_books.xhtml");
+        submenu.getChildren().add(item);
+
+
+        item = new MenuItem();
+        item.setValue("Books in the library");
+        item.setUrl("library_current_books.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Issued Books");
+        item.setUrl("library_issued_books.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Delayed Returns");
+        item.setUrl("library_delayed_books.xhtml");
+        submenu.getChildren().add(item);
+
+        item = new MenuItem();
+        item.setValue("Book History");
+        item.setUrl("library_books_history.xhtml");
+        submenu.getChildren().add(item);        
+        
+        return submenu;
+    }
+
+    
     public MenuModel getModel() {
         return model;
     }

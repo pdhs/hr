@@ -10,6 +10,7 @@ package gov.sp.health.bean;
 
 import gov.sp.health.facade.DesignationFacade;
 import gov.sp.health.entity.Designation;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -30,7 +31,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @SessionScoped
-public final class DesignationController {
+public final class DesignationController  implements Serializable {
 
     @EJB
     private DesignationFacade ejbFacade;
@@ -174,6 +175,10 @@ public final class DesignationController {
     }
 
     public void saveSelected() {
+        if (sessionController.getPrivilege().isDemographyEdit()==false){
+            JsfUtil.addErrorMessage("You are not autherized to make changes to any content");
+            return;
+        }            
         if (selectedItemIndex > 0) {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(new MessageProvider().getValue("savedOldSuccessfully"));

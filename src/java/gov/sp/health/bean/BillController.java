@@ -11,6 +11,7 @@ import gov.sp.health.entity.Person;
 import gov.sp.health.facade.BillFacade;
 import gov.sp.health.facade.BillItemFacade;
 import gov.sp.health.facade.InstitutionFacade;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -26,7 +27,7 @@ import javax.faces.model.ListDataModel;
  */
 @ManagedBean
 @RequestScoped
-public class BillController {
+public class BillController  implements Serializable {
 
     @EJB
     BillFacade billFacade;
