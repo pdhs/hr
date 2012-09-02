@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./resources/template/pdhs_template_1.xhtml"
+                template="./resources/template/template_1.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:pou="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core">
@@ -21,6 +21,43 @@
                 <pou:fileUpload value="#{dbfController.file}" mode="simple"/>
                 <h:commandButton value="Upload" action="#{dbfController.extractData}"/>
             </h:panelGrid>
+        </h:form>
+        <h:form>
+            <pou:panel header="Existing Data">
+                <pou:dataTable value="#{dbfController.existingPersonInstitutions}" var="exPi">
+                    <pou:column>
+                        <f:facet name="header">Employee Id</f:facet>
+                        <h:outputLabel value="#{exPi.empNo}"/>
+                    </pou:column>
+                    <pou:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputLabel value="#{exPi.person.name}"/>
+                    </pou:column> 
+                    <pou:column>
+                        <f:facet name="header">Designation</f:facet>
+                        <h:outputLabel value="#{exPi.designation.name}"/>
+                    </pou:column>                 
+                </pou:dataTable>
+            </pou:panel>
+            <pou:panel header="New Data">
+                <pou:dataTable value="#{dbfController.newPersonInstitutions}" var="newPi">
+                    <pou:column>
+                        <f:facet name="header">Employee Id</f:facet>
+                        <h:outputLabel value="#{newPi.empNo}"/>
+                    </pou:column>
+                    <pou:column>
+                        <f:facet name="header">Name</f:facet>
+                        <h:outputLabel value="#{newPi.person.name}"/>
+                    </pou:column> 
+                    <pou:column>
+                        <f:facet name="header">Designation</f:facet>
+                        <h:outputLabel value="#{newPi.designation.name}"/>
+                    </pou:column>                 
+                </pou:dataTable>
+            </pou:panel>            
+            <pou:panel header="Replace Existing Data With new Data">
+                <h:commandButton value="Replace" action="#{dbfController.replaceData}"/>
+            </pou:panel>
 
         </h:form>
     </ui:define>

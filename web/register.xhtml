@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./resources/template/pdhs_template_1.xhtml"
+                template="./resources/template/template_1.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -40,23 +40,6 @@
                     <td align="left">
                         <h:selectOneListbox id="cmbIns" value="#{connetcionController.institution}" size="5">
                             <f:selectItems value="#{connetcionController.institutions}" var="ins" itemValue="#{ins}" itemLabel="#{ins.name}"/>
-                            <f:ajax event="change" execute="cmbIns" render="cmbUnit" />
-                        </h:selectOneListbox>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="pdLabel" align="right">Unit</td>
-                    <td align="left">
-                        <h:selectOneListbox id="cmbUnit" value="#{connetcionController.unit}" size="5">
-                            <f:selectItems value="#{connetcionController.units}" var="uni" itemValue="#{uni}" itemLabel="#{uni.name}"/>
-                        </h:selectOneListbox>
-                    </td>
-                </tr>                
-                <tr>
-                    <td class="pdLabel" align="right">Area</td>
-                    <td align="left">
-                        <h:selectOneListbox value="#{connetcionController.current.webUserPerson.area}" size="5">
-                            <f:selectItems value="#{connetcionController.areas}" var="area" itemValue="#{area}" itemLabel="#{area.name}"/>
                         </h:selectOneListbox>
                     </td>
                 </tr>
@@ -71,10 +54,6 @@
                 <tr>
                     <td class="pdLabel" align="right">Reenter Password</td>
                     <td align="left"><h:inputSecret value="#{connetcionController.newPasswordConfirm}"  /></td>
-                </tr>                
-                <tr>
-                    <td class="pdLabel" align="right">Password Hint</td>
-                    <td align="left"><h:inputText value="#{connetcionController.newPasswordHint}"  /></td>
                 </tr>                
                 <tr>
                     <td align="left"></td>
