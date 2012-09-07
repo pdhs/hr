@@ -117,17 +117,7 @@ public class Menu implements Serializable {
         item.setUrl("institution_employees.xhtml");
         submenu.getChildren().add(item);
 
-        item = new MenuItem();
-        item.setValue("Files");
-        item.setUrl("record_room_files.xhtml");
-        submenu.getChildren().add(item);
-
-        item = new MenuItem();
-        item.setValue("Box Files");
-        item.setUrl("record_room_files_in_boxes.xhtml");
-        submenu.getChildren().add(item);
-
-        return submenu;
+         return submenu;
     }
 
     private Submenu userSubmenu() {
