@@ -18,22 +18,15 @@ import gov.health.facade.DesignationFacade;
 import gov.health.facade.InstitutionFacade;
 import gov.health.facade.PersonFacade;
 import gov.health.facade.PersonInstitutionFacade;
-import java.awt.Image;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import javax.faces.bean.ManagedBean;
 import org.primefaces.model.UploadedFile;
-import sun.awt.image.codec.JPEGImageDecoderImpl;
-import sun.awt.image.codec.JPEGImageEncoderImpl;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedProperty;
@@ -443,14 +436,4 @@ public class DbfController implements Serializable {
         return des;
     }
 
-    public byte[] PersistentImage(BufferedImage image) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        new JPEGImageEncoderImpl(out).encode(image);
-        return out.toByteArray();
-    }
-
-    public Image makeImage(byte[] data) throws IOException {
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        return new JPEGImageDecoderImpl(in).decodeAsBufferedImage();
-    }
 }

@@ -4,41 +4,27 @@
  */
 package gov.health.bean;
 
-import gov.health.entity.Institution;
-import gov.health.entity.Person;
 import gov.health.entity.AppImage;
 import gov.health.entity.Category;
+import gov.health.entity.Institution;
+import gov.health.entity.Person;
 import gov.health.facade.AppImageFacade;
 import gov.health.facade.CategoryFacade;
 import gov.health.facade.InstitutionFacade;
 import gov.health.facade.PersonFacade;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import org.primefaces.model.UploadedFile;
-import sun.awt.image.codec.JPEGImageDecoderImpl;
-import sun.awt.image.codec.JPEGImageEncoderImpl;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
-import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -233,14 +219,5 @@ public class ImageController implements Serializable {
 
     }
 
-    public byte[] PersistentImage(BufferedImage image) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        new JPEGImageEncoderImpl(out).encode(image);
-        return out.toByteArray();
-    }
-
-    public Image makeImage(byte[] data) throws IOException {
-        ByteArrayInputStream in = new ByteArrayInputStream(data);
-        return new JPEGImageDecoderImpl(in).decodeAsBufferedImage();
-    }
+    
 }

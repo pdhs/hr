@@ -1,91 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_healthoffice_healthofficePool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="healthoffice"/>
-        <property name="User" value="healthoffice"/>
-        <property name="Password" value="health"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/healthoffice"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="dsJHO" object-type="user" pool-name="derby_net_healthoffice_healthofficePool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_HealthOffice_HealthOfficePool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="HealthOffice"/>
-        <property name="User" value="HealthOffice"/>
-        <property name="Password" value="health"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/HealthOffice"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="ds1" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
-    <jdbc-resource enabled="true" jndi-name="dsServerJHO" object-type="user" pool-name="derby_net_healthoffice_healthofficePool"/>
-    <jdbc-resource enabled="true" jndi-name="1" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
-    <jdbc-resource enabled="true" jndi-name="ds2" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_temp_tempPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="temp"/>
-        <property name="User" value="temp"/>
-        <property name="Password" value="temp"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/temp"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="ds123" object-type="user" pool-name="derby_net_temp_tempPool"/>
-    <jdbc-resource enabled="true" jndi-name="dsLaptopJdbHealthOffice" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_coop1_coop1Pool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="databaseName" value="coop1"/>
-        <property name="User" value="coop1"/>
-        <property name="Password" value="coop1"/>
-        <property name="URL" value="jdbc:derby://localhost/coop1"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="dsCoop1" object-type="user" pool-name="derby_net_coop1_coop1Pool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="mysql_healthoffice_healthofficePool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="server"/>
-        <property name="portNumber" value="3306"/>
-        <property name="databaseName" value="healthoffice"/>
-        <property name="User" value="healthoffice"/>
-        <property name="Password" value="health"/>
-        <property name="URL" value="jdbc:mysql://server:3306/healthoffice"/>
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="ds_server" object-type="user" pool-name="mysql_healthoffice_healthofficePool"/>
-    <jdbc-resource enabled="true" jndi-name="dsJLap" object-type="user" pool-name="derby_net_HealthOffice_HealthOfficePool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="mysql_ho_hoPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="svr"/>
-        <property name="portNumber" value="3306"/>
-        <property name="databaseName" value="ho"/>
-        <property name="User" value="ho"/>
-        <property name="Password" value="ho"/>
-        <property name="URL" value="jdbc:mysql://svr:3306/ho"/>
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="dsSvr" object-type="user" pool-name="mysql_ho_hoPool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_ho_hoPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="ho"/>
-        <property name="User" value="ho"/>
-        <property name="Password" value="ho"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/ho"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="ds111" object-type="user" pool-name="derby_net_ho_hoPool"/>
-    <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_healthofice_healthofficePool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
-        <property name="serverName" value="localhost"/>
-        <property name="portNumber" value="1527"/>
-        <property name="databaseName" value="healthofice"/>
-        <property name="User" value="healthoffice"/>
-        <property name="Password" value="health"/>
-        <property name="URL" value="jdbc:derby://localhost:1527/healthofice"/>
-        <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
-    </jdbc-connection-pool>
-    <jdbc-resource enabled="true" jndi-name="dsHealthOffice" object-type="user" pool-name="derby_net_healthofice_healthofficePool"/>
-    <jdbc-resource enabled="true" jndi-name="dsJava" object-type="user" pool-name="derby_net_healthofice_healthofficePool"/>
     <jdbc-connection-pool allow-non-component-callers="false" associate-with-thread="false" connection-creation-retry-attempts="0" connection-creation-retry-interval-in-seconds="10" connection-leak-reclaim="false" connection-leak-timeout-in-seconds="0" connection-validation-method="auto-commit" datasource-classname="org.apache.derby.jdbc.ClientDataSource" fail-all-connections="false" idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="derby_net_hr_hrPool" non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" wrap-jdbc-objects="false">
         <property name="serverName" value="localhost"/>
         <property name="portNumber" value="1527"/>
@@ -96,5 +11,4 @@
         <property name="driverClass" value="org.apache.derby.jdbc.ClientDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="dsHr" object-type="user" pool-name="derby_net_hr_hrPool"/>
-    <jdbc-resource enabled="true" jndi-name="dsHumanResource" object-type="user" pool-name="derby_net_hr_hrPool"/>
 </resources>
