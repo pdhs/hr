@@ -8,6 +8,7 @@
 package gov.health.bean;
 
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.primefaces.component.submenu.Submenu;
@@ -189,4 +190,15 @@ public class Menu implements Serializable {
     public void setModel(MenuModel model) {
         this.model = model;
     }
+    
+    
+    @PostConstruct
+    public void init() {
+        try {
+            createMenu();
+        } catch (Exception e) {
+            System.out.println("Error in init method. It is " + e.getMessage());
+        }
+    }
+    
 }

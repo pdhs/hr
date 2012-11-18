@@ -49,7 +49,7 @@ public class FileUploadController  implements Serializable {
         try {
 
             in = file.getInputstream();
-            File f = new File("D:\\Tem", file.getFileName());
+            File f = new File("\\Tem", file.getFileName());
             FileOutputStream out = new FileOutputStream(f);
             //            OutputStream out = new FileOutputStream(new File(fileName));
             int read = 0;
